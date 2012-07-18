@@ -1,7 +1,11 @@
 package info.plugmania.ijmh.effects;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
@@ -15,12 +19,14 @@ public class PlayerEffects {
 		plugin = instance;
 	
 		// CATCH FIRE
-		effects[1] = "You caught fire, hurry and use a bucket of water to put it out!";	
+		effects[1] = ChatColor.GOLD + "You caught fire, hurry and use a bucket of water to put it out!";	
 		// PUT OUT FIRE
-		effects[2] = "You really need to be careful next time.";
+		effects[2] = ChatColor.AQUA + "You really need to be careful next time.";
+		// FOOD POISONING
+		effects[3] = ChatColor.GREEN + "Your belly starts to rumble, that food must have been bad!";
 	}
 	
-	public static void addEffectOnItemUse(int itemId, PlayerInteractEvent event){
+	public static void addEffectInteract(int itemId, PlayerInteractEvent event){
 		Player player = event.getPlayer();
 		int effect = 0;
 		// CATCH FIRE
@@ -36,4 +42,16 @@ public class PlayerEffects {
 		}
 		if(effect>0) player.sendMessage(effects[effect]);
 	}
+
+	public static void addEffectRegainHealth(String reason, EntityRegainHealthEvent event){
+		Player player = (Player) event.getEntity();
+		int effect = 0;
+		// CATCH FIRE
+		if(reason=="EATING" && Util.pctChance(10)) {
+			player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(15), 1));
+			effect = 3;
+		}
+		if(effect>0) player.sendMessage(effects[effect]);
+	}
+	
 }
