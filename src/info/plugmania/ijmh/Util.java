@@ -9,12 +9,12 @@ public class Util{
 		plugin = instance;
 	}
 	
-	int sec2tic(int seconds){
+	public static int sec2tic(int seconds){
 		int ticks = seconds * 20;
 		return ticks;
 	}
 	
-	boolean pctChance(int pct){
+	public boolean pctChance(int pct){
 		boolean result = false;
 		Random r = new Random();
 		int rNum = r.nextInt(100);
