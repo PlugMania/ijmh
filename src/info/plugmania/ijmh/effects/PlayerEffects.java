@@ -13,7 +13,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public static String[] effects = new String[3];
+	public static String[] effects = new String[4];
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
@@ -24,6 +24,8 @@ public class PlayerEffects {
 		effects[2] = ChatColor.AQUA + "You really need to be careful next time.";
 		// FOOD POISONING
 		effects[3] = ChatColor.GREEN + "Your belly starts to rumble, that food must have been bad!";
+	    // CURE FOOD POISONING
+		effects[4] = ChatColor.AQUA + "You feel better, you where lucky this time.";
 	}
 	
 	public static void addEffectInteract(int itemId, PlayerInteractEvent event){
@@ -40,6 +42,10 @@ public class PlayerEffects {
 			event.setCancelled(true);
 			effect = 2;
 		}
+		// CURE FOODPOISON
+		else if(itemId==326 && player.hasPotionEffect(PotionEffectType.POISON)) {
+			effect = 4;
+		}
 		if(effect>0) player.sendMessage(effects[effect]);
 	}
 
@@ -48,7 +54,7 @@ public class PlayerEffects {
 		int effect = 0;
 		// CATCH FIRE
 		if(reason=="EATING" && Util.pctChance(10)) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(15), 1));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(60), 1));
 			effect = 3;
 		}
 		if(effect>0) player.sendMessage(effects[effect]);
