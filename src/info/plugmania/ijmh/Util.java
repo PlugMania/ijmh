@@ -1,7 +1,5 @@
 package info.plugmania.ijmh;
 
-import java.util.Random;
-
 public class Util{
 	static ijmh plugin;
 	
@@ -14,7 +12,7 @@ public class Util{
 		return ticks;
 	}
 	
-	public boolean pctChance(int pct){
+	public static boolean pctChance(int pct){
 		boolean result = false;
 		int rNum = (int) (100*Math.random());
 		if(rNum<=pct) result = true;

@@ -15,6 +15,15 @@ public class PlayerListener implements Listener {
 		plugin = instance;
 	}
 	
+	int[][] items = new int[2][2];
+	
+	// FLINT & TINDER
+	items[259][0] = 0;
+	items[259][1] = 0;
+	// WATER
+	items[326][0] = 0;
+	items[326][1] = 0;
+	
 	@EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
