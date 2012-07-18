@@ -16,8 +16,7 @@ public class Util{
 	
 	public boolean pctChance(int pct){
 		boolean result = false;
-		Random r = new Random();
-		int rNum = r.nextInt(100);
+		int rNum = (int) (100*Math.random());
 		if(rNum<=pct) result = true;
 		return result;
 	}
