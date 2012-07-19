@@ -12,10 +12,10 @@ public class Util{
 		return ticks;
 	}
 	
-	public static boolean pctChance(int pct){
+	public static boolean pctChance(double d){
 		boolean result = false;
 		int rNum = (int) (100*Math.random());
-		if(rNum<=pct) result = true;
+		if(rNum<=d) result = true;
 		return result;
 	}
 }

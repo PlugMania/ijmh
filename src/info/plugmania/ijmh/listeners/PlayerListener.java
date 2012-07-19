@@ -3,13 +3,20 @@ package info.plugmania.ijmh.listeners;
 import info.plugmania.ijmh.ijmh;
 import info.plugmania.ijmh.effects.PlayerEffects;
 
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.world.WorldEvent;
 
 public class PlayerListener implements Listener {
 	
@@ -23,22 +30,42 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		
-		if(player.getGameMode().getValue()==0) {
+		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 			if(event.hasItem()) {
-				PlayerEffects.addEffectInteract(event.getItem().getTypeId(), event);
+				PlayerEffects.addEffectInteract(event);
 			}
 		}
     }	
 	
 	@EventHandler
-    public void onEntityRegainHealth(EntityRegainHealthEvent event) {
-		Entity player = event.getEntity();
+	public void onPlayerMove(PlayerMoveEvent event) {
+		Player player = event.getPlayer();
 		
-		if(((HumanEntity) player).getGameMode().getValue()==0) {
-			if(event.getRegainReason().name()=="EATING") {
-				PlayerEffects.addEffectRegainHealth(event.getRegainReason().name(), event);
+		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+			PlayerEffects.addEffectMove(event);			
+		}
+	}
+	
+	@EventHandler
+    public void onEntityRegainHealth(EntityRegainHealthEvent event) {		
+		if(event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+				if(event.getRegainReason().equals(RegainReason.EATING)) {
+					PlayerEffects.addEffectRegainHealth(event);
+				}
 			}
 		}
-    }	
+    }
+	
+	@EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {		
+		if(event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+				PlayerEffects.addEffectDamage(event);
+			}
+		}
+    }
 	
 }
