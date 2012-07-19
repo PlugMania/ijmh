@@ -1,5 +1,7 @@
 package info.plugmania.ijmh.effects;
 
+import java.util.Date;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -15,20 +17,23 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public static String[] effects = new String[4 + 1];
-	static int effect = 0;
+	public static String[] effects = new String[5 + 1];
+	static int effect;
+	public static long StruckTime = 0;
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
 	
 		// CATCH FIRE
-		effects[1] = ChatColor.GOLD + "You caught fire, hurry and use a bucket of water to put it out!";	
+		effects[1] = ChatColor.GOLD + "You caught fire, hurry and use a bucket of water or a lake to put it out!";	
 		// PUT OUT FIRE
 		effects[2] = ChatColor.AQUA + "You really need to be careful next time.";
 		// FOOD POISONING
 		effects[3] = ChatColor.GREEN + "Your belly starts to rumble, that food must have been bad!? Milk Milk!!";
 	    // CURE FOOD POISONING
 		effects[4] = ChatColor.AQUA + "You feel better, you where lucky this time.";
+	    // STRUCK BY LIGHTNING UNDER A TREE
+		effects[5] = ChatColor.RED + "Struck by lightning, didn't your mom teach you not to hide under trees during a storm!?";
 	}
 	
 	public static void addEffectInteract(int itemId, PlayerInteractEvent event){
@@ -72,9 +77,33 @@ public class PlayerEffects {
 		Location to = event.getTo();
 		Location from = event.getFrom();
 		
+		effect = 0;
+		
 		// PUT OUT FIRE
 		if((to.getBlock().getTypeId()==8 || to.getBlock().getTypeId()==9) && from.getBlock().getTypeId()!=8 && from.getBlock().getTypeId()!=9 && player.getFireTicks()>0){
 			effect = 2;
+		}
+		else if(player.getWorld().hasStorm()){
+			Date curDate = new Date();
+			long curTime = curDate.getTime();
+			
+			if(curTime>StruckTime) {
+				int i = 0;
+				boolean isHit = false;
+				while(i++<=15){
+					if(player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i+3, to.getBlockZ()).getType().name()=="LEAVES") {
+						isHit = true;
+					}
+				}
+				
+				if(isHit==true && Util.pctChance(0.5)) {
+					StruckTime = curTime + 10000;
+					player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
+					player.damage(10);
+					effect = 5;
+				} 
+			}
+			
 		}
 		else {
 			effect = 0;
