@@ -3,6 +3,7 @@ package info.plugmania.ijmh.listeners;
 import info.plugmania.ijmh.ijmh;
 import info.plugmania.ijmh.effects.PlayerEffects;
 
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -26,7 +27,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		
-		if(player.getGameMode().getValue()==0) {
+		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 			if(event.hasItem()) {
 				PlayerEffects.addEffectInteract(event.getItem().getTypeId(), event);
 			}
@@ -34,12 +35,13 @@ public class PlayerListener implements Listener {
     }	
 	
 	@EventHandler
-    public void onEntityRegainHealth(EntityRegainHealthEvent event) {
-		Entity player = event.getEntity();
-		
-		if(((HumanEntity) player).getGameMode().getValue()==0) {
-			if(event.getRegainReason().name()=="EATING") {
-				PlayerEffects.addEffectRegainHealth(event.getRegainReason().name(), event);
+    public void onEntityRegainHealth(EntityRegainHealthEvent event) {		
+		if(event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+				if(event.getRegainReason().name()=="EATING") {
+					PlayerEffects.addEffectRegainHealth(event.getRegainReason().name(), event);
+				}
 			}
 		}
     }
@@ -48,7 +50,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerMove(PlayerMoveEvent event) {
 		Player player = event.getPlayer();
 		
-		if(player.getGameMode().getValue()==0) {
+		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 			PlayerEffects.addEffectMove(event);			
 		}
 	}
