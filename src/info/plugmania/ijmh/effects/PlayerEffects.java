@@ -25,13 +25,13 @@ public class PlayerEffects {
 		plugin = instance;
 	
 		// CATCH FIRE
-		effects[1] = ChatColor.GOLD + "You caught fire, hurry and use a bucket of water or a lake to put it out!";	
+		effects[1] = ChatColor.GOLD + "You caught fire, use a bucket of water or find water to put it out!";	
 		// PUT OUT FIRE
 		effects[2] = ChatColor.AQUA + "You really need to be careful next time.";
 		// FOOD POISONING
 		effects[3] = ChatColor.GREEN + "Your belly starts to rumble, that food must have been bad!? Milk Milk!!";
 	    // CURE FOOD POISONING
-		effects[4] = ChatColor.AQUA + "You feel better, you where lucky this time.";
+		effects[4] = ChatColor.AQUA + "You feel better! You where lucky this time.";
 	    // STRUCK BY LIGHTNING UNDER A TREE
 		effects[5] = ChatColor.RED + "Struck by lightning, didn't your mom teach you not to hide under trees during a storm!?";
 	}
