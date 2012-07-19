@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
@@ -79,6 +80,7 @@ public class PlayerEffects {
 		if((to.getBlock().getTypeId()==8 || to.getBlock().getTypeId()==9) && from.getBlock().getTypeId()!=8 && from.getBlock().getTypeId()!=9 && player.getFireTicks()>0){
 			effect = 2;
 		}
+		// STRUCK BY LIGHTNING UNDER A TREE
 		else if(player.getWorld().hasStorm()){
 			Date curDate = new Date();
 			long curTime = curDate.getTime();
@@ -86,9 +88,14 @@ public class PlayerEffects {
 			if(curTime>StruckTime) {
 				int i = 0;
 				boolean isHit = false;
-				while(i++<=15){
-					if(player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i+3, to.getBlockZ()).getType().name()=="LEAVES") {
+				boolean doBreak = false;
+				while(i++<=15 && !doBreak && !isHit){
+					Material testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i+3, to.getBlockZ()).getType();
+					if(testBlock.equals(Material.LEAVES) || testBlock.equals(Material.WOOD)) {
 						isHit = true;
+					} else if(!testBlock.equals(Material.AIR)) {
+						doBreak = true;
+						isHit = false;
 					}
 				}
 				
