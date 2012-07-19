@@ -90,7 +90,7 @@ public class PlayerEffects {
 				boolean isHit = false;
 				boolean doBreak = false;
 				while(i++<=15 && !doBreak && !isHit){
-					Material testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i+3, to.getBlockZ()).getType();
+					Material testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i, to.getBlockZ()).getType();
 					if(testBlock.equals(Material.LEAVES) || testBlock.equals(Material.WOOD)) {
 						isHit = true;
 					} else if(!testBlock.equals(Material.AIR)) {
