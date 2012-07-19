@@ -39,7 +39,11 @@ public class PlayerEffects {
 	public static void addEffectInteract(int itemId, PlayerInteractEvent event){
 		Player player = event.getPlayer();
 		// CATCH FIRE
-		if(itemId==259 && Util.pctChance(10)) {
+		if(
+			itemId==259 && Util.pctChance(10) && 
+			player.getWorld().getBlockAt(player.getLocation()).isLiquid()==false && 
+			player.getWorld().hasStorm()==false
+			) {
 			player.setFireTicks(Util.sec2tic(300));
 			effect = 1;
 		}
