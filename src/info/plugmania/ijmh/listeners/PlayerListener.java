@@ -69,6 +69,16 @@ public class PlayerListener implements Listener {
 		}
     }
 	
-
+	@EventHandler
+	public void onBlockRedstoneEvent(BlockRedstoneEvent event){
+		for(Player p:plugin.getServer().getOnlinePlayers()){
+			if(p.getLocation().getBlockX()==event.getBlock().getLocation().getBlockX()&&
+					p.getLocation().getBlockY()==event.getBlock().getLocation().getBlockY()&&
+					p.getLocation().getBlockZ()==event.getBlock().getLocation().getBlockZ()){
+				p.damage(1);
+			}
+				
+		}
+	}
 	
 }
