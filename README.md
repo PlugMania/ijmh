@@ -15,8 +15,9 @@ Features
 - Concussion from fall in 3 steps from damage over 4,8,12.
 - Electrocution when standing on redstone while powered state is on, 5% chance for massive voltage.
 
-permissions
+Permissions
 ====
+
   ijmh.immunity.*:
     description: Immunity to all events
   ijmh.immunity.fire:
