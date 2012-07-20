@@ -9,3 +9,4 @@ Features
 - 10% chance of catching foodpoisoning when eathing, and milk is used to cure it.
 - (10s CD) Chance to get struck by lightning when standing under a tree in a storm.
 - Cuncussion from fall in 3 steps from damage over 4,8,12.
+- Electrocution when standing on redstone while the powered state changes, 5% change for massive voltage.

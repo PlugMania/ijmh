@@ -22,7 +22,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[6 + 1];
+	public String[] effects = new String[8 + 1];
 	int effect;
 	public long StruckTime = 0;
 
@@ -41,6 +41,9 @@ public class PlayerEffects {
 		effects[5] = ChatColor.RED + "Struck by lightning, didn't your mom teach you not to hide under trees during a storm!?";
 		// CUNCUSSION FROM FALL
 		effects[6] = ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "You might have hit the ground a bit too hard there ...";
+		// REDSTONE ELECTROCUTION
+		effects[7] = ChatColor.GOLD + "You got lucky, the redstone was only carrying low voltage!";
+		effects[8] = ChatColor.GOLD + "Aaaaaarggghhh, the redstone zapped you with HIGH VOLTAGE!";
 	}
 	
 	public void addEffectInteract(PlayerInteractEvent event){
@@ -149,14 +152,22 @@ public class PlayerEffects {
 		if(effect>0) player.sendMessage(effects[effect]);
 	}
 	
-	public void addEffectRedstoneElectrocution(BlockRedstoneEvent event){
-		for(Player p:plugin.getServer().getOnlinePlayers()){
-			if(p.getLocation().getBlockX()==event.getBlock().getLocation().getBlockX()&&
-					p.getLocation().getBlockY()==event.getBlock().getLocation().getBlockY()&&
-					p.getLocation().getBlockZ()==event.getBlock().getLocation().getBlockZ()){
-				p.damage(1);
-			}
+	public void addEffectRedstone(BlockRedstoneEvent event){
+		// REDSTONE ELECTRICUTION
+		for(Player player:plugin.getServer().getOnlinePlayers()){
+			if(player.getLocation().getBlockX()==event.getBlock().getLocation().getBlockX()&&
+					player.getLocation().getBlockY()==event.getBlock().getLocation().getBlockY()&&
+							player.getLocation().getBlockZ()==event.getBlock().getLocation().getBlockZ()){
+				if(Util.pctChance(5)) {
+					player.damage(8);
+					player.sendMessage(effects[8]);
+				}
+				else {
+					player.damage(2);
+					player.sendMessage(effects[7]);
+				}
 				
+			}	
 		}
 	}
 	

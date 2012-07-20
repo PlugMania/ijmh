@@ -65,7 +65,7 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onBlockRedstoneEvent(BlockRedstoneEvent event){
-		plugin.playerEffects.addEffectRedstoneElectrocution(event);
+		plugin.playerEffects.addEffectRedstone(event);
 	}
 	
 }
