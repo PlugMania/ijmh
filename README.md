@@ -2,10 +2,10 @@ ijmh (It Just Might Happen)
 ====
 
 name: ijmh<br />
-description: "It Just Might Happen" is reality added based on events
-author: nsordk & PlugMania
-main: info.plugmania.ijmh.ijmh
-version: 1.0.0
+description: "It Just Might Happen" is reality added based on events<br />
+author: nsordk & PlugMania<br />
+main: info.plugmania.ijmh.ijmh<br />
+version: 1.0.0<br />
 
 Features
 ====
@@ -18,16 +18,16 @@ Features
 Permissions
 ====
 
-  ijmh.immunity.*:
-    description: Immunity to all events
-  ijmh.immunity.fire:
-    description: Immunity to catching fire on use of flint & tinder.
-  ijmh.immunity.fall:
-    description: Immunity to concussion on fall.
-  ijmh.immunity.foodpoison:
-    description: Immunity to getting foodpoisoning when eating.
-  ijmh.immunity.lightning:
-    description: Immunity to getting hit by Lightning while under trees.
-  ijmh.immunity.electro:
-    description: Immunity to getting electrocuted when touching blocks powered by redstone.
+  ijmh.immunity.*:<br />
+    description: Immunity to all events<br />
+  ijmh.immunity.fire:<br />
+    description: Immunity to catching fire on use of flint & tinder.<br />
+  ijmh.immunity.fall:<br />
+    description: Immunity to concussion on fall.<br />
+  ijmh.immunity.foodpoison:<br />
+    description: Immunity to getting foodpoisoning when eating.<br />
+  ijmh.immunity.lightning:<br />
+    description: Immunity to getting hit by Lightning while under trees.<br />
+  ijmh.immunity.electro:<br />
+    description: Immunity to getting electrocuted when touching blocks powered by redstone.<br />
               
