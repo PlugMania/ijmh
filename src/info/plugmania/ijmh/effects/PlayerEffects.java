@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -21,9 +22,9 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public static String[] effects = new String[6 + 1];
-	static int effect;
-	public static long StruckTime = 0;
+	public String[] effects = new String[6 + 1];
+ int effect;
+	public long StruckTime = 0;
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
@@ -42,7 +43,7 @@ public class PlayerEffects {
 		effects[6] = ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "You might have hit the ground a bit too hard there ...";
 	}
 	
-	public static void addEffectInteract(PlayerInteractEvent event){
+	public void addEffectInteract(PlayerInteractEvent event){
 		Player player = event.getPlayer();
 		// CATCH FIRE
 		if(
@@ -69,7 +70,7 @@ public class PlayerEffects {
 		if(effect>0) player.sendMessage(effects[effect]);
 	}
 
-	public static void addEffectMove(PlayerMoveEvent event){
+	public void addEffectMove(PlayerMoveEvent event){
 		Player player = event.getPlayer();
 		Location to = event.getTo();
 		Location from = event.getFrom();
@@ -114,7 +115,7 @@ public class PlayerEffects {
 		if(effect>0) player.sendMessage(effects[effect]);
 	}
 	
-	public static void addEffectRegainHealth(EntityRegainHealthEvent event){
+	public void addEffectRegainHealth(EntityRegainHealthEvent event){
 		Player player = (Player) event.getEntity();
 		// CATCH FIRE
 		if(event.getRegainReason().equals(RegainReason.EATING) && Util.pctChance(10)) {
@@ -127,7 +128,7 @@ public class PlayerEffects {
 		if(effect>0) player.sendMessage(effects[effect]);
 	}
 	
-	public static void addEffectDamage(EntityDamageEvent event){
+	public void addEffectDamage(EntityDamageEvent event){
 		Player player = (Player) event.getEntity();
 		
 		// CUNCUSSION FROM FALL
@@ -146,6 +147,17 @@ public class PlayerEffects {
 			if(event.getDamage()>=4) effect = 6;
 		}
 		if(effect>0) player.sendMessage(effects[effect]);
+	}
+	
+	public void addEffectRedstoneElectrocution(BlockRedstoneEvent event){
+		for(Player p:plugin.getServer().getOnlinePlayers()){
+			if(p.getLocation().getBlockX()==event.getBlock().getLocation().getBlockX()&&
+					p.getLocation().getBlockY()==event.getBlock().getLocation().getBlockY()&&
+					p.getLocation().getBlockZ()==event.getBlock().getLocation().getBlockZ()){
+				p.damage(1);
+			}
+				
+		}
 	}
 	
 }
