@@ -1,7 +1,7 @@
 ijmh (It Just Might Happen)
 ====
 
-name: ijmh/n
+name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events
 author: nsordk & PlugMania
 main: info.plugmania.ijmh.ijmh
