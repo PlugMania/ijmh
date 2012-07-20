@@ -23,7 +23,7 @@ public class PlayerEffects {
 	
 	ijmh plugin;
 	public String[] effects = new String[6 + 1];
- int effect;
+	int effect;
 	public long StruckTime = 0;
 
 	public PlayerEffects(ijmh instance){

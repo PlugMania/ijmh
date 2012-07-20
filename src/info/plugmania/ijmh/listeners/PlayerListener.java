@@ -1,23 +1,17 @@
 package info.plugmania.ijmh.listeners;
 
 import info.plugmania.ijmh.ijmh;
-import info.plugmania.ijmh.effects.PlayerEffects;
 
 import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.world.WorldEvent;
 
 public class PlayerListener implements Listener {
 	
@@ -33,7 +27,7 @@ public class PlayerListener implements Listener {
 		
 		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 			if(event.hasItem()) {
-				PlayerEffects.addEffectInteract(event);
+				plugin.playerEffects.addEffectInteract(event);
 			}
 		}
     }	
@@ -43,7 +37,7 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 		
 		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
-			PlayerEffects.addEffectMove(event);			
+			plugin.playerEffects.addEffectMove(event);			
 		}
 	}
 	
@@ -53,7 +47,7 @@ public class PlayerListener implements Listener {
 			Player player = (Player) event.getEntity();
 			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 				if(event.getRegainReason().equals(RegainReason.EATING)) {
-					PlayerEffects.addEffectRegainHealth(event);
+					plugin.playerEffects.addEffectRegainHealth(event);
 				}
 			}
 		}
@@ -64,14 +58,14 @@ public class PlayerListener implements Listener {
 		if(event.getEntity() instanceof Player) {
 			Player player = (Player) event.getEntity();
 			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
-				PlayerEffects.addEffectDamage(event);
+				plugin.playerEffects.addEffectDamage(event);
 			}
 		}
     }
 	
 	@EventHandler
 	public void onBlockRedstoneEvent(BlockRedstoneEvent event){
-	plugin.playerEffects.addEffectRedstoneElectrocution(event);
+		plugin.playerEffects.addEffectRedstoneElectrocution(event);
 	}
 	
 }
