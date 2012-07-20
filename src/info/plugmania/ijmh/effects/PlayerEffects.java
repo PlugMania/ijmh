@@ -80,8 +80,25 @@ public class PlayerEffects {
 		
 		effect = 0;
 		
+		// ELECTRICUTION ON REDSTONE TOUCH
+		if(to.getBlock().isBlockPowered() && 
+				(
+						to.getBlockX()!=from.getBlockX() ||
+						to.getBlockY()!=from.getBlockY() ||
+						to.getBlockZ()!=from.getBlockZ()
+				)
+			){
+			if(Util.pctChance(5)) {
+				player.damage(8);
+				effect = 8;
+			}
+			else {
+				player.damage(2);
+				effect = 7;
+			}
+		}
 		// PUT OUT FIRE
-		if((to.getBlock().getTypeId()==8 || to.getBlock().getTypeId()==9) && from.getBlock().getTypeId()!=8 && from.getBlock().getTypeId()!=9 && player.getFireTicks()>0){
+		else if((to.getBlock().getTypeId()==8 || to.getBlock().getTypeId()==9) && from.getBlock().getTypeId()!=8 && from.getBlock().getTypeId()!=9 && player.getFireTicks()>0){
 			effect = 2;
 		}
 		// STRUCK BY LIGHTNING UNDER A TREE
@@ -150,25 +167,6 @@ public class PlayerEffects {
 			if(event.getDamage()>=4) effect = 6;
 		}
 		if(effect>0) player.sendMessage(effects[effect]);
-	}
-	
-	public void addEffectRedstone(BlockRedstoneEvent event){
-		// REDSTONE ELECTRICUTION
-		for(Player player:plugin.getServer().getOnlinePlayers()){
-			if(player.getLocation().getBlockX()==event.getBlock().getLocation().getBlockX()&&
-					player.getLocation().getBlockY()==event.getBlock().getLocation().getBlockY()&&
-							player.getLocation().getBlockZ()==event.getBlock().getLocation().getBlockZ()){
-				if(Util.pctChance(5)) {
-					player.damage(8);
-					player.sendMessage(effects[8]);
-				}
-				else {
-					player.damage(2);
-					player.sendMessage(effects[7]);
-				}
-				
-			}	
-		}
 	}
 	
 }
