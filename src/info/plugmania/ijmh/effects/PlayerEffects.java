@@ -97,6 +97,19 @@ public class PlayerEffects {
 				effect = 7;
 			}
 		}
+		// CUNCUSSION FROM FALL EVENT BASED ON AIRBLOCKS
+		else if(!player.isFlying() && event.getPlayer().getFallDistance()>4 && event.getPlayer().getLastDamage()<4){
+			if(event.getPlayer().getFallDistance()>14){
+				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(5), 1));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(15), 1));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(10), 1));
+			} else if(event.getPlayer().getFallDistance()>11){
+				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(10), 1));				
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(5), 1));	
+			} else if(event.getPlayer().getFallDistance()>6){
+				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(10), 1));				
+			}
+		}
 		// PUT OUT FIRE
 		else if((to.getBlock().getTypeId()==8 || to.getBlock().getTypeId()==9) && from.getBlock().getTypeId()!=8 && from.getBlock().getTypeId()!=9 && player.getFireTicks()>0){
 			effect = 2;
