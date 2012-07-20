@@ -33,13 +33,13 @@ public class PlayerEffects {
 		effects[1] = ChatColor.GOLD + "You caught fire, use a bucket of water or find water to put it out!";	
 		// PUT OUT FIRE
 		effects[2] = ChatColor.AQUA + "You really need to be careful next time.";
-		// FOOD POISONING
+		// FOODPOISONING
 		effects[3] = ChatColor.GREEN + "Your belly starts to rumble, that food must have been bad!? Milk Milk!!";
 	    // CURE FOOD POISONING
 		effects[4] = ChatColor.AQUA + "You feel better! You where lucky this time.";
 	    // STRUCK BY LIGHTNING UNDER A TREE
 		effects[5] = ChatColor.RED + "Struck by lightning, didn't your mom teach you not to hide under trees during a storm!?";
-		// CUNCUSSION FROM FALL
+		// CONCUSSION FROM FALL
 		effects[6] = ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "You might have hit the ground a bit too hard there ...";
 		// REDSTONE ELECTROCUTION
 		effects[7] = ChatColor.GOLD + "You got lucky, the redstone was only carrying low voltage!";
@@ -50,9 +50,10 @@ public class PlayerEffects {
 		Player player = event.getPlayer();
 		// CATCH FIRE
 		if(
-			   event.getItem().getTypeId()==259 && Util.pctChance(10) 
-			&& player.getWorld().getBlockAt(player.getLocation()).isLiquid()==false 
-			&& player.getWorld().hasStorm()==false
+				!player.hasPermission("ijmh.immunity.fire") && 
+				event.getItem().getTypeId()==259 && Util.pctChance(10) && 
+				player.getWorld().getBlockAt(player.getLocation()).isLiquid()==false && 
+				player.getWorld().hasStorm()==false
 			) {
 			player.setFireTicks(Util.sec2tic(300));
 			effect = 1;
@@ -81,7 +82,7 @@ public class PlayerEffects {
 		effect = 0;
 		
 		// ELECTRICUTION ON REDSTONE TOUCH
-		if(to.getBlock().isBlockPowered() && 
+		if(!player.hasPermission("ijmh.immunity.electro") && to.getBlock().isBlockPowered() && 
 				(
 						to.getBlockX()!=from.getBlockX() ||
 						to.getBlockY()!=from.getBlockY() ||
@@ -97,8 +98,12 @@ public class PlayerEffects {
 				effect = 7;
 			}
 		}
-		// CUNCUSSION FROM FALL EVENT BASED ON AIRBLOCKS
-		else if(!player.isFlying() && event.getPlayer().getFallDistance()>4 && event.getPlayer().getLastDamage()<4){
+		// CONCUSSION FROM FALL EVENT BASED ON AIRBLOCKS
+		else if(
+				!player.hasPermission("ijmh.immunity.fall") && 
+				!player.isFlying() && event.getPlayer().getFallDistance()>4 && 
+				event.getPlayer().getLastDamage()<4
+				){
 			if(event.getPlayer().getFallDistance()>14){
 				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(5), 1));
 				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(15), 1));
@@ -119,7 +124,7 @@ public class PlayerEffects {
 			Date curDate = new Date();
 			long curTime = curDate.getTime();
 			
-			if(curTime>StruckTime) {
+			if(!player.hasPermission("ijmh.immunity.lightning") && curTime>StruckTime) {
 				int i = 0;
 				boolean isHit = false;
 				boolean doBreak = false;
@@ -150,8 +155,8 @@ public class PlayerEffects {
 	
 	public void addEffectRegainHealth(EntityRegainHealthEvent event){
 		Player player = (Player) event.getEntity();
-		// CATCH FIRE
-		if(event.getRegainReason().equals(RegainReason.EATING) && Util.pctChance(10)) {
+		// FOODPOISONING
+		if(!player.hasPermission("ijmh.immunity.foodpoison") && event.getRegainReason().equals(RegainReason.EATING) && Util.pctChance(10)) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(60), 1));
 			effect = 3;
 		} 
@@ -164,8 +169,8 @@ public class PlayerEffects {
 	public void addEffectDamage(EntityDamageEvent event){
 		Player player = (Player) event.getEntity();
 		
-		// CUNCUSSION FROM FALL
-		if(event.getCause().equals(DamageCause.FALL)) {
+		// CONCUSSION FROM FALL
+		if(!player.hasPermission("ijmh.immunity.fall") && event.getCause().equals(DamageCause.FALL)) {
 			
 			if(event.getDamage()>=12) {
 				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(5), 1));
