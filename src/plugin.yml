@@ -3,17 +3,30 @@ description: -It Just Might Happen- is reality added based on events
 author: nsordk & PlugMania
 main: info.plugmania.ijmh.ijmh
 version: 1.0.0
+commands:
+  ijmh:
+    usage: /ijmh
+    description: gives access to toggle effects on/off.
 permissions:
   ijmh.immunity.*:
     description: Immunity to all events
+    default: false
   ijmh.immunity.fire:
     description: Immunity to catching fire on use of flint & tinder.
+    default: false
   ijmh.immunity.fall:
     description: Immunity to concussion on fall.
+    default: false
   ijmh.immunity.foodpoison:
     description: Immunity to getting foodpoisoning when eating.
+    default: false
   ijmh.immunity.lightning:
     description: Immunity to getting hit by Lightning while under trees.
+    default: false
   ijmh.immunity.electro:
     description: Immunity to getting electrocuted when touching blocks powered by redstone.
+    default: false
+  ijmh.admin:
+    description: Grant access to the toggle event.
+    default: op
               

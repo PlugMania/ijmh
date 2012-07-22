@@ -1,0 +1,11 @@
+debug: false
+fire:
+  active: true 
+electro:
+  active: true 
+lightning:
+  active: true 
+fall:    
+  active: true
+foodpoison:
+  active: true

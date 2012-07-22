@@ -50,6 +50,7 @@ public class PlayerEffects {
 		Player player = event.getPlayer();
 		// CATCH FIRE
 		if(
+				plugin.getConfig().getConfigurationSection("fire").getBoolean("active") &&
 				!player.hasPermission("ijmh.immunity.fire") && 
 				event.getItem().getTypeId()==259 && Util.pctChance(10) && 
 				player.getWorld().getBlockAt(player.getLocation()).isLiquid()==false && 
@@ -82,7 +83,10 @@ public class PlayerEffects {
 		effect = 0;
 		
 		// ELECTRICUTION ON REDSTONE TOUCH
-		if(!player.hasPermission("ijmh.immunity.electro") && to.getBlock().isBlockPowered() && 
+		if(
+				plugin.getConfig().getConfigurationSection("electro").getBoolean("active") &&
+				!player.hasPermission("ijmh.immunity.electro") && 
+				to.getBlock().isBlockPowered() && 
 				(
 						to.getBlockX()!=from.getBlockX() ||
 						to.getBlockY()!=from.getBlockY() ||
@@ -100,6 +104,7 @@ public class PlayerEffects {
 		}
 		// CONCUSSION FROM FALL EVENT BASED ON AIRBLOCKS
 		else if(
+				plugin.getConfig().getConfigurationSection("fall").getBoolean("active") &&
 				!player.hasPermission("ijmh.immunity.fall") && 
 				!player.isFlying() && event.getPlayer().getFallDistance()>4 && 
 				event.getPlayer().getLastDamage()<4
@@ -123,14 +128,18 @@ public class PlayerEffects {
 		else if(player.getWorld().hasStorm()){
 			Date curDate = new Date();
 			long curTime = curDate.getTime();
-			
-			if(!player.hasPermission("ijmh.immunity.lightning") && curTime>StruckTime) {
+
+			if(
+					plugin.getConfig().getConfigurationSection("lightning").getBoolean("active") &&
+					!player.hasPermission("ijmh.immunity.lightning") && 
+					curTime>StruckTime
+					) {
 				int i = 0;
 				boolean isHit = false;
 				boolean doBreak = false;
 				while(i++<=15 && !doBreak && !isHit){
 					Material testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i, to.getBlockZ()).getType();
-					if(testBlock.equals(Material.LEAVES) || testBlock.equals(Material.WOOD)) {
+					if(testBlock.equals(Material.LEAVES)) {
 						isHit = true;
 					} else if(!testBlock.equals(Material.AIR)) {
 						doBreak = true;
@@ -156,7 +165,12 @@ public class PlayerEffects {
 	public void addEffectRegainHealth(EntityRegainHealthEvent event){
 		Player player = (Player) event.getEntity();
 		// FOODPOISONING
-		if(!player.hasPermission("ijmh.immunity.foodpoison") && event.getRegainReason().equals(RegainReason.EATING) && Util.pctChance(10)) {
+		if(
+				plugin.getConfig().getConfigurationSection("foodpoison").getBoolean("active") &&
+				!player.hasPermission("ijmh.immunity.foodpoison") && 
+				event.getRegainReason().equals(RegainReason.EATING) && 
+				Util.pctChance(10)
+				) {
 			player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(60), 1));
 			effect = 3;
 		} 
@@ -170,7 +184,11 @@ public class PlayerEffects {
 		Player player = (Player) event.getEntity();
 		
 		// CONCUSSION FROM FALL
-		if(!player.hasPermission("ijmh.immunity.fall") && event.getCause().equals(DamageCause.FALL)) {
+		if(
+				plugin.getConfig().getConfigurationSection("fall").getBoolean("active") &&
+				!player.hasPermission("ijmh.immunity.fall") && 
+				event.getCause().equals(DamageCause.FALL)
+				) {
 			
 			if(event.getDamage()>=12) {
 				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(5), 1));
