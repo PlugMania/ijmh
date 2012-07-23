@@ -3,6 +3,7 @@ package info.plugmania.ijmh;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,7 +49,11 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro"); 
 					sender.sendMessage(ChatColor.GREEN + "/ijmh toggle <effect>" + ChatColor.AQUA + " - turn effect on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml"); 
+					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates"); 
 				} 
+				else if(args[0].equalsIgnoreCase("version")){
+					util.checkVersion(true,null,sender);
+				}
 				else if(args[0].equalsIgnoreCase("toggle") && args.length==2){
 					if(this.getConfig().isConfigurationSection(args[1])) {
 						if(this.getConfig().getConfigurationSection(args[1]).getBoolean("active")) {
@@ -63,7 +68,7 @@ public class ijmh extends JavaPlugin {
 						}
 					} 
 					else {
-						sender.sendMessage(ChatColor.RED + "[ijhm] Unknown effect or your config.yml is broken.");
+						sender.sendMessage(ChatColor.RED + "[ijhm] Either you had an error in your command or your config.yml is broken.");
 					}
 				} 
 				else if(args[0].equalsIgnoreCase("load")) {

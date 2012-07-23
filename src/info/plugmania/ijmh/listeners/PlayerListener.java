@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 public class PlayerListener implements Listener {
@@ -19,6 +20,15 @@ public class PlayerListener implements Listener {
 
 	public PlayerListener(ijmh instance) {
 		plugin = instance;
+	}
+	
+	
+	@EventHandler()
+	public void join(PlayerJoinEvent event){
+		Player player = event.getPlayer();
+		if(player.hasPermission("ijmh.admin") || player.isOp()){
+			plugin.util.checkVersion(false, player, null);
+		}
 	}
 	
 	@EventHandler
