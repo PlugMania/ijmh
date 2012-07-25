@@ -14,9 +14,10 @@ v1.0.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v1.1.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
-- Fixed flight:on getting concussion from landing
-1.1.1
+- Effectstatements optimized for performance<br />
+- Fixed flight:on getting concussion from landing<br />
+1.1.1<br />
 - Unlucky crafter added "aka craftthumb"<br />
-1.1.0 
+1.1.0<br />
 - Versioncheck upon login or by command<br /> 
 - Removed debug in config.yml<br />
