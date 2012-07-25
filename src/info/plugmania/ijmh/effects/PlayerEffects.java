@@ -129,7 +129,7 @@ public class PlayerEffects {
 		else if(
 				plugin.getConfig().getConfigurationSection("fall").getBoolean("active") &&
 				!player.hasPermission("ijmh.immunity.fall") && 
-				!player.isFlying() && event.getPlayer().getFallDistance()>4 && 
+				!player.getAllowFlight() && event.getPlayer().getFallDistance()>4 && 
 				event.getPlayer().getLastDamage()<4
 				){
 			if(event.getPlayer().getFallDistance()>14){
