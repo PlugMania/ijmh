@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
@@ -22,7 +23,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[8 + 1];
+	public String[] effects = new String[9 + 1];
 	int effect;
 	public long StruckTime = 0;
 
@@ -44,6 +45,28 @@ public class PlayerEffects {
 		// REDSTONE ELECTROCUTION
 		effects[7] = ChatColor.GOLD + "You got lucky, the redstone was only carrying low voltage!";
 		effects[8] = ChatColor.GOLD + "Aaaaaarggghhh, the redstone zapped you with HIGH VOLTAGE!";
+		// CRAFT MESSAGES
+		effects[9] = ChatColor.GOLD + "Auch! You struck your thumb.";
+	}
+	
+	public void addEffectCraft(CraftItemEvent event){
+		Player player = (Player) event.getWhoClicked();
+		
+		// CRAFTTHUMB
+		if(!player.hasPermission("ijmh.immunity.craftthumb")){
+			if(plugin.getConfig().getConfigurationSection("craftthumb").getBoolean("active")){
+				int moreCraft = event.getCursor().getAmount();
+				if(event.getCursor().getAmount()>0) moreCraft = (event.getCursor().getAmount() / 100)^(event.getCursor().getAmount() / 2);
+				if(Util.pctChance(10 / (1 + moreCraft) )) {
+					player.damage(2);
+					effect = 9;
+				} else {
+					effect = 0;
+				}
+				
+			}
+		}
+		if(effect>0) player.sendMessage(effects[effect]);
 	}
 	
 	public void addEffectInteract(PlayerInteractEvent event){

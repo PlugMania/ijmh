@@ -8,3 +8,5 @@ fall:
   active: true
 foodpoison:
   active: true
+craftthumb:
+  active: true  

@@ -11,8 +11,9 @@ version: 1.1.0<br /><br />
 v1.0.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.1.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.1.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
-<b>1.1.0 Changelog</b><br />
+<b>1.1.1 Changelog</b><br />
 - Versioncheck upon login or by command<br />
 - Removed debug in config.yml<br />
+- Unlucky crafter added "aka craftthumb"<br />
