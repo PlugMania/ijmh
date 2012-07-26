@@ -9,4 +9,6 @@ fall:
 foodpoison:
   active: true
 craftthumb:
+  active: true 
+cows:
   active: true  

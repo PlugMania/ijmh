@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -28,12 +29,21 @@ public class PlayerListener implements Listener {
 	}
 	
 	
-	@EventHandler()
+	@EventHandler
 	public void join(PlayerJoinEvent event){
 		Player player = event.getPlayer();
 		if(player.hasPermission("ijmh.admin") || player.isOp()){
 			plugin.util.checkVersion(false, player, null);
 		}
+	} 
+
+	@EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+		Player player = event.getPlayer();
+		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+			plugin.playerEffects.addEffectInteractEntity(event);
+		}
+		
 	}
 	
 	@EventHandler

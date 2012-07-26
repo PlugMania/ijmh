@@ -5,6 +5,10 @@ import java.util.Date;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Cow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -12,10 +16,13 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.util.Vector;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
@@ -23,7 +30,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[9 + 1];
+	public String[] effects = new String[11 + 1];
 	int effect;
 	public long StruckTime = 0;
 
@@ -47,6 +54,9 @@ public class PlayerEffects {
 		effects[8] = ChatColor.GOLD + "Aaaaaarggghhh, the redstone zapped you with HIGH VOLTAGE!";
 		// CRAFT MESSAGES
 		effects[9] = ChatColor.GOLD + "Auch! You struck your thumb.";
+		// MILKING A COW
+		effects[10] = ChatColor.GOLD + "Seriously ... Do you know any cows that can be milked like that?!";
+		effects[11] = ChatColor.GOLD + "That might leave a mark ...!";		
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -98,6 +108,41 @@ public class PlayerEffects {
 		} 
 	}
 
+	public void addEffectInteractEntity(PlayerInteractEntityEvent event){
+		Player player = event.getPlayer();
+		Entity entityP = event.getPlayer();
+		Entity entity = event.getRightClicked();
+		
+		if(plugin.getConfig().getConfigurationSection("cows").getBoolean("active")) {
+			if(entity.getType().equals(EntityType.COW)) {
+				if(
+					player.getItemInHand().getType().equals(Material.BUCKET) ||
+					player.getItemInHand().getType().equals(Material.MILK_BUCKET)
+					){
+					Location cowLocation = entity.getLocation();
+					Location playerLocation = entityP.getLocation();
+				
+					float entityYaw = Math.abs((cowLocation.getYaw() + 180) % 360);
+					float playerYaw = Math.abs((playerLocation.getYaw() + 180) % 360);
+					float diff = Math.abs(playerYaw - entityYaw);
+					int threshhold = 40;
+					if(diff > 180 - threshhold && diff < 180 + threshhold){
+						player.sendMessage(effects[10]);
+						if(plugin.debug) plugin.getLogger().info("DEBUG: Front " + diff);
+					}	
+					else if((diff < threshhold - 10  || diff > 360 - threshhold + 10) && (!player.hasPermission("ijmh.immunity.cowskick"))) {
+						player.damage(4);
+						player.setVelocity(new Vector(-entity.getLocation().getDirection().getX()-2,1,-entity.getLocation().getDirection().getZ()-2));
+						player.sendMessage(effects[11]);
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(5), 1));
+						if(plugin.debug) plugin.getLogger().info("DEBUG: Back " + diff);
+					} 
+					else if(plugin.debug) plugin.getLogger().info("DEBUG: Side " + diff);
+				}
+			}
+		}
+	}
+	
 	public void addEffectMove(PlayerMoveEvent event){
 		Player player = event.getPlayer();
 		Location to = event.getTo();
@@ -129,7 +174,8 @@ public class PlayerEffects {
 			plugin.getConfig().getConfigurationSection("fall").getBoolean("active") &&
 			!player.hasPermission("ijmh.immunity.fall") && 
 			!player.getAllowFlight() && event.getPlayer().getFallDistance()>4 && 
-			event.getPlayer().getLastDamage()<4
+			event.getPlayer().getLastDamage()<4 &&
+			!player.hasPotionEffect(PotionEffectType.CONFUSION)
 			){
 			if(event.getPlayer().getFallDistance()>14){
 				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(5), 1));

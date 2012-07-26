@@ -46,7 +46,7 @@ public class ijmh extends JavaPlugin {
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
 					sender.sendMessage(ChatColor.AQUA + "- [ijhm] It Just Might Happen v" + this.getDescription().getVersion() + " ------------------"); 
-					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro, craftthumb"); 
+					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro, craftthumb, cows"); 
 					sender.sendMessage(ChatColor.GREEN + "/ijmh toggle <effect>" + ChatColor.AQUA + " - turn effect on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml"); 
 					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates"); 
