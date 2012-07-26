@@ -5,12 +5,9 @@ import java.util.Date;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.entity.Cow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -21,7 +18,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import info.plugmania.ijmh.Util;
@@ -110,7 +106,6 @@ public class PlayerEffects {
 
 	public void addEffectInteractEntity(PlayerInteractEntityEvent event){
 		Player player = event.getPlayer();
-		Entity entityP = event.getPlayer();
 		Entity entity = event.getRightClicked();
 		
 		if(plugin.getConfig().getConfigurationSection("cows").getBoolean("active")) {
@@ -119,8 +114,9 @@ public class PlayerEffects {
 					player.getItemInHand().getType().equals(Material.BUCKET) ||
 					player.getItemInHand().getType().equals(Material.MILK_BUCKET)
 					){
+										
 					Location cowLocation = entity.getLocation();
-					Location playerLocation = entityP.getLocation();
+					Location playerLocation = player.getLocation();
 				
 					float entityYaw = Math.abs((cowLocation.getYaw() + 180) % 360);
 					float playerYaw = Math.abs((playerLocation.getYaw() + 180) % 360);
