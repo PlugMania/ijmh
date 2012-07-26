@@ -14,12 +14,12 @@ v1.1.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v1.1.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
-1.1.2<br />
+v1.1.2<br />
 - Added Cows is supposed to be milked from the side and cows now kicks if milked from behind<br />
 - Effectstatements optimized for performance<br />
 - Fixed flight:on getting concussion from landing<br />
-1.1.1<br />
+v1.1.1<br />
 - Unlucky crafter added "aka craftthumb"<br />
-1.1.0<br />
+v1.1.0<br />
 - Versioncheck upon login or by command<br /> 
 - Removed debug in config.yml<br />
