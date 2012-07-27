@@ -6,6 +6,7 @@ import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
@@ -65,7 +66,16 @@ public class PlayerListener implements Listener {
 			plugin.playerEffects.addEffectMove(event);			
 		}
 	}
-
+	
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		Player player = event.getPlayer();
+		
+		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+			plugin.playerEffects.addEffectBlockBreak(event);			
+		}
+	}
+	
 	@EventHandler
 	public void onCraftItem(CraftItemEvent event) {
 		plugin.playerEffects.addEffectCraft(event);			

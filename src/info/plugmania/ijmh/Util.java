@@ -83,9 +83,9 @@ public class Util{
 	
 	public static boolean pctChance(double d){
 		boolean result = false;
-		int rNum = (int) (100*Math.random());
-		if(plugin.debug) plugin.getLogger().info(rNum + " <= " + d);
+		int rNum = (int) (100*Math.random()); 
 		if(rNum<=d) result = true;
+		if(plugin.debug) plugin.getLogger().info(rNum + " <= " + d + " State:" + result);
 		return result;
 	}
 }

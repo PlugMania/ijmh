@@ -11,4 +11,6 @@ foodpoison:
 craftthumb:
   active: true 
 cows:
-  active: true  
+  active: true
+happyminer:
+  active: true

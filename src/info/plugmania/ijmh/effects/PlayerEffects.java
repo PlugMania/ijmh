@@ -2,12 +2,17 @@ package info.plugmania.ijmh.effects;
 
 import java.util.Date;
 
+import net.minecraft.server.EntityCow;
+import net.minecraft.server.EntityLiving;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.entity.CraftCow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -26,7 +31,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[11 + 1];
+	public String[] effects = new String[13 + 1];
 	int effect;
 	public long StruckTime = 0;
 
@@ -52,7 +57,10 @@ public class PlayerEffects {
 		effects[9] = ChatColor.GOLD + "Auch! You struck your thumb.";
 		// MILKING A COW
 		effects[10] = ChatColor.GOLD + "Seriously ... Do you know any cows that can be milked like that?!";
-		effects[11] = ChatColor.GOLD + "That might leave a mark ...!";		
+		effects[11] = ChatColor.GOLD + "That might leave a mark ...!";
+		// THE HAPPY MINER
+		effects[12] = ChatColor.GOLD + "This is fun! you feel energized!!";
+		effects[13] = ChatColor.GOLD + "So tired... must slow down ...";	
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -113,11 +121,11 @@ public class PlayerEffects {
 				if(
 					player.getItemInHand().getType().equals(Material.BUCKET) ||
 					player.getItemInHand().getType().equals(Material.MILK_BUCKET)
-					){
-										
+					){			
+
 					Location cowLocation = entity.getLocation();
 					Location playerLocation = player.getLocation();
-				
+					
 					float entityYaw = Math.abs((cowLocation.getYaw() + 180) % 360);
 					float playerYaw = Math.abs((playerLocation.getYaw() + 180) % 360);
 					float diff = Math.abs(playerYaw - entityYaw);
@@ -171,8 +179,12 @@ public class PlayerEffects {
 			!player.hasPermission("ijmh.immunity.fall") && 
 			!player.getAllowFlight() && event.getPlayer().getFallDistance()>4 && 
 			event.getPlayer().getLastDamage()<4 &&
-			!player.hasPotionEffect(PotionEffectType.CONFUSION)
+			!player.hasPotionEffect(PotionEffectType.CONFUSION) &&
+			!player.getLocation().getBlock().isEmpty() && !player.getLocation().getBlock().isLiquid()
 			){
+			Location pLoc = player.getLocation().add(0, -1, 0);
+			
+			if(plugin.debug) plugin.getLogger().info("Landing block is: " + pLoc.getBlock().getType().name());
 			if(event.getPlayer().getFallDistance()>14){
 				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(5), 1));
 				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(15), 1));
@@ -234,6 +246,33 @@ public class PlayerEffects {
 				) {
 				player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(60), 1));
 				player.sendMessage(effects[3]);
+			}
+		}
+	}
+	
+	public void addEffectBlockBreak(BlockBreakEvent event){
+		Player player = (Player) event.getPlayer();
+		
+		// THE HAPPY MINER
+		if(plugin.getConfig().getConfigurationSection("happyminer").getBoolean("active")) {
+			if(
+				!player.hasPotionEffect(PotionEffectType.FAST_DIGGING) &&
+				!player.hasPotionEffect(PotionEffectType.SLOW_DIGGING)
+				){
+				if(Util.pctChance(2)) {
+					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(10), 1));
+					player.sendMessage(effects[12]);
+				} else if(Util.pctChance(2) && !player.hasPermission("ijmh.ummunity.lazyminer")) {
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(10), 1));
+					player.sendMessage(effects[13]);
+				}
+				
+			} 
+			else if(
+				player.hasPotionEffect(PotionEffectType.SLOW_DIGGING) && 
+				!player.hasPotionEffect(PotionEffectType.HUNGER)
+				) {
+				player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, Util.sec2tic(2), 1));
 			}
 		}
 	}
