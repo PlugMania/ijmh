@@ -5,15 +5,16 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.1.3<br /><br />
+version: 1.1.4<br /><br />
 
 <b>Latest Release</b><br />
 v1.1.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.1.3 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.1.4 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v1.1.4<br />
 Added command for toggling ingame update messages.<br />
 Added command interface to tweak all settings by command.<br />
 Added chancemodifier to go lower than 1%<br />

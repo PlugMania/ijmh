@@ -32,7 +32,7 @@ permissions:
   ijmh.immunity.cowskick:
     description: Immunity to cows kicking from behind.
     default: false
-  ijmh.immunity.lazyminer:
+  ijmh.immunity.tiredminer:
     description: Immunity effect occuring when mining makes you tired.
     default: false 
   ijmh.admin:

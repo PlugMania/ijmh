@@ -47,14 +47,14 @@ public class ijmh extends JavaPlugin {
 		try {
 			if (args.length == 0) args = new String[] { "help" };
 		    
-			String[] effects = {"fire", "fall", "foodpoison", "lightning", "electro", "craftthumb", "cows", "lazyminer"};
+			String[] effects = {"fire", "fall", "foodpoison", "lightning", "electro", "craftthumb", "cows", "happyminer"};
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
 					sender.sendMessage(ChatColor.AQUA + "- [ijhm] It Just Might Happen v" + this.getDescription().getVersion() + " ------------------"); 
-					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro, craftthumb, cows, lazyminer"); 
-					sender.sendMessage(ChatColor.GREEN + "/ijmh toggle <effect>" + ChatColor.AQUA + " - turn effect on/off");
+					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro, craftthumb, cows, happyminer"); 
 					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect>" + ChatColor.AQUA + " - HowTo change values for an effect");
+					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect> toggle" + ChatColor.AQUA + " - turn effect on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh update" + ChatColor.AQUA + " - Toggle the update messages on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates"); 
@@ -74,26 +74,6 @@ public class ijmh extends JavaPlugin {
 							this.saveConfig();
 					} 
 				}
-				else if((args[0].equalsIgnoreCase("toggle") && args.length==2)){
-					if(this.getConfig().isConfigurationSection(args[1])) {
-						if(this.getConfig().getConfigurationSection(args[1]).getBoolean("active")) {
-							this.getConfig().getConfigurationSection(args[1]).set("active", false);
-							sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " has been switched off");
-							this.saveConfig();
-						}
-						else {
-							this.getConfig().getConfigurationSection(args[1]).set("active", true);
-							sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " has been switched on");
-							this.saveConfig();
-						}
-					} 
-					else {
-						err = true;
-					}
-				}
-				else if((args[1].equalsIgnoreCase("toggle") && args.length==2)){
-					sender.sendMessage(ChatColor.AQUA + "[ijhm] WHY DOES THIS PROVOKE e.g /ijmh fire toggle TO AN ERROR ");
-				}
 				else if(args[0].equalsIgnoreCase("load")) {
 					this.reloadConfig();
 					sender.sendMessage(ChatColor.AQUA + "[ijhm] Configuration loaded");
@@ -103,7 +83,7 @@ public class ijmh extends JavaPlugin {
 					if(util.config(args[0], null).getBoolean("active")) state = ChatColor.GREEN + "enabled";
 					else state = ChatColor.RED + "disabled";
 					
-					sender.sendMessage(ChatColor.AQUA + "- HOWTO change: " + args[0] + " effect " + state + ChatColor.AQUA + " -------------------");
+					sender.sendMessage(ChatColor.AQUA + "- HOWTO change: " + args[0] + " effect " + state + ChatColor.AQUA + " ----------------");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh " + args[0] + " <name> <value> or <section> <name> <value>");
 					sender.sendMessage(ChatColor.GOLD + "section" + ChatColor.AQUA + " | " + ChatColor.GOLD + "name" + ChatColor.AQUA + " (default): current value");
 					sender.sendMessage(ChatColor.AQUA + "| toggle");
@@ -122,6 +102,7 @@ public class ijmh extends JavaPlugin {
 					else if(args[0].equalsIgnoreCase("foodpoison")) {
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("foodpoison",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("multiplier"));
 						sender.sendMessage(ChatColor.AQUA + "| duration (60): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("duration"));
 					} 
@@ -171,6 +152,23 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.GOLD + "message" + ChatColor.AQUA + " (true/false), " + ChatColor.GOLD + "chance" + ChatColor.AQUA + " (1-100), " + ChatColor.GOLD + "duration" + ChatColor.AQUA + " (seconds),");
 					sender.sendMessage(ChatColor.GOLD + "damage" + ChatColor.AQUA + " (1=½hearth), " + ChatColor.GOLD + "multiplier" + ChatColor.AQUA + " (1-5), " + ChatColor.GOLD + "cooldown" + ChatColor.AQUA + " (seconds)");
 				}
+				else if(Arrays.asList(effects).contains(args[0].toLowerCase()) && args.length==2){
+					if(util.config(args[0],null).isBoolean("active")) {
+						if(this.getConfig().getConfigurationSection(args[0]).getBoolean("active")) {
+							this.getConfig().getConfigurationSection(args[0]).set("active", false);
+							sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[0] + " has been switched off");
+							this.saveConfig();
+						}
+						else {
+							this.getConfig().getConfigurationSection(args[0]).set("active", true);
+							sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[0] + " has been switched on");
+							this.saveConfig();
+						}
+					} 
+					else {
+						err = true;
+					}
+				}
 				else if(Arrays.asList(effects).contains(args[0].toLowerCase()) && args.length==3){
 					if(util.config(args[0],null).isSet(args[1])) {
 						
@@ -213,6 +211,7 @@ public class ijmh extends JavaPlugin {
 		
 		} catch (Exception e) {
 			sender.sendMessage(ChatColor.RED + "An error occured.");
+			if(this.debug) sender.sendMessage(ChatColor.RED + "" + e);
 		}
 		
 		return true;

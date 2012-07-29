@@ -112,7 +112,7 @@ public class PlayerEffects {
 		Entity entity = event.getRightClicked();
 		
 		// MILKING A COW
-		if(Util.config("cow",null).getBoolean("active")) {
+		if(Util.config("cows",null).getBoolean("active")) {
 			if(entity.getType().equals(EntityType.COW)) {
 				if(
 					player.getItemInHand().getType().equals(Material.BUCKET) ||
@@ -127,14 +127,14 @@ public class PlayerEffects {
 					float diff = Math.abs(playerYaw - entityYaw);
 					int threshhold = 40;
 					if(diff > 180 - threshhold && diff < 180 + threshhold){
-						if(Util.config("cow",null).getBoolean("message")) player.sendMessage(effects[10]);
+						if(Util.config("cows",null).getBoolean("message")) player.sendMessage(effects[10]);
 						if(plugin.debug) plugin.getLogger().info("DEBUG: Front " + diff);
 					}	
 					else if((diff < threshhold - 10  || diff > 360 - threshhold + 10) && (!player.hasPermission("ijmh.immunity.cowskick"))) {
-						player.damage(Util.config("cow","kick").getInt("damage"));
-						player.setVelocity(new Vector(-entity.getLocation().getDirection().getX()-Util.config("cow","kick").getInt("backwards"),Util.config("cow","kick").getInt("upwards"),-entity.getLocation().getDirection().getZ()-Util.config("cow","kick").getInt("backwards")));
-						if(Util.config("cow","kick").getBoolean("message")) player.sendMessage(effects[11]);
-						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("cow","kick").getInt("time")), 1));
+						player.damage(Util.config("cows","kick").getInt("damage"));
+						player.setVelocity(new Vector(-entity.getLocation().getDirection().getX()-Util.config("cows","kick").getInt("backwards"),Util.config("cows","kick").getInt("upwards"),-entity.getLocation().getDirection().getZ()-Util.config("cows","kick").getInt("backwards")));
+						if(Util.config("cows","kick").getBoolean("message")) player.sendMessage(effects[11]);
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("cows","kick").getInt("time")), 1));
 						if(plugin.debug) plugin.getLogger().info("DEBUG: Back " + diff);
 					} 
 					else if(plugin.debug) plugin.getLogger().info("DEBUG: Side " + diff);
@@ -263,7 +263,7 @@ public class PlayerEffects {
 				if(Util.pctChance(Util.config("happyminer","energized").getInt("chance"),Util.config("happyminer","energized").getInt("chancemod"))) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(Util.config("happyminer","energized").getInt("duration")), Util.config("happyminer","energized").getInt("multiplier")));
 					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[12]);
-				} else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.ummunity.lazyminer")) {
+				} else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.ummunity.tiredminer")) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(Util.config("happyminer","tired").getInt("duration")), Util.config("happyminer","tired").getInt("multiplier")));
 					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[13]);
 				}

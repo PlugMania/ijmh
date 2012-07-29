@@ -6,12 +6,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.util.Vector;
 
 public class Util{
 	static ijmh plugin;
@@ -70,12 +70,10 @@ public class Util{
 		return ticks;
 	}
 	
-	public static boolean pctChance(double d){
-		  return pctChance(d, 1);
-	}
-	public static boolean pctChance(double d, int m){
+	public static boolean pctChance(int d, int m){
 		boolean result = false;
-		int rNum = (int) (m*100*Math.random()); 
+		
+		int rNum = (int) ((m*100)*Math.random()); 
 		if(rNum<=d) result = true;
 		if(plugin.debug) plugin.getLogger().info(rNum + " <= " + d + " State:" + result);
 		return result;
