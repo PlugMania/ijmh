@@ -74,7 +74,7 @@ public class ijmh extends JavaPlugin {
 							this.saveConfig();
 					} 
 				}
-				else if(args[0].equalsIgnoreCase("toggle") && args.length==2){
+				else if((args[0].equalsIgnoreCase("toggle") && args.length==2)){
 					if(this.getConfig().isConfigurationSection(args[1])) {
 						if(this.getConfig().getConfigurationSection(args[1]).getBoolean("active")) {
 							this.getConfig().getConfigurationSection(args[1]).set("active", false);
@@ -91,17 +91,27 @@ public class ijmh extends JavaPlugin {
 						err = true;
 					}
 				}
+				else if((args[1].equalsIgnoreCase("toggle") && args.length==2)){
+					sender.sendMessage(ChatColor.AQUA + "[ijhm] WHY DOES THIS PROVOKE e.g /ijmh fire toggle TO AN ERROR ");
+				}
 				else if(args[0].equalsIgnoreCase("load")) {
 					this.reloadConfig();
 					sender.sendMessage(ChatColor.AQUA + "[ijhm] Configuration loaded");
 				}
 				else if(Arrays.asList(effects).contains(args[0].toLowerCase()) && args.length==1){
-					sender.sendMessage(ChatColor.AQUA + "- HOWTO change: " + args[0] + " effect ------------------------");
+					String state;
+					if(util.config(args[0], null).getBoolean("active")) state = ChatColor.GREEN + "enabled";
+					else state = ChatColor.RED + "disabled";
+					
+					sender.sendMessage(ChatColor.AQUA + "- HOWTO change: " + args[0] + " effect " + state + ChatColor.AQUA + " -------------------");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh " + args[0] + " <name> <value> or <section> <name> <value>");
 					sender.sendMessage(ChatColor.GOLD + "section" + ChatColor.AQUA + " | " + ChatColor.GOLD + "name" + ChatColor.AQUA + " (default): current value");
+					sender.sendMessage(ChatColor.AQUA + "| toggle");
+					
 					if(args[0].equalsIgnoreCase("fire")) {
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("fire",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("fire",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("fire",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| duration (300): " + ChatColor.GOLD + util.config("fire",null).getInt("duration"));
 					}
 					else if(args[0].equalsIgnoreCase("fall")) {
