@@ -28,7 +28,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void join(PlayerJoinEvent event){
 		Player player = event.getPlayer();
-		if(player.hasPermission("ijmh.admin") || player.isOp()){
+		if((player.hasPermission("ijmh.admin") || player.isOp()) && plugin.getConfig().getBoolean("update_message")){
 			plugin.util.checkVersion(false, player, null);
 		}
 	} 

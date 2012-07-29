@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,7 +25,7 @@ public class ijmh extends JavaPlugin {
 	}
 	
 	public void onDisable (){
-		getLogger().info("ItJustMightHappen is now disabled.");
+
 	}
 	
 	public void onEnable(){
@@ -34,7 +35,7 @@ public class ijmh extends JavaPlugin {
 		this.getConfig().options().copyDefaults(true);
         this.saveConfig();
 		
-		getLogger().info("ItJustMightHappen is enabled.");
+        util.checkVersion(false, null, null);
 		if(this.getConfig().getBoolean("debug")) this.debug = true;
 		if(this.debug) getLogger().info("Debug enabled.");
 	}
@@ -54,11 +55,24 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro, craftthumb, cows, lazyminer"); 
 					sender.sendMessage(ChatColor.GREEN + "/ijmh toggle <effect>" + ChatColor.AQUA + " - turn effect on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect>" + ChatColor.AQUA + " - HowTo change values for an effect");
-					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml"); 
+					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml");
+					sender.sendMessage(ChatColor.GREEN + "/ijmh update" + ChatColor.AQUA + " - Toggle the update messages on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates"); 
 				} 
 				else if(args[0].equalsIgnoreCase("version")){
 					util.checkVersion(true,null,sender);
+				}
+				else if(args[0].equalsIgnoreCase("update")){
+					if(this.getConfig().getBoolean("update_message")) {
+							this.getConfig().set("update_message", false);
+							sender.sendMessage(ChatColor.AQUA + "[ijhm] update messages has been switched off");
+							this.saveConfig();
+					}
+					else {
+							this.getConfig().set("update_message", true);
+							sender.sendMessage(ChatColor.AQUA + "[ijhm] update messages has been switched on");
+							this.saveConfig();
+					} 
 				}
 				else if(args[0].equalsIgnoreCase("toggle") && args.length==2){
 					if(this.getConfig().isConfigurationSection(args[1])) {

@@ -1,3 +1,4 @@
+update_message: true
 fire:
   active: true
   message: true

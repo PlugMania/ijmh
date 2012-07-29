@@ -42,6 +42,7 @@ public class Util{
 						String msg = ChatColor.AQUA + "[ijmh] New version " + ChatColor.GOLD + "v" + m.group(0) + ChatColor.AQUA + " is out! You are running " + ChatColor.GRAY + "v" + plugin.getDescription().getVersion() + ChatColor.AQUA + ". Get the new version is at " + ChatColor.GOLD + "http://dev.bukkit.org/server-mods/" + plugin.getDescription().getName();
 						if(player!=null) player.sendMessage(msg);
 						else if(sender!=null) sender.sendMessage(msg);
+						else plugin.getLogger().info("New version v" + m.group(0) + " is out! You are running v" + plugin.getDescription().getVersion() + ". Get the new version is at http://dev.bukkit.org/server-mods/" + plugin.getDescription().getName());
 					} else if(isCmd){
 						sender.sendMessage(ChatColor.AQUA + "[ijmh] Newest version " + ChatColor.GOLD + plugin.getDescription().getVersion() + ChatColor.AQUA + " already running.");	
 					}
