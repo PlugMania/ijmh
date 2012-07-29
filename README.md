@@ -14,6 +14,8 @@ v1.1.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v1.1.3 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+Added command interface to tweak all settings by command.<br />
+Added chancemodifier to go lower than 1%<br />
 v1.1.3<br />
 Added "The Happy Miner", Speeded or slowed when getting energized or tired from blockbreaking.<br />
 Fixed falling into water giving concussion.<br />

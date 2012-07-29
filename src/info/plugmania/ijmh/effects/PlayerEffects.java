@@ -2,13 +2,9 @@ package info.plugmania.ijmh.effects;
 
 import java.util.Date;
 
-import net.minecraft.server.EntityCow;
-import net.minecraft.server.EntityLiving;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.entity.CraftCow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -68,12 +64,12 @@ public class PlayerEffects {
 		
 		// CRAFTTHUMB
 		if(!player.hasPermission("ijmh.immunity.craftthumb")){
-			if(plugin.getConfig().getConfigurationSection("craftthumb").getBoolean("active")){
+			if(Util.config("craftthumb",null).getBoolean("active")){
 				int moreCraft = event.getCursor().getAmount();
 				if(event.getCursor().getAmount()>0) moreCraft = (event.getCursor().getAmount() / 100)^(event.getCursor().getAmount() / 2);
-				if(Util.pctChance(10 / (1 + moreCraft) )) {
-					player.damage(2);
-					player.sendMessage(effects[9]);
+				if(Util.pctChance(Util.config("craftthumb",null).getInt("chance") / (1 + moreCraft),Util.config("craftthumb",null).getInt("chancemod"))) {
+					player.damage(Util.config("craftthumb",null).getInt("damage"));
+					if(Util.config("craftthumb",null).getBoolean("message")) player.sendMessage(effects[9]);
 				} 
 				
 			}
@@ -85,15 +81,14 @@ public class PlayerEffects {
 		// CATCH FIRE
 		if(!player.hasPermission("ijmh.immunity.fire")) {
 			if(event.getItem().equals(Material.FLINT_AND_STEEL)){
-				if(plugin.getConfig().getConfigurationSection("fire").getBoolean("active")) {
+				if(Util.config("fire",null).getBoolean("active")) {
 					if(
-						Util.pctChance(10) && 
+						Util.pctChance(Util.config("fire",null).getInt("chance"),Util.config("fire",null).getInt("chancemod")) && 
 						player.getWorld().getBlockAt(player.getLocation()).isLiquid()==false && 
-						player.getWorld().hasStorm()==false &&
-						Util.pctChance(10)
+						player.getWorld().hasStorm()==false
 						) {
-						player.setFireTicks(Util.sec2tic(300));
-						player.sendMessage(effects[1]);
+						player.setFireTicks(Util.sec2tic(Util.config("fire",null).getInt("duration")));
+						if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[1]);
 					}
 				}
 			}
@@ -103,12 +98,12 @@ public class PlayerEffects {
 			if(event.getItem().equals(Material.WATER_BUCKET)) {
 				player.setFireTicks(0);
 				event.setCancelled(true);
-				player.sendMessage(effects[2]);
+				if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[2]);
 			}
 		}
 		// CURE FOODPOISON
 		if(player.hasPotionEffect(PotionEffectType.POISON)) {
-			player.sendMessage(effects[4]);
+			if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[4]);
 		} 
 	}
 
@@ -116,7 +111,8 @@ public class PlayerEffects {
 		Player player = event.getPlayer();
 		Entity entity = event.getRightClicked();
 		
-		if(plugin.getConfig().getConfigurationSection("cows").getBoolean("active")) {
+		// MILKING A COW
+		if(Util.config("cow",null).getBoolean("active")) {
 			if(entity.getType().equals(EntityType.COW)) {
 				if(
 					player.getItemInHand().getType().equals(Material.BUCKET) ||
@@ -131,14 +127,14 @@ public class PlayerEffects {
 					float diff = Math.abs(playerYaw - entityYaw);
 					int threshhold = 40;
 					if(diff > 180 - threshhold && diff < 180 + threshhold){
-						player.sendMessage(effects[10]);
+						if(Util.config("cow",null).getBoolean("message")) player.sendMessage(effects[10]);
 						if(plugin.debug) plugin.getLogger().info("DEBUG: Front " + diff);
 					}	
 					else if((diff < threshhold - 10  || diff > 360 - threshhold + 10) && (!player.hasPermission("ijmh.immunity.cowskick"))) {
-						player.damage(4);
-						player.setVelocity(new Vector(-entity.getLocation().getDirection().getX()-2,1,-entity.getLocation().getDirection().getZ()-2));
-						player.sendMessage(effects[11]);
-						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(5), 1));
+						player.damage(Util.config("cow","kick").getInt("damage"));
+						player.setVelocity(new Vector(-entity.getLocation().getDirection().getX()-Util.config("cow","kick").getInt("backwards"),Util.config("cow","kick").getInt("upwards"),-entity.getLocation().getDirection().getZ()-Util.config("cow","kick").getInt("backwards")));
+						if(Util.config("cow","kick").getBoolean("message")) player.sendMessage(effects[11]);
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("cow","kick").getInt("time")), 1));
 						if(plugin.debug) plugin.getLogger().info("DEBUG: Back " + diff);
 					} 
 					else if(plugin.debug) plugin.getLogger().info("DEBUG: Side " + diff);
@@ -155,7 +151,7 @@ public class PlayerEffects {
 		// ELECTRICUTION ON REDSTONE TOUCH
 		if(!player.hasPermission("ijmh.immunity.electro")) {
 			if(
-				plugin.getConfig().getConfigurationSection("electro").getBoolean("active") && 
+				Util.config("electro",null).getBoolean("active") && 
 				to.getBlock().isBlockPowered() && 
 				(
 						to.getBlockX()!=from.getBlockX() ||
@@ -163,19 +159,19 @@ public class PlayerEffects {
 						to.getBlockZ()!=from.getBlockZ()
 				)
 				){
-				if(Util.pctChance(5)) {
-					player.damage(8);
-					player.sendMessage(effects[8]);
+				if(Util.pctChance(Util.config("electro","high").getInt("chance"),Util.config("electro","high").getInt("chancemod"))) {
+					player.damage(Util.config("electro","high").getInt("damage"));
+					if(Util.config("electro","high").getBoolean("message")) player.sendMessage(effects[8]);
 				}
 				else {
-					player.damage(2);
-					player.sendMessage(effects[7]);
+					player.damage(Util.config("electro","low").getInt("chance"));
+					if(Util.config("electro","low").getBoolean("message")) player.sendMessage(effects[7]);
 				}
 			}
 		}
 		// CONCUSSION FROM FALL EVENT BASED ON AIRBLOCKS
 		if(
-			plugin.getConfig().getConfigurationSection("fall").getBoolean("active") &&
+			Util.config("fall",null).getBoolean("active") &&
 			!player.hasPermission("ijmh.immunity.fall") && 
 			!player.getAllowFlight() && event.getPlayer().getFallDistance()>4 && 
 			event.getPlayer().getLastDamage()<4 &&
@@ -186,29 +182,33 @@ public class PlayerEffects {
 			
 			if(plugin.debug) plugin.getLogger().info("Landing block is: " + pLoc.getBlock().getType().name());
 			if(event.getPlayer().getFallDistance()>14){
-				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(5), 1));
-				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(15), 1));
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(10), 1));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*3), 1));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));
 			} else if(event.getPlayer().getFallDistance()>11){
-				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(10), 1));				
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(5), 1));	
+				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));	
 			} else if(event.getPlayer().getFallDistance()>6){
-				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(10), 1));				
+				player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
 			}
-			if(event.getPlayer().getFallDistance()>6) player.sendMessage(effects[6]);
+			if(Util.config("fall",null).getBoolean("message") && event.getPlayer().getFallDistance()>6) player.sendMessage(effects[6]);
 		}
 		// PUT OUT FIRE
 		if((to.getBlock().getTypeId()==8 || to.getBlock().getTypeId()==9) && from.getBlock().getTypeId()!=8 && from.getBlock().getTypeId()!=9 && player.getFireTicks()>0){
-			player.sendMessage(effects[2]);
+			if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[2]);
+		}
+		// QUICKSAND
+		if(to.getBlock().getType().equals(Material.SAND)) {
+			// YET TO COME
 		}
 		// STRUCK BY LIGHTNING UNDER A TREE
 		if(player.getWorld().hasStorm()){
 			Date curDate = new Date();
 			long curTime = curDate.getTime();
-
+			
 			if(!player.hasPermission("ijmh.immunity.lightning")) {
 				if(
-					plugin.getConfig().getConfigurationSection("lightning").getBoolean("active") &&
+					Util.config("lightning",null).getBoolean("active") &&
 					curTime>StruckTime
 					) {
 					int i = 0;
@@ -224,11 +224,11 @@ public class PlayerEffects {
 						}
 					}
 				
-					if(isHit==true && Util.pctChance(0.5)) {
-						StruckTime = curTime + 10000;
+					if(isHit==true && Util.pctChance(Util.config("lightning",null).getInt("chance"),Util.config("lightning",null).getInt("chancemod"))) {
+						StruckTime = curTime + (Util.config("lightning",null).getInt("cooldown") * 1000);
 						player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
-						player.damage(10);
-						player.sendMessage(effects[5]);
+						player.damage(Util.config("lightning",null).getInt("damage"));
+						if(Util.config("lightning",null).getBoolean("message")) player.sendMessage(effects[5]);
 					}
 				}
 			}	
@@ -240,12 +240,12 @@ public class PlayerEffects {
 		// FOODPOISONING
 		if(!player.hasPermission("ijmh.immunity.foodpoison")) {
 			if(
-				plugin.getConfig().getConfigurationSection("foodpoison").getBoolean("active") &&
+				Util.config("foodpoison",null).getBoolean("active") &&
 				event.getRegainReason().equals(RegainReason.EATING) && 
-				Util.pctChance(10)
+				Util.pctChance(Util.config("foodpoison",null).getInt("chance"),Util.config("foodpoison",null).getInt("chancemod"))
 				) {
-				player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(60), 1));
-				player.sendMessage(effects[3]);
+				player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoison",null).getInt("duration")), Util.config("foodpoison",null).getInt("multiplier")));
+				if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[3]);
 			}
 		}
 	}
@@ -254,17 +254,18 @@ public class PlayerEffects {
 		Player player = (Player) event.getPlayer();
 		
 		// THE HAPPY MINER
-		if(plugin.getConfig().getConfigurationSection("happyminer").getBoolean("active")) {
+		if(Util.config("happyminer",null).getBoolean("active")) {
 			if(
 				!player.hasPotionEffect(PotionEffectType.FAST_DIGGING) &&
 				!player.hasPotionEffect(PotionEffectType.SLOW_DIGGING)
 				){
-				if(Util.pctChance(2)) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(10), 1));
-					player.sendMessage(effects[12]);
-				} else if(Util.pctChance(2) && !player.hasPermission("ijmh.ummunity.lazyminer")) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(10), 1));
-					player.sendMessage(effects[13]);
+				
+				if(Util.pctChance(Util.config("happyminer","energized").getInt("chance"),Util.config("happyminer","energized").getInt("chancemod"))) {
+					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(Util.config("happyminer","energized").getInt("duration")), Util.config("happyminer","energized").getInt("multiplier")));
+					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[12]);
+				} else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.ummunity.lazyminer")) {
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(Util.config("happyminer","tired").getInt("duration")), Util.config("happyminer","tired").getInt("multiplier")));
+					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[13]);
 				}
 				
 			} 
@@ -272,7 +273,7 @@ public class PlayerEffects {
 				player.hasPotionEffect(PotionEffectType.SLOW_DIGGING) && 
 				!player.hasPotionEffect(PotionEffectType.HUNGER)
 				) {
-				player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, Util.sec2tic(2), 1));
+				player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, Util.sec2tic(Util.config("happyminer","hunger").getInt("duration")), Util.config("happyminer","hunger").getInt("multiplier")));
 			}
 		}
 	}
@@ -283,20 +284,20 @@ public class PlayerEffects {
 		// CONCUSSION FROM FALL
 		if(!player.hasPermission("ijmh.immunity.fall")) {
 			if(
-				plugin.getConfig().getConfigurationSection("fall").getBoolean("active") &&
+				Util.config("fall",null).getBoolean("active") &&
 				event.getCause().equals(DamageCause.FALL)
 				) {
 				if(event.getDamage()>=12) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(5), 1));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(15), 1));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(10), 1));	
+					player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*3), 1));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));	
 				} else if(event.getDamage()>=8) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(10), 1));				
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(5), 1));	
+					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));	
 				} else if(event.getDamage()>=4){
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(10), 1));				
+					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
 				}
-				if(event.getDamage()>=4) player.sendMessage(effects[6]);
+				if(event.getDamage()>=4 && Util.config("fall",null).getBoolean("message")) player.sendMessage(effects[6]);
 			}
 		}
 	}

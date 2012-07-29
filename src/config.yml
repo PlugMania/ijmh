@@ -1,16 +1,66 @@
 fire:
-  active: true 
+  active: true
+  message: true
+  chance: 10
+  chancemod: 1
+  duration: 300
 electro:
-  active: true 
+  active: true
+  high:
+    message: true
+    chance: 5
+    chancemod: 1
+    damage: 8
+  low:
+    message: true
+    damage: 2  
 lightning:
-  active: true 
+  active: true
+  message: true
+  chance: 5
+  chancemod: 10
+  damage: 10
+  cooldown: 10 
 fall:    
   active: true
+  message: true
+  duration: 5
 foodpoison:
   active: true
+  message: true
+  chance: 10
+  chancemod: 1
+  multiplier: 1
+  duration: 60
 craftthumb:
-  active: true 
+  active: true
+  message: true
+  chance: 10
+  chancemod: 1
+  damage: 2
 cows:
   active: true
+  message: true
+  kick:
+    message: true
+    damage: 4
+    duration: 5
+    backwards: 2
+    upwards: 1
 happyminer:
   active: true
+  tired:
+    message: true
+    chance: 2
+    chancemod: 1
+    multiplier: 1
+    duration: 10
+  hunger:
+    multiplier: 1
+    duration: 10    
+  energized:
+    message: true
+    chance: 2
+    chancemod: 1
+    multiplier: 1
+    duration: 10

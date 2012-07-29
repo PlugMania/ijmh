@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -55,26 +56,13 @@ public class Util{
 
 	}
 	
-	public static float getLookAtYaw(Vector motion, boolean isPlayer) {
-        double dx = motion.getX();
-        double dz = motion.getZ();
-        double yaw = 0;
-        // Set yaw
-        if (dx != 0) {
-            // Set yaw start value based on dx
-            if (dx < 0) {
-                yaw = 1.5 * Math.PI;
-            } else {
-                yaw = 0.5 * Math.PI;
-            }
-            yaw -= Math.atan(dz / dx);
-        } else if (dz < 0) {
-            yaw = Math.PI;
-        }
-        int extract = 0;
-        if(isPlayer==false) extract = 90;  
-        return (float) (-yaw * 180 / Math.PI - extract);
-    }
+	static public ConfigurationSection config(String s1, String s2){
+		
+		ConfigurationSection config = plugin.getConfig().getConfigurationSection(s1);
+		if(s2!=null) config = config.getConfigurationSection(s2);
+		
+		return config;
+	}
 	
 	public static int sec2tic(int seconds){
 		int ticks = seconds * 20;
@@ -82,8 +70,11 @@ public class Util{
 	}
 	
 	public static boolean pctChance(double d){
+		  return pctChance(d, 1);
+	}
+	public static boolean pctChance(double d, int m){
 		boolean result = false;
-		int rNum = (int) (100*Math.random()); 
+		int rNum = (int) (m*100*Math.random()); 
 		if(rNum<=d) result = true;
 		if(plugin.debug) plugin.getLogger().info(rNum + " <= " + d + " State:" + result);
 		return result;
