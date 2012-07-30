@@ -104,7 +104,7 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("multiplier"));
-						sender.sendMessage(ChatColor.AQUA + "| duration (60): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("duration"));
+						sender.sendMessage(ChatColor.AQUA + "| duration (5): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("duration"));
 					} 
 					else if(args[0].equalsIgnoreCase("lightning")) {
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("lightning",null).getBoolean("message"));

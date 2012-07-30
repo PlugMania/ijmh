@@ -32,7 +32,7 @@ foodpoison:
   chance: 10
   chancemod: 1
   multiplier: 1
-  duration: 60
+  duration: 5
 craftthumb:
   active: true
   message: true

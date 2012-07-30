@@ -18,6 +18,8 @@ v1.1.4<br />
 Added command for toggling ingame update messages.<br />
 Added command interface to tweak all settings by command.<br />
 Added chancemodifier to go lower than 1%<br />
+Changed foodpoison to only trigger on raw food.
+Fixed bug where cure foodpoison triggered on different events.
 v1.1.3<br />
 Added "The Happy Miner", Speeded or slowed when getting energized or tired from blockbreaking.<br />
 Fixed falling into water giving concussion.<br />

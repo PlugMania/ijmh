@@ -1,6 +1,7 @@
 package info.plugmania.ijmh.effects;
 
 import java.util.Date;
+import java.util.Arrays;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -8,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
@@ -78,17 +80,37 @@ public class PlayerEffects {
 	
 	public void addEffectInteract(PlayerInteractEvent event){
 		Player player = event.getPlayer();
+
+		// FOODPOISONING
+		if(!player.hasPermission("ijmh.immunity.foodpoison") || !player.hasPotionEffect(PotionEffectType.POISON)) {
+			if(
+				Util.config("foodpoison",null).getBoolean("active") &&
+				player.getFoodLevel()!=20 &&
+				event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+				) {
+				if(Util.pctChance(Util.config("foodpoison",null).getInt("chance"),Util.config("foodpoison",null).getInt("chancemod"))) {
+					Material[] material = {Material.RAW_BEEF, Material.RAW_CHICKEN, Material.RAW_FISH, Material.ROTTEN_FLESH};
+					if(Arrays.asList(material).contains(event.getMaterial())) {
+						if(plugin.debug) plugin.getLogger().info("FoodLevel is " + player.getFoodLevel());
+						player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoison",null).getInt("duration")), Util.config("foodpoison",null).getInt("multiplier")));
+						if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[3]);
+			
+					}
+				}
+			}
+		}		
 		// CATCH FIRE
 		if(!player.hasPermission("ijmh.immunity.fire")) {
 			if(event.getItem().equals(Material.FLINT_AND_STEEL)){
 				if(Util.config("fire",null).getBoolean("active")) {
 					if(
-						Util.pctChance(Util.config("fire",null).getInt("chance"),Util.config("fire",null).getInt("chancemod")) && 
 						player.getWorld().getBlockAt(player.getLocation()).isLiquid()==false && 
 						player.getWorld().hasStorm()==false
 						) {
-						player.setFireTicks(Util.sec2tic(Util.config("fire",null).getInt("duration")));
-						if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[1]);
+						if(Util.pctChance(Util.config("fire",null).getInt("chance"),Util.config("fire",null).getInt("chancemod"))) {
+							player.setFireTicks(Util.sec2tic(Util.config("fire",null).getInt("duration")));
+							if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[1]);
+						}
 					}
 				}
 			}
@@ -102,7 +124,7 @@ public class PlayerEffects {
 			}
 		}
 		// CURE FOODPOISON
-		if(player.hasPotionEffect(PotionEffectType.POISON)) {
+		if(player.hasPotionEffect(PotionEffectType.POISON) && event.getMaterial().equals(Material.MILK_BUCKET) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[4]);
 		} 
 	}
@@ -237,17 +259,6 @@ public class PlayerEffects {
 	
 	public void addEffectRegainHealth(EntityRegainHealthEvent event){
 		Player player = (Player) event.getEntity();
-		// FOODPOISONING
-		if(!player.hasPermission("ijmh.immunity.foodpoison")) {
-			if(
-				Util.config("foodpoison",null).getBoolean("active") &&
-				event.getRegainReason().equals(RegainReason.EATING) && 
-				Util.pctChance(Util.config("foodpoison",null).getInt("chance"),Util.config("foodpoison",null).getInt("chancemod"))
-				) {
-				player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoison",null).getInt("duration")), Util.config("foodpoison",null).getInt("multiplier")));
-				if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[3]);
-			}
-		}
 	}
 	
 	public void addEffectBlockBreak(BlockBreakEvent event){
