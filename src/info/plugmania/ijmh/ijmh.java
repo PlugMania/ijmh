@@ -47,12 +47,12 @@ public class ijmh extends JavaPlugin {
 		try {
 			if (args.length == 0) args = new String[] { "help" };
 		    
-			String[] effects = {"fire", "fall", "foodpoison", "lightning", "electro", "craftthumb", "cows", "happyminer"};
+			String[] effects = {"fire", "fall", "foodpoison", "lightning", "electro", "craftthumb", "cows", "happyminer", "roses"};
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
 					sender.sendMessage(ChatColor.AQUA + "- [ijhm] It Just Might Happen v" + this.getDescription().getVersion() + " ------------------"); 
-					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro, craftthumb, cows, happyminer"); 
+					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro, craftthumb, cows, happyminer, roses"); 
 					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect>" + ChatColor.AQUA + " - HowTo change values for an effect");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect> toggle" + ChatColor.AQUA + " - turn effect on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml");
@@ -149,6 +149,13 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "energized | multiplier (1): " + ChatColor.GOLD + util.config("happyminer","energized").getInt("multiplier"));
 						sender.sendMessage(ChatColor.AQUA + "energized | duration (10): " + ChatColor.GOLD + util.config("happyminer","energized").getInt("duration"));   
 					}
+					else if(args[0].equalsIgnoreCase("roses")) {
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("roses",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| damage (1): " + ChatColor.GOLD + util.config("roses",null).getInt("damage"));
+						sender.sendMessage(ChatColor.AQUA + "| multiplier (3): " + ChatColor.GOLD + util.config("roses",null).getInt("multiplier"));
+						sender.sendMessage(ChatColor.AQUA + "| duration (2): " + ChatColor.GOLD + util.config("roses",null).getInt("duration"));
+					} 
+					
 					sender.sendMessage(ChatColor.GOLD + "message" + ChatColor.AQUA + " (true/false), " + ChatColor.GOLD + "chance" + ChatColor.AQUA + " (1-100), " + ChatColor.GOLD + "duration" + ChatColor.AQUA + " (seconds),");
 					sender.sendMessage(ChatColor.GOLD + "damage" + ChatColor.AQUA + " (1=½hearth), " + ChatColor.GOLD + "multiplier" + ChatColor.AQUA + " (1-5), " + ChatColor.GOLD + "cooldown" + ChatColor.AQUA + " (seconds)");
 				}

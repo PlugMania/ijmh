@@ -6,6 +6,7 @@ import java.util.Arrays;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -29,9 +30,10 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[13 + 1];
+	public String[] effects = new String[14 + 1];
 	int effect;
 	public long StruckTime = 0;
+	public long HitTime = 0;
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
@@ -58,7 +60,9 @@ public class PlayerEffects {
 		effects[11] = ChatColor.GOLD + "That might leave a mark ...!";
 		// THE HAPPY MINER
 		effects[12] = ChatColor.GOLD + "This is fun! you feel energized!!";
-		effects[13] = ChatColor.GOLD + "So tired... must slow down ...";	
+		effects[13] = ChatColor.GOLD + "So tired... must slow down ...";
+		// WALKING ON RED ROSES
+		effects[14] = ChatColor.GOLD + "Thorns... why... thorns...! ";
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -91,7 +95,6 @@ public class PlayerEffects {
 				if(Util.pctChance(Util.config("foodpoison",null).getInt("chance"),Util.config("foodpoison",null).getInt("chancemod"))) {
 					Material[] material = {Material.RAW_BEEF, Material.RAW_CHICKEN, Material.RAW_FISH, Material.ROTTEN_FLESH};
 					if(Arrays.asList(material).contains(event.getMaterial())) {
-						if(plugin.debug) plugin.getLogger().info("FoodLevel is " + player.getFoodLevel());
 						player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoison",null).getInt("duration")), Util.config("foodpoison",null).getInt("multiplier")));
 						if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[3]);
 			
@@ -169,6 +172,8 @@ public class PlayerEffects {
 		Player player = event.getPlayer();
 		Location to = event.getTo();
 		Location from = event.getFrom();
+		Date curDate = new Date();
+		long curTime = curDate.getTime();
 		
 		// ELECTRICUTION ON REDSTONE TOUCH
 		if(!player.hasPermission("ijmh.immunity.electro")) {
@@ -216,18 +221,41 @@ public class PlayerEffects {
 			if(Util.config("fall",null).getBoolean("message") && event.getPlayer().getFallDistance()>6) player.sendMessage(effects[6]);
 		}
 		// PUT OUT FIRE
-		if((to.getBlock().getTypeId()==8 || to.getBlock().getTypeId()==9) && from.getBlock().getTypeId()!=8 && from.getBlock().getTypeId()!=9 && player.getFireTicks()>0){
+		if(
+				(to.getBlock().getType().equals(Material.WATER) || to.getBlock().getType().equals(Material.STATIONARY_WATER)) && 
+				!from.getBlock().getType().equals(Material.WATER) && 
+				from.getBlock().getType().equals(Material.STATIONARY_WATER) && 
+				player.getFireTicks()>0){
+				
 			if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[2]);
 		}
 		// QUICKSAND
 		if(to.getBlock().getType().equals(Material.SAND)) {
 			// YET TO COME
 		}
+		// WALK ON RED ROSES
+		if(!player.hasPermission("ijmh.immunity.roses")) {
+			if(to.getBlock().getType().equals(Material.RED_ROSE) && curTime>HitTime){
+				if(
+						Util.config("roses",null).getBoolean("active") &&
+						(to.getBlockX()!=from.getBlockX() ||
+						 to.getBlockY()!=from.getBlockY() ||
+						 to.getBlockZ()!=from.getBlockZ()
+					)){
+					player.damage(Util.config("roses",null).getInt("damage"));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("roses",null).getInt("duration")), Util.config("roses",null).getInt("multiplier")));
+					if(
+							Util.config("roses",null).getBoolean("message") && 
+							to.getBlock().getType()!=from.getBlock().getType()
+							) {
+						player.sendMessage(effects[14]);
+						HitTime = curTime + 10000;
+					}		
+				}
+			}
+		}
 		// STRUCK BY LIGHTNING UNDER A TREE
 		if(player.getWorld().hasStorm()){
-			Date curDate = new Date();
-			long curTime = curDate.getTime();
-			
 			if(!player.hasPermission("ijmh.immunity.lightning")) {
 				if(
 					Util.config("lightning",null).getBoolean("active") &&

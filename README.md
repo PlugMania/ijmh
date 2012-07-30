@@ -14,12 +14,15 @@ v1.1.4 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v1.1.4 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v1.1.x<br />
+Added walk on Red Roses causing slow and damage while moving through the roses.<br />
 v1.1.4<br />
 Added command for toggling ingame update messages.<br />
 Added command interface to tweak all settings by command.<br />
 Added chancemodifier to go lower than 1%<br />
-Changed foodpoison to only trigger on raw food.
-Fixed bug where cure foodpoison triggered on different events.
+Changed foodpoison to only trigger on raw food.<br />
+Changed default duration for foodpoison to 5 seconds.<br />
+Fixed bug where cure foodpoison triggered on different events.<br />
 v1.1.3<br />
 Added "The Happy Miner", Speeded or slowed when getting energized or tired from blockbreaking.<br />
 Fixed falling into water giving concussion.<br />

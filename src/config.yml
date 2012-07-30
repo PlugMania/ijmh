@@ -65,3 +65,9 @@ happyminer:
     chancemod: 1
     multiplier: 1
     duration: 10
+roses:    
+  active: true
+  message: true
+  damage: 1
+  multiplier: 3
+  duration: 2    

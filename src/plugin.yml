@@ -34,8 +34,10 @@ permissions:
     default: false
   ijmh.immunity.tiredminer:
     description: Immunity effect occuring when mining makes you tired.
-    default: false 
+    default: false
+  ijmh.immunity.roses:
+    description: Immunity to damage and slowing from roses.
+    default: false   
   ijmh.admin:
     description: Grant access to the toggle event.
     default: op
-              
