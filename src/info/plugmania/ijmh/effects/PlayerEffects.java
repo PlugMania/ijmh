@@ -237,7 +237,7 @@ public class PlayerEffects {
 		}
 		// WALK ON RED ROSES
 		if(!player.hasPermission("ijmh.immunity.roses")) {
-			if(to.getBlock().getType().equals(Material.RED_ROSE) && curTime>HitTime){
+			if(to.getBlock().getType().equals(Material.RED_ROSE)){
 				if(
 						Util.config("roses",null).getBoolean("active") &&
 						(to.getBlockX()!=from.getBlockX() ||
@@ -250,7 +250,7 @@ public class PlayerEffects {
 							Util.config("roses",null).getBoolean("message") && 
 							to.getBlock().getType()!=from.getBlock().getType()
 							) {
-						player.sendMessage(effects[14]);
+						if(curTime>HitTime) player.sendMessage(effects[14]);
 						HitTime = curTime + 10000;
 					}		
 				}
