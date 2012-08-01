@@ -17,11 +17,13 @@ electro:
     damage: 2  
 lightning:
   active: true
+  skip_biome:
+    - 'JUNGLE'
   message: true
   chance: 5
   chancemod: 10
   damage: 10
-  cooldown: 10 
+  cooldown: 10
 fall:    
   active: true
   message: true

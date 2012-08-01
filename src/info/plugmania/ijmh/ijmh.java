@@ -1,6 +1,9 @@
 package info.plugmania.ijmh;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -47,12 +50,21 @@ public class ijmh extends JavaPlugin {
 		try {
 			if (args.length == 0) args = new String[] { "help" };
 		    
-			String[] effects = {"fire", "fall", "foodpoison", "lightning", "electro", "craftthumb", "cows", "happyminer", "roses"};
+			List effects = new LinkedList(); 
+			effects.add("fire"); 
+			effects.add("fall"); 
+			effects.add("foodpoison");
+			effects.add("lightning"); 
+			effects.add("electro");
+			effects.add("craftthumb");
+			effects.add("cows");
+			effects.add("happyminer");
+			effects.add("roses");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
 					sender.sendMessage(ChatColor.AQUA + "- [ijhm] It Just Might Happen v" + this.getDescription().getVersion() + " ------------------"); 
-					sender.sendMessage(ChatColor.AQUA + "Effects: fire, fall, foodpoison, lightning, electro, craftthumb, cows, happyminer, roses"); 
+					sender.sendMessage(ChatColor.AQUA + "Effects: " + ChatColor.GOLD + effects); 
 					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect>" + ChatColor.AQUA + " - HowTo change values for an effect");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect> toggle" + ChatColor.AQUA + " - turn effect on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml");
@@ -78,7 +90,7 @@ public class ijmh extends JavaPlugin {
 					this.reloadConfig();
 					sender.sendMessage(ChatColor.AQUA + "[ijhm] Configuration loaded");
 				}
-				else if(Arrays.asList(effects).contains(args[0].toLowerCase()) && args.length==1){
+				else if(effects.contains(args[0].toLowerCase()) && args.length==1){
 					String state;
 					if(util.config(args[0], null).getBoolean("active")) state = ChatColor.GREEN + "enabled";
 					else state = ChatColor.RED + "disabled";
@@ -108,6 +120,7 @@ public class ijmh extends JavaPlugin {
 					} 
 					else if(args[0].equalsIgnoreCase("lightning")) {
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("lightning",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| skip: " + ChatColor.GOLD + util.config("lightning",null).getList("skip_biome"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (5): " + ChatColor.GOLD + util.config("lightning",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + util.config("lightning",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| damage (10): " + ChatColor.GOLD + util.config("lightning",null).getInt("damage"));
@@ -159,7 +172,7 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.GOLD + "message" + ChatColor.AQUA + " (true/false), " + ChatColor.GOLD + "chance" + ChatColor.AQUA + " (1-100), " + ChatColor.GOLD + "duration" + ChatColor.AQUA + " (seconds),");
 					sender.sendMessage(ChatColor.GOLD + "damage" + ChatColor.AQUA + " (1=½hearth), " + ChatColor.GOLD + "multiplier" + ChatColor.AQUA + " (1-5), " + ChatColor.GOLD + "cooldown" + ChatColor.AQUA + " (seconds)");
 				}
-				else if(Arrays.asList(effects).contains(args[0].toLowerCase()) && args.length==2){
+				else if(effects.contains(args[0].toLowerCase()) && args.length==2){
 					if(util.config(args[0],null).isBoolean("active")) {
 						if(this.getConfig().getConfigurationSection(args[0]).getBoolean("active")) {
 							this.getConfig().getConfigurationSection(args[0]).set("active", false);
@@ -176,24 +189,38 @@ public class ijmh extends JavaPlugin {
 						err = true;
 					}
 				}
-				else if(Arrays.asList(effects).contains(args[0].toLowerCase()) && args.length==3){
-					if(util.config(args[0],null).isSet(args[1])) {
+				else if(effects.contains(args[0].toLowerCase()) && args.length==3){
+					if(util.config(args[0],null).isSet(args[1]) || args[1].equalsIgnoreCase("skip")) {
 						
 						if(args[1].equalsIgnoreCase("message")) {
 							boolean valueB = Boolean.parseBoolean(args[2]);
 							util.config(args[0],null).set(args[1], valueB);
+						}
+						else if(args[1].equalsIgnoreCase("skip")) {
+							if(Util.isBiome(args[2])) {
+								if(Util.config("lightning",null).getList("skip_biome").contains(args[2].toUpperCase())) {
+									Util.config("lightning",null).getList("skip_biome").remove(args[2].toUpperCase());
+									sender.sendMessage(ChatColor.AQUA + "[ijhm] Biome:" + args[2] + " was removed from the list");
+								} else {
+									List skip_biome = Util.config("lightning",null).getList("skip_biome");
+									skip_biome.add(args[2].toUpperCase());
+									sender.sendMessage(ChatColor.AQUA + "[ijhm] Biome:" + args[2] + " was added to the list");
+								}
+							} else {
+								sender.sendMessage(ChatColor.RED + "[ijhm] Biome not recognized!");
+							}
 						}
 						else {
 							int valueI = Integer.parseInt(args[2]);
 							util.config(args[0],null).set(args[1], valueI);
 						}
 						
-						sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
+						if(!args[1].equalsIgnoreCase("skip")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
 						this.saveConfig();
 					}
 					else err = true;
 				}
-				else if(Arrays.asList(effects).contains(args[0].toLowerCase()) && args.length==4){
+				else if(effects.contains(args[0].toLowerCase()) && args.length==4){
 					if(util.config(args[0],args[1]).isSet(args[2])) {
 
 						if(args[2].equalsIgnoreCase("message")) {

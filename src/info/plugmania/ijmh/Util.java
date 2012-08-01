@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
@@ -63,6 +65,26 @@ public class Util{
 		if(s2!=null) config = config.getConfigurationSection(s2);
 		
 		return config;
+	}
+	
+	static public boolean isBiome(String biome){
+		boolean isBiome = false;
+		
+		List BiomeList = new LinkedList(); 
+		BiomeList.add("FOREST"); 
+		BiomeList.add("DESERT"); 
+		BiomeList.add("PLAINS");
+		BiomeList.add("SWAMPLAND"); 
+		BiomeList.add("JUNGLE");
+		BiomeList.add("TUNDRA");
+		BiomeList.add("TAIGA");
+		BiomeList.add("EXTREME_HILLS");
+		BiomeList.add("OCEAN");	
+		BiomeList.add("MUSHROOM_ISLAND");
+		
+		if(BiomeList.contains(biome.toUpperCase())) isBiome = true;
+		
+		return isBiome;
 	}
 	
 	public static int sec2tic(int seconds){

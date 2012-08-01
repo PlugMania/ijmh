@@ -15,6 +15,7 @@ v1.1.4 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.
               
 <b>Changelog</b><br />
 v1.1.x<br />
+Added option for Lightning to skip choosen biomes<br />
 Added walk on Red Roses causing slow and damage while moving through the roses.<br />
 v1.1.4<br />
 Added command for toggling ingame update messages.<br />

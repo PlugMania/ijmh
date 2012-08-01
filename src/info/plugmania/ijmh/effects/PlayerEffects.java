@@ -17,8 +17,10 @@ import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerInventoryEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -259,12 +261,13 @@ public class PlayerEffects {
 			if(!player.hasPermission("ijmh.immunity.lightning")) {
 				if(
 					Util.config("lightning",null).getBoolean("active") &&
+					!Util.config("lightning",null).getList("skip_biome").contains(player.getLocation().getBlock().getBiome().name()) &&
 					curTime>StruckTime
 					) {
 					int i = 0;
 					boolean isHit = false;
 					boolean doBreak = false;
-					while(i++<=15 && !doBreak && !isHit){
+					while(i++<=10 && !doBreak && !isHit){
 						Material testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i, to.getBlockZ()).getType();
 						if(testBlock.equals(Material.LEAVES)) {
 							isHit = true;
@@ -283,10 +286,6 @@ public class PlayerEffects {
 				}
 			}	
 		}
-	}
-	
-	public void addEffectRegainHealth(EntityRegainHealthEvent event){
-		Player player = (Player) event.getEntity();
 	}
 	
 	public void addEffectBlockBreak(BlockBreakEvent event){
