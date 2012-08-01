@@ -9,18 +9,22 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.listeners.PlayerListener;
 import info.plugmania.ijmh.effects.PlayerEffects;
+import info.plugmania.mazemania.MazeMania;
 
 public class ijmh extends JavaPlugin {
 	
 	public final Util util;
 	public final PlayerEffects playerEffects;
 	public boolean debug;
+	
+	public MazeMania mazeMania;
 	
 	public ijmh() {
 		this.util = new Util(this);
@@ -41,6 +45,11 @@ public class ijmh extends JavaPlugin {
         util.checkVersion(false, null, null);
 		if(this.getConfig().getBoolean("debug")) this.debug = true;
 		if(this.debug) getLogger().info("Debug enabled.");
+		
+		Plugin plug = this.getServer().getPluginManager().getPlugin("MazeMania");
+		if(plug != null){
+		  mazeMania = (MazeMania) plug;
+		}
 	}
 	
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {

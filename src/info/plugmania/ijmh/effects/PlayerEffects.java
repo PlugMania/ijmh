@@ -262,6 +262,7 @@ public class PlayerEffects {
 				if(
 					Util.config("lightning",null).getBoolean("active") &&
 					!Util.config("lightning",null).getList("skip_biome").contains(player.getLocation().getBlock().getBiome().name()) &&
+					(plugin.mazeMania==null || (plugin.mazeMania!=null && !plugin.mazeMania.arena.playing.contains(player))) &&
 					curTime>StruckTime
 					) {
 					int i = 0;
