@@ -11,9 +11,11 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.SignChangeEvent;
 
 public class Util{
 	static ijmh plugin;
@@ -66,6 +68,11 @@ public class Util{
 		
 		return config;
 	}
+	
+	static public void toLog(String s, boolean isDebug){
+		
+		if((isDebug && plugin.debug) || (!isDebug)) plugin.getLogger().info(s);
+	}	
 	
 	static public boolean isBiome(String biome){
 		boolean isBiome = false;

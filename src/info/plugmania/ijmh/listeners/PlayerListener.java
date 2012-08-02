@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
+import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -76,6 +77,11 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onCraftItem(CraftItemEvent event) {
 		plugin.playerEffects.addEffectCraft(event);			
+	}
+	
+	@EventHandler
+	public void onBrew(BrewEvent event) {
+		plugin.playerEffects.addEffectBrew(event);			
 	}
 	
 	@EventHandler

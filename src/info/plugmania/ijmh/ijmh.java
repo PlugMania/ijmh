@@ -69,6 +69,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("cows");
 			effects.add("happyminer");
 			effects.add("roses");
+			effects.add("brew");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -176,7 +177,12 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| damage (1): " + ChatColor.GOLD + util.config("roses",null).getInt("damage"));
 						sender.sendMessage(ChatColor.AQUA + "| multiplier (3): " + ChatColor.GOLD + util.config("roses",null).getInt("multiplier"));
 						sender.sendMessage(ChatColor.AQUA + "| duration (2): " + ChatColor.GOLD + util.config("roses",null).getInt("duration"));
-					} 
+					}
+					else if(args[0].equalsIgnoreCase("brew")) {
+						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("brew",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + util.config("brew",null).getInt("chancemod"));
+						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + util.config("brew",null).getInt("multiplier"));
+					}
 					
 					sender.sendMessage(ChatColor.GOLD + "message" + ChatColor.AQUA + " (true/false), " + ChatColor.GOLD + "chance" + ChatColor.AQUA + " (1-100), " + ChatColor.GOLD + "duration" + ChatColor.AQUA + " (seconds),");
 					sender.sendMessage(ChatColor.GOLD + "damage" + ChatColor.AQUA + " (1=½hearth), " + ChatColor.GOLD + "multiplier" + ChatColor.AQUA + " (1-5), " + ChatColor.GOLD + "cooldown" + ChatColor.AQUA + " (seconds)");
