@@ -12,10 +12,8 @@ import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.BrewEvent;
@@ -23,7 +21,6 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -345,38 +342,25 @@ public class PlayerEffects {
 
 	public void addEffectBrew(BrewEvent event) {
 		if(Util.config("brew",null).getBoolean("active")) {
-			//if(Util.pctChance(Util.config("brew",null).getInt("chance"),Util.config("brew",null).getInt("chancemod"))) {
-				event.getBlock().getWorld().createExplosion(event.getBlock().getLocation(), Util.config("brew",null).getInt("multiplier"));
-				if(event.getBlock().getWorld().getBlockAt(event.getBlock().getX(),event.getBlock().getY()-1,event.getBlock().getZ()).isEmpty()) event.getBlock().getWorld().getBlockAt(event.getBlock().getX(),event.getBlock().getY()-1,event.getBlock().getZ()).setType(Material.GRASS);
-				event.getBlock().setType(Material.SIGN_POST);
-				Block block = event.getBlock();
-				block.setTypeId(Material.SIGN_POST.getId());
-				
-				/*
-				Sign sign = (Sign) block.getState();
+			if(Util.pctChance(Util.config("brew",null).getInt("chance"),Util.config("brew",null).getInt("chancemod"))) {
+				Block b = event.getBlock();
+				b.getWorld().createExplosion(b.getLocation(), Util.config("brew",null).getInt("multiplier"));
+				if(b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) b.getRelative(BlockFace.DOWN).setType(Material.GRASS);
+	
+				b.setTypeId(Material.SIGN_POST.getId());
+	
+				Sign sign = (Sign) b.getState();
+				Util.toLog("" + sign.getLines()[1], true);
 				sign.setLine(0, "===============");
 				sign.setLine(1, "Equipment");
 				sign.setLine(2, "exploded!");
 				sign.setLine(3, "===============");
 				sign.update();
-				*/
-				
-				/*
-				Location l = event.getBlock().getLocation();
-				
-				l.getBlock().setTypeId(Material.SIGN_POST.getId());
-				Sign s = (Sign) plugin.getServer().getWorld(event.getBlock().getWorld().getName()).getBlockAt(l).getState();
-				s.setLine(0, "===============");
-				s.setLine(1, "Equipment");
-				s.setLine(2, "exploded!");
-				s.setLine(3, "===============");
-				org.bukkit.material.Sign matSign =  new org.bukkit.material.Sign(Material.SIGN_POST);
-				matSign.setFacingDirection(BlockFace.SOUTH);
-				s.setData(matSign);
-				s.update();
-				plugin.getServer().getPluginManager().callEvent(new SignChangeEvent(block, null, s.getLines()));
-				*/
-			//}
+				if(plugin.debug){
+					sign = (Sign) b.getState();
+					Util.toLog("" + sign.getLines()[1], true);
+				}
+			}
 		}
 	}
 }
