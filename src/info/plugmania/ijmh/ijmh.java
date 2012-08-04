@@ -70,6 +70,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("happyminer");
 			effects.add("roses");
 			effects.add("brew");
+			effects.add("squid");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -179,9 +180,17 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| duration (2): " + ChatColor.GOLD + util.config("roses",null).getInt("duration"));
 					}
 					else if(args[0].equalsIgnoreCase("brew")) {
+						sender.sendMessage(ChatColor.AQUA + "| signs (false): " + ChatColor.GOLD + util.config("brew",null).getBoolean("signs"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("brew",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + util.config("brew",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + util.config("brew",null).getInt("multiplier"));
+					}
+					else if(args[0].equalsIgnoreCase("squid")) {
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("squid",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (25): " + ChatColor.GOLD + util.config("squid",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("squid",null).getInt("chancemod"));
+						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + util.config("squid",null).getInt("multiplier"));
+						sender.sendMessage(ChatColor.AQUA + "| duration (5): " + ChatColor.GOLD + util.config("squid",null).getInt("duraton"));
 					}
 					
 					sender.sendMessage(ChatColor.GOLD + "message" + ChatColor.AQUA + " (true/false), " + ChatColor.GOLD + "chance" + ChatColor.AQUA + " (1-100), " + ChatColor.GOLD + "duration" + ChatColor.AQUA + " (seconds),");

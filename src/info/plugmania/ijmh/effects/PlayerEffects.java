@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Arrays;
 
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,9 +12,11 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.BrewEvent;
@@ -31,7 +34,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[14 + 1];
+	public String[] effects = new String[15 + 1];
 	int effect;
 	public long StruckTime = 0;
 	public long HitTime = 0;
@@ -64,6 +67,8 @@ public class PlayerEffects {
 		effects[13] = ChatColor.GOLD + "So tired... must slow down ...";
 		// WALKING ON RED ROSES
 		effects[14] = ChatColor.GOLD + "Thorns... why... thorns...! ";
+		// SQUID DEFENSE
+		effects[15] = ChatColor.GOLD + "" + ChatColor.ITALIC + "The Squid tries to defend itself!";
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -318,50 +323,72 @@ public class PlayerEffects {
 	}
 	
 	public void addEffectDamage(EntityDamageEvent event){
-		Player player = (Player) event.getEntity();
 		
-		// CONCUSSION FROM FALL
-		if(!player.hasPermission("ijmh.immunity.fall")) {
-			if(
-				Util.config("fall",null).getBoolean("active") &&
-				event.getCause().equals(DamageCause.FALL)
-				) {
-				if(event.getDamage()>=12) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*3), 1));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));	
-				} else if(event.getDamage()>=8) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));	
-				} else if(event.getDamage()>=4){
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+		if(event.getEntity().getType().equals(EntityType.PLAYER)) {
+		
+			Player player = (Player) event.getEntity();
+			
+			// CONCUSSION FROM FALL
+			if(!player.hasPermission("ijmh.immunity.fall")) {
+				if(
+					Util.config("fall",null).getBoolean("active") &&
+					event.getCause().equals(DamageCause.FALL)
+					) {
+					if(event.getDamage()>=12) {
+						player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*3), 1));
+						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));	
+					} else if(event.getDamage()>=8) {
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));	
+					} else if(event.getDamage()>=4){
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+					}
+					if(event.getDamage()>=4 && Util.config("fall",null).getBoolean("message")) player.sendMessage(effects[6]);
 				}
-				if(event.getDamage()>=4 && Util.config("fall",null).getBoolean("message")) player.sendMessage(effects[6]);
 			}
-		}
+		} 	
 	}
 
+	public void addEffectDamageByEntity(EntityDamageByEntityEvent event) {
+		
+		if(event.getEntity() instanceof LivingEntity && event.getDamager() instanceof Player) {
+
+			LivingEntity entity = (LivingEntity) event.getEntity();
+			Player damager = (Player) event.getDamager();
+			
+			// SQUID SELFDEFENSE
+			if(entity.getType().equals(EntityType.SQUID) && damager.getGameMode().equals(GameMode.SURVIVAL)) {
+				if(Util.pctChance(Util.config("squid",null).getInt("chance"),Util.config("squid",null).getInt("chancemod"))) {
+					damager.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("squid",null).getInt("duration")), Util.config("squid",null).getInt("multiplier")));
+					damager.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("squid",null).getInt("duration")), 1));
+					if(Util.config("fall",null).getBoolean("message")) damager.sendMessage(effects[15]);
+				}
+			}
+		}
+		
+	}
+	
 	public void addEffectBrew(BrewEvent event) {
 		if(Util.config("brew",null).getBoolean("active")) {
 			if(Util.pctChance(Util.config("brew",null).getInt("chance"),Util.config("brew",null).getInt("chancemod"))) {
 				Block b = event.getBlock();
 				b.getWorld().createExplosion(b.getLocation(), Util.config("brew",null).getInt("multiplier"));
-				if(b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) b.getRelative(BlockFace.DOWN).setType(Material.GRASS);
-	
-				b.setTypeId(Material.SIGN_POST.getId());
-	
-				Sign sign = (Sign) b.getState();
-				Util.toLog("" + sign.getLines()[1], true);
-				sign.setLine(0, "===============");
-				sign.setLine(1, "Equipment");
-				sign.setLine(2, "exploded!");
-				sign.setLine(3, "===============");
-				sign.update();
-				if(plugin.debug){
-					sign = (Sign) b.getState();
-					Util.toLog("" + sign.getLines()[1], true);
+				
+				if(Util.config("brew",null).getBoolean("signs")) {
+					if(b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) b.getRelative(BlockFace.DOWN).setType(Material.GRASS);
+		
+					b.setTypeId(Material.SIGN_POST.getId());
+		
+					Sign sign = (Sign) b.getState();
+					sign.setLine(0, "===============");
+					sign.setLine(1, "Equipment");
+					sign.setLine(2, "exploded!");
+					sign.setLine(3, "===============");
+					sign.update();
 				}
 			}
 		}
 	}
+
 }

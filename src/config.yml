@@ -75,6 +75,14 @@ roses:
   duration: 2
 brew:
   active: false
+  signs: false
   chance: 1
   chancemod: 10
   multiplier: 1
+squid:
+  active: true
+  message: true
+  chance: 25
+  chancemod: 1
+  multiplier: 1
+  duration: 5 

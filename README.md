@@ -5,22 +5,22 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.1.4<br /><br />
+version: 1.1.5<br /><br />
 
 <b>Latest Release</b><br />
-v1.1.4 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v1.1.5 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.1.4 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.1.5 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
-v1.1.x<br />
-Disabled Redstone from triggering when In vehicle<br />
+v1.1.5<br />
+Added chance for squid add POISON and BLINDNESS on being hit<br />
 Added Brew explosion (Signs still bugged)<br />
-Fixed to roses cooldown only applies to message<br />
 Added compability with players inside a MazeMania game not to get struck by Lightning<br />
 Added option for Lightning to skip choosen biomes<br />
 Added walk on Red Roses causing slow and damage while moving through the roses.<br />
+Disabled Redstone from triggering when In vehicle<br />
 v1.1.4<br />
 Added command for toggling ingame update messages.<br />
 Added command interface to tweak all settings by command.<br />
