@@ -179,7 +179,8 @@ public class PlayerEffects {
 		// ELECTRICUTION ON REDSTONE TOUCH
 		if(!player.hasPermission("ijmh.immunity.electro")) {
 			if(
-				Util.config("electro",null).getBoolean("active") && 
+				Util.config("electro",null).getBoolean("active") &&
+				!player.isInsideVehicle() &&
 				to.getBlock().isBlockPowered() && 
 				(
 						to.getBlockX()!=from.getBlockX() ||

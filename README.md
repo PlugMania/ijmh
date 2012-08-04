@@ -15,6 +15,7 @@ v1.1.4 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.
               
 <b>Changelog</b><br />
 v1.1.x<br />
+Disabled Redstone from triggering when In vehicle<br />
 Added Brew explosion (Signs still bugged)<br />
 Fixed to roses cooldown only applies to message<br />
 Added compability with players inside a MazeMania game not to get struck by Lightning<br />
