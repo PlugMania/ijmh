@@ -16,7 +16,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.listeners.PlayerListener;
 import info.plugmania.ijmh.effects.PlayerEffects;
+
 import info.plugmania.mazemania.MazeMania;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class ijmh extends JavaPlugin {
 	
@@ -25,6 +27,7 @@ public class ijmh extends JavaPlugin {
 	public boolean debug;
 	
 	public MazeMania mazeMania;
+	public WorldGuardPlugin wg;
 	
 	public ijmh() {
 		this.util = new Util(this);
@@ -46,10 +49,16 @@ public class ijmh extends JavaPlugin {
 		if(this.getConfig().getBoolean("debug")) this.debug = true;
 		if(this.debug) getLogger().info("Debug enabled.");
 		
-		Plugin plug = this.getServer().getPluginManager().getPlugin("MazeMania");
-		if(plug != null){
-		  mazeMania = (MazeMania) plug;
+		Plugin p = this.getServer().getPluginManager().getPlugin("MazeMania");
+		if(p != null){
+		  mazeMania = (MazeMania) p;
+		  getLogger().info("MazeMania hooked");
 		}
+		p = getServer().getPluginManager().getPlugin("WorldGuard");
+	    if (p != null || (p instanceof WorldGuardPlugin)) {
+	        wg = (WorldGuardPlugin) p;
+	        getLogger().info("WorldGuard hooked");
+	    }
 	}
 	
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {

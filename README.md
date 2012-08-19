@@ -5,15 +5,17 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.1.5<br /><br />
+version: 1.1.6<br /><br />
 
 <b>Latest Release</b><br />
-v1.1.5 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v1.1.6 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.1.5 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.1.6 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v1.1.6<br />
+Added compability for WorldGuard invincible flag<br />
 v1.1.5<br />
 Added chance for squid add POISON and BLINDNESS on being hit<br />
 Added Brew explosion (Signs still bugged)<br />

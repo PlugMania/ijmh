@@ -11,11 +11,23 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.plugin.Plugin;
+
+import com.sk89q.worldedit.Vector;
+import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.StateFlag;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+
+import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
 
 public class Util{
 	static ijmh plugin;
@@ -107,4 +119,25 @@ public class Util{
 		if(plugin.debug) plugin.getLogger().info(rNum + " <= " + d + " State:" + result);
 		return result;
 	}
+
+	// HOOKS ------------------------------------------------------------------------------
+	
+	public static boolean WorldGuard(StateFlag flag, Location loc, Player p) {
+
+		if(plugin.wg==null) return false;
+
+		WorldGuardPlugin wg = plugin.wg;
+		Vector pt = toVector(loc); // This also takes a location
+		LocalPlayer localPlayer = wg.wrapPlayer(p);
+		 
+		RegionManager regionManager = wg.getRegionManager(p.getWorld());
+		ApplicableRegionSet set = regionManager.getApplicableRegions(pt);
+
+		if(flag.equals(DefaultFlag.INVINCIBILITY)) {
+			if(set.allows(flag)) return true;
+		}
+		
+		return false;
+	}
+	
 }
