@@ -11,9 +11,11 @@ version: 1.1.6<br /><br />
 v1.1.6 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.1.6 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.1.7 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v1.2.0<br />
+Added Tar, Sloweffect when walking over black wool<br />
 v1.1.6<br />
 Added compability for WorldGuard invincible flag<br />
 v1.1.5<br />

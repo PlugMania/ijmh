@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Arrays;
 
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -24,6 +25,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -37,10 +39,11 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[15 + 1];
+	public String[] effects = new String[16 + 1];
 	int effect;
 	public long StruckTime = 0;
 	public long HitTime = 0;
+	public long SlowTime = 0;
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
@@ -72,6 +75,8 @@ public class PlayerEffects {
 		effects[14] = ChatColor.GOLD + "Thorns... why... thorns...! ";
 		// SQUID DEFENSE
 		effects[15] = ChatColor.GOLD + "" + ChatColor.ITALIC + "The Squid tries to defend itself!";
+		// TAR
+		effects[16] = ChatColor.GOLD + "The ground under you suddenly feels terribly sticky ...";
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -179,6 +184,7 @@ public class PlayerEffects {
 	
 	public void addEffectMove(PlayerMoveEvent event){
 		Player player = event.getPlayer();
+		Location pUnder = player.getLocation().add(0, -1, 0);
 		Location to = event.getTo();
 		Location from = event.getFrom();
 		Date curDate = new Date();
@@ -217,9 +223,7 @@ public class PlayerEffects {
 			){
 			Util.toLog("CONCUSSION FROM FALL EVENT BASED ON AIRBLOCKS",true);
 			
-			Location pLoc = player.getLocation().add(0, -1, 0);
-			
-			if(plugin.debug) plugin.getLogger().info("Landing block is: " + pLoc.getBlock().getType().name());
+			if(plugin.debug) plugin.getLogger().info("Landing block is: " + pUnder.getBlock().getType().name());
 
 			boolean INVINCIBILITY = false;
 			if(plugin.wg!=null) INVINCIBILITY = Util.WorldGuard(DefaultFlag.INVINCIBILITY, player.getLocation(), player);
@@ -248,9 +252,30 @@ public class PlayerEffects {
 			if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[2]);
 		}
 		// QUICKSAND
-		if(to.getBlock().getType().equals(Material.SAND)) {
+		if(pUnder.getBlock().getType().equals(Material.SAND)) {
 			// YET TO COME
 		}
+		// TAR
+		if(
+				pUnder.getBlock().getType().equals(Material.WOOL) &&
+				(
+						to.getBlockX()!=from.getBlockX() ||
+						to.getBlockY()!=from.getBlockY() ||
+						to.getBlockZ()!=from.getBlockZ()
+				)) {
+
+			Block block = pUnder.getBlock();
+			Wool wool = new Wool(block.getType(), block.getData());
+			if(wool.getColor().equals(DyeColor.BLACK)) {
+				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("tar",null).getInt("duration")), Util.config("tar",null).getInt("multiplier")));
+				if(
+						Util.config("tar",null).getBoolean("message")
+						) {
+					if(curTime>SlowTime) player.sendMessage(effects[16]);
+					SlowTime = curTime + 10000;
+				}
+			}
+		}		
 		// WALK ON RED ROSES
 		if(!player.hasPermission("ijmh.immunity.roses")) {
 			if(to.getBlock().getType().equals(Material.RED_ROSE)){

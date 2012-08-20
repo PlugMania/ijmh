@@ -86,3 +86,8 @@ squid:
   chancemod: 1
   multiplier: 1
   duration: 5 
+tar:    
+  active: true
+  message: true
+  multiplier: 5
+  duration: 1  
