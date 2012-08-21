@@ -257,6 +257,7 @@ public class PlayerEffects {
 		}
 		// TAR
 		if(
+				Util.config("tar",null).getBoolean("active") &&
 				pUnder.getBlock().getType().equals(Material.WOOL) &&
 				(
 						to.getBlockX()!=from.getBlockX() ||
