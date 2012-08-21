@@ -5,7 +5,7 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.1.6<br /><br />
+version: 1.1.7<br /><br />
 
 <b>Latest Release</b><br />
 v1.1.6 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
@@ -15,6 +15,7 @@ v1.1.7 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.
               
 <b>Changelog</b><br />
 v1.1.7<br />
+Added "Bump on the Rail", chance to get thrown out of the minecart<br />
 Added chance to break Bow during PvP<br />
 Added Tar, Sloweffect when walking over black wool<br />
 v1.1.6<br />

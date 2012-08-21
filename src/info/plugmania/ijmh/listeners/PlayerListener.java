@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerInventoryEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 public class PlayerListener implements Listener {
 	
@@ -108,5 +109,12 @@ public class PlayerListener implements Listener {
 			plugin.playerEffects.addEffectDamageByEntity(event);
 		}
     }	
+	
+	@EventHandler
+    public void onVehicleMove(VehicleMoveEvent event) {	
+		if(event.getVehicle().getPassenger() instanceof Player) {
+			plugin.playerEffects.addEffectVehicleMove(event);
+		}
+	}
 	
 }

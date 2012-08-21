@@ -97,3 +97,10 @@ bow:
   chance: 1
   chancemod: 1  
   damage: 4
+rail:
+  active: true
+  message: true
+  chance: 1
+  chancemod: 1
+  distance: 1
+  angle: 1

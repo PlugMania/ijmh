@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -18,6 +19,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -28,8 +30,10 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Rails;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -44,7 +48,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[17 + 1];
+	public String[] effects = new String[18 + 1];
 	int effect;
 	public long StruckTime = 0;
 	public long HitTime = 0;
@@ -84,6 +88,8 @@ public class PlayerEffects {
 		effects[16] = ChatColor.GOLD + "The ground under you suddenly feels terribly sticky ...";
 		// BOW
 		effects[17] = ChatColor.RED + "Your bow suddenly broke, not your day it seems ...";
+		// BUMP IN THE RAIL
+		effects[18] = ChatColor.GOLD + "Your cart hits a bump, what the ... oh no !";
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -454,6 +460,25 @@ public class PlayerEffects {
 					sign.setLine(2, "exploded!");
 					sign.setLine(3, "===============");
 					sign.update();
+				}
+			}
+		}
+	}
+
+	public void addEffectVehicleMove(VehicleMoveEvent event) {
+		Player player = (Player) event.getVehicle().getPassenger();
+
+		// BUMP IN THE RAIL
+		if(Util.config("rail",null).getBoolean("active")) {
+			if(event.getTo().getBlock().getType().equals(Material.RAILS) && event.getVehicle().getType().equals(EntityType.MINECART)) {
+				if(!player.hasPermission("ijmh.immunity.rail")) {
+					Rails rail = new Rails(event.getTo().getBlock().getType(), event.getTo().getBlock().getData());
+					if(rail.isCurve() && Util.pctChance(Util.config("rail",null).getInt("chance"),Util.config("rail",null).getInt("chancemod"))) {
+						event.getVehicle().eject();
+						Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
+						player.setVelocity(new Vector(vector.getX()+Util.config("rail",null).getInt("distance"),Util.config("rail",null).getInt("angle"),vector.getZ()+Util.config("rail",null).getInt("distance")));
+						if(Util.config("rail",null).getBoolean("message")) player.sendMessage(effects[18]);
+					}
 				}
 			}
 		}
