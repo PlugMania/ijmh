@@ -81,6 +81,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("brew");
 			effects.add("squid");
 			effects.add("tar");
+			effects.add("bow");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -206,6 +207,12 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("tar",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| multiplier (5): " + ChatColor.GOLD + util.config("tar",null).getInt("multiplier"));
 						sender.sendMessage(ChatColor.AQUA + "| duration (1): " + ChatColor.GOLD + util.config("tar",null).getInt("duration"));
+					}
+					else if(args[0].equalsIgnoreCase("bow")) {
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("bow",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("bow",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("bow",null).getInt("chancemod"));
+						sender.sendMessage(ChatColor.AQUA + "| damage (4): " + ChatColor.GOLD + util.config("bow",null).getInt("damage"));
 					}
 					
 					sender.sendMessage(ChatColor.GOLD + "message" + ChatColor.AQUA + " (true/false), " + ChatColor.GOLD + "chance" + ChatColor.AQUA + " (1-100), " + ChatColor.GOLD + "duration" + ChatColor.AQUA + " (seconds),");

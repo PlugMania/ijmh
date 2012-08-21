@@ -11,10 +11,13 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -25,6 +28,8 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -39,7 +44,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[16 + 1];
+	public String[] effects = new String[17 + 1];
 	int effect;
 	public long StruckTime = 0;
 	public long HitTime = 0;
@@ -77,6 +82,8 @@ public class PlayerEffects {
 		effects[15] = ChatColor.GOLD + "" + ChatColor.ITALIC + "The Squid tries to defend itself!";
 		// TAR
 		effects[16] = ChatColor.GOLD + "The ground under you suddenly feels terribly sticky ...";
+		// BOW
+		effects[17] = ChatColor.RED + "Your bow suddenly broke, not your day it seems ...";
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -394,10 +401,12 @@ public class PlayerEffects {
 
 	public void addEffectDamageByEntity(EntityDamageByEntityEvent event) {
 		
+		Player damager = null;
+		
 		if(event.getEntity() instanceof LivingEntity && event.getDamager() instanceof Player) {
-
+			
+			damager = (Player) event.getDamager();
 			LivingEntity entity = (LivingEntity) event.getEntity();
-			Player damager = (Player) event.getDamager();
 			
 			// SQUID SELFDEFENSE
 			if(entity.getType().equals(EntityType.SQUID) && damager.getGameMode().equals(GameMode.SURVIVAL)) {
@@ -408,7 +417,24 @@ public class PlayerEffects {
 				}
 			}
 		}
-		
+		// BOW BREAKS
+		if(event.getDamager() instanceof Arrow && event.getEntity() instanceof Player) {
+			Arrow arrow = (Arrow) event.getDamager();
+			if(arrow.getShooter() instanceof Player) {
+				damager = (Player) arrow.getShooter();
+				if(!damager.hasPermission("ijmh.immunity.bow")) {
+					if(Util.config("bow",null).getBoolean("active")) {
+						if(Util.pctChance(Util.config("bow",null).getInt("chance"),Util.config("bow",null).getInt("chancemod"))) {
+							ItemStack itemHand = (ItemStack) damager.getItemInHand();
+							Inventory inv = damager.getInventory();
+							inv.remove(itemHand);
+							damager.damage(Util.config("bow",null).getInt("damage"));
+							if(Util.config("bow",null).getBoolean("message")) damager.sendMessage(effects[17]);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public void addEffectBrew(BrewEvent event) {

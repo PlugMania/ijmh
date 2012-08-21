@@ -14,7 +14,8 @@ v1.1.6 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v1.1.7 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
-v1.2.0<br />
+v1.1.7<br />
+Added chance to break Bow during PvP<br />
 Added Tar, Sloweffect when walking over black wool<br />
 v1.1.6<br />
 Added compability for WorldGuard invincible flag<br />

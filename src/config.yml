@@ -90,4 +90,10 @@ tar:
   active: true
   message: true
   multiplier: 5
-  duration: 1  
+  duration: 1
+bow:    
+  active: true
+  message: true
+  chance: 1
+  chancemod: 1  
+  damage: 4
