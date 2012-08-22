@@ -20,6 +20,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Vehicle;
+import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -27,6 +28,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -48,7 +51,7 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[18 + 1];
+	public String[] effects = new String[20 + 1];
 	int effect;
 	public long StruckTime = 0;
 	public long HitTime = 0;
@@ -90,6 +93,10 @@ public class PlayerEffects {
 		effects[17] = ChatColor.RED + "Your bow suddenly broke, not your day it seems ...";
 		// BUMP IN THE RAIL
 		effects[18] = ChatColor.GOLD + "Your cart hits a bump, what the ... oh no !";
+		// LUCKY FISHERMAN
+		effects[19] = ChatColor.GREEN + "Lucky you! You also caught ";
+		// FISHERMAN ON HOOK
+		effects[20] = ChatColor.GOLD + "What! Something more on the hook, it's a ";
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -344,6 +351,38 @@ public class PlayerEffects {
 		}
 	}
 	
+	public void addEffectFish(PlayerFishEvent event) {
+		Player player = event.getPlayer();
+
+		// FISHERMAN
+		if(Util.config("fishing",null).getBoolean("active")) {
+			// LUCKY FISHERMAN
+			if(event.getState().equals(State.CAUGHT_FISH)) {
+				if(Util.pctChance(Util.config("fishing","lucky").getInt("chance"),Util.config("fishing","lucky").getInt("chancemod")) && Util.config("fishing","lucky").getBoolean("active")) {
+					if(!Util.config("fishing","lucky").getList("items").isEmpty()) {
+						Material material = Material.matchMaterial((String) Util.config("fishing","lucky").getList("items").get((int) (Util.config("fishing","lucky").getList("items").size()*Math.random())));
+						short data = 0;
+						int amount = 1;
+						player.getInventory().addItem(new ItemStack(material, amount, data));
+						player.updateInventory();
+						if(Util.config("fishing","lucky").getBoolean("message")) player.sendMessage(effects[19] + material.name());
+						Util.toLog(effects[19] + material.name(), true);
+					}
+				}
+				else if(Util.pctChance(Util.config("fishing","spawn").getInt("chance"),Util.config("fishing","spawn").getInt("chancemod"))) {
+					if(Util.config("fishing","spawn").getBoolean("active")) {
+						if(!Util.config("fishing","spawn").getList("mobs").isEmpty()) {
+							EntityType mob = EntityType.fromName((String) Util.config("fishing","spawn").getList("mobs").get((int) (Util.config("fishing","spawn").getList("mobs").size()*Math.random())));
+							plugin.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation().add(new Vector(2,0,0)), mob);
+							if(Util.config("fishing","spawn").getBoolean("message")) player.sendMessage(effects[20] + mob.getName());
+						}
+				
+					}
+				}
+			}
+		}
+	}
+	
 	public void addEffectBlockBreak(BlockBreakEvent event){
 		Player player = (Player) event.getPlayer();
 		
@@ -357,7 +396,8 @@ public class PlayerEffects {
 				if(Util.pctChance(Util.config("happyminer","energized").getInt("chance"),Util.config("happyminer","energized").getInt("chancemod"))) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(Util.config("happyminer","energized").getInt("duration")), Util.config("happyminer","energized").getInt("multiplier")));
 					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[12]);
-				} else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.ummunity.tiredminer")) {
+				} 
+				else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.ummunity.tiredminer")) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(Util.config("happyminer","tired").getInt("duration")), Util.config("happyminer","tired").getInt("multiplier")));
 					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[13]);
 				}

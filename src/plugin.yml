@@ -2,7 +2,7 @@ name: ijmh
 description: -It Just Might Happen- is reality added based on events
 author: nsordk & PlugMania
 main: info.plugmania.ijmh.ijmh
-version: 1.1.6
+version: 1.2.0
 commands:
   ijmh:
     usage: /ijmh
@@ -43,6 +43,9 @@ permissions:
     default: false
   ijmh.immunity.rail:
     description: Immunity to getting thrown off rails.
+    default: false
+  ijmh.immunity.spawn:
+    description: Immunity to catching mobs while fishing.
     default: false 
   ijmh.admin:
     description: Grant access to the toggle event.

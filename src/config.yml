@@ -18,7 +18,7 @@ electro:
 lightning:
   active: true
   skip_biome:
-    - 'JUNGLE'
+    - JUNGLE
   message: true
   chance: 5
   chancemod: 10
@@ -104,3 +104,19 @@ rail:
   chancemod: 1
   distance: 1
   angle: 1
+fishing:
+  active: true
+  lucky:
+    active: true
+    message: true
+    chance: 5
+    chancemod: 1
+    items:
+      - DIRT
+  spawn:
+    active: true
+    message: true
+    chance: 1
+    chancemod: 1
+    mobs:
+      - SILVERFISH

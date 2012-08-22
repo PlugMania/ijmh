@@ -14,6 +14,7 @@ import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerInventoryEvent;
@@ -64,6 +65,15 @@ public class PlayerListener implements Listener {
 		
 		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 			plugin.playerEffects.addEffectMove(event);			
+		}
+	}
+	 
+	@EventHandler
+	public void onPlayerFish(PlayerFishEvent event) {
+		Player player = event.getPlayer();
+		
+		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
+			plugin.playerEffects.addEffectFish(event);			
 		}
 	}
 	

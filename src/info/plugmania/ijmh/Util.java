@@ -12,9 +12,11 @@ import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.plugin.Plugin;
@@ -104,6 +106,24 @@ public class Util{
 		if(BiomeList.contains(biome.toUpperCase())) isBiome = true;
 		
 		return isBiome;
+	}
+
+	public Material isItem(String item){
+		
+		Material material = null;
+
+		if(Material.matchMaterial(item) != null) material = Material.matchMaterial(item);
+		
+		return material;
+	}
+
+	public EntityType isEntity(String entity){
+		
+		EntityType entityType = null;
+
+		if(EntityType.fromName(entity) != null) entityType = EntityType.fromName(entity);
+		
+		return entityType;
 	}
 	
 	public static int sec2tic(int seconds){
