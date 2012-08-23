@@ -5,15 +5,17 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.2.0<br /><br />
+version: 1.2.1<br /><br />
 
 <b>Latest Release</b><br />
-v1.1.6 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v1.2.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.2.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.2.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v1.2.1<br />
+Added Metrics for usage statistics<br />
 v1.2.0<br />
 Added "Fisherman on hook", chance to carch more items or catch mobs<br />
 Added "Bump on the Rail", chance to get thrown out of the minecart<br />

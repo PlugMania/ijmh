@@ -1,5 +1,6 @@
 package info.plugmania.ijmh;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -39,6 +40,12 @@ public class ijmh extends JavaPlugin {
 	}
 	
 	public void onEnable(){
+		try {
+		    Metrics metrics = new Metrics(this);
+		    metrics.start();
+		} catch (IOException e) {
+		}
+		
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerListener(this), this);
 		
