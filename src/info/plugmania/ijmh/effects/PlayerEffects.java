@@ -56,6 +56,7 @@ public class PlayerEffects {
 	public long StruckTime = 0;
 	public long HitTime = 0;
 	public long SlowTime = 0;
+	public long FireTime = 0;
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
@@ -118,7 +119,9 @@ public class PlayerEffects {
 	
 	public void addEffectInteract(PlayerInteractEvent event){
 		Player player = event.getPlayer();
-
+		Date curDate = new Date();
+		long curTime = curDate.getTime();
+		
 		// FOODPOISONING
 		if(!player.hasPermission("ijmh.immunity.foodpoison") || !player.hasPotionEffect(PotionEffectType.POISON)) {
 			if(
@@ -138,11 +141,12 @@ public class PlayerEffects {
 		}		
 		// CATCH FIRE
 		if(!player.hasPermission("ijmh.immunity.fire")) {
-			if(event.getItem().equals(Material.FLINT_AND_STEEL)){
+			if(player.getItemInHand().getType().equals(Material.FLINT_AND_STEEL) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 				if(Util.config("fire",null).getBoolean("active")) {
+					Util.toLog("Fire: Active passed", true);
 					if(
-						player.getWorld().getBlockAt(player.getLocation()).isLiquid()==false && 
-						player.getWorld().hasStorm()==false
+						!player.getWorld().getBlockAt(player.getLocation()).isLiquid() && 
+						!player.getWorld().hasStorm()
 						) {
 						if(Util.pctChance(Util.config("fire",null).getInt("chance"),Util.config("fire",null).getInt("chancemod"))) {
 							player.setFireTicks(Util.sec2tic(Util.config("fire",null).getInt("duration")));
@@ -154,10 +158,13 @@ public class PlayerEffects {
 		}
 		// PUT OUT FIRE
 		if(player.getFireTicks()>0) {
-			if(event.getItem().equals(Material.WATER_BUCKET)) {
+			if(event.getItem().getType().equals(Material.WATER_BUCKET)) {
 				player.setFireTicks(0);
 				event.setCancelled(true);
-				if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[2]);
+				if(Util.config("fire",null).getBoolean("message")) {
+					if(curTime>FireTime) player.sendMessage(effects[2]);
+					FireTime = curTime + 2000;
+				}
 			}
 		}
 		// CURE FOODPOISON
@@ -269,7 +276,8 @@ public class PlayerEffects {
 				from.getBlock().getType().equals(Material.STATIONARY_WATER) && 
 				player.getFireTicks()>0){
 				
-			if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[2]);
+			if(curTime>FireTime) player.sendMessage(effects[2]);
+			FireTime = curTime + 2000;
 		}
 		// QUICKSAND
 		if(pUnder.getBlock().getType().equals(Material.SAND)) {
@@ -395,7 +403,7 @@ public class PlayerEffects {
 				
 				if(Util.pctChance(Util.config("happyminer","energized").getInt("chance"),Util.config("happyminer","energized").getInt("chancemod"))) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(Util.config("happyminer","energized").getInt("duration")), Util.config("happyminer","energized").getInt("multiplier")));
-					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[12]);
+					if(Util.config("happyminer","energized").getBoolean("message")) player.sendMessage(effects[12]);
 				} 
 				else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.ummunity.tiredminer")) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(Util.config("happyminer","tired").getInt("duration")), Util.config("happyminer","tired").getInt("multiplier")));
