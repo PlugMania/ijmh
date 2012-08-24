@@ -405,7 +405,7 @@ public class PlayerEffects {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(Util.config("happyminer","energized").getInt("duration")), Util.config("happyminer","energized").getInt("multiplier")));
 					if(Util.config("happyminer","energized").getBoolean("message")) player.sendMessage(effects[12]);
 				} 
-				else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.ummunity.tiredminer")) {
+				else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.immunity.tiredminer")) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(Util.config("happyminer","tired").getInt("duration")), Util.config("happyminer","tired").getInt("multiplier")));
 					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[13]);
 				}
