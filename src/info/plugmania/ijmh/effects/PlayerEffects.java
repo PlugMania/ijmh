@@ -130,7 +130,7 @@ public class PlayerEffects {
 				event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				) {
 				if(Util.pctChance(Util.config("foodpoison",null).getInt("chance"),Util.config("foodpoison",null).getInt("chancemod"))) {
-					Material[] material = {Material.RAW_BEEF, Material.RAW_CHICKEN, Material.RAW_FISH, Material.ROTTEN_FLESH};
+					Material[] material = {Material.RAW_BEEF, Material.RAW_CHICKEN, Material.RAW_FISH, Material.ROTTEN_FLESH, Material.PORK};
 					if(Arrays.asList(material).contains(event.getMaterial())) {
 						player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoison",null).getInt("duration")), Util.config("foodpoison",null).getInt("multiplier")));
 						if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[3]);
