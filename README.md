@@ -16,6 +16,9 @@ v1.2.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.
 <b>Changelog</b><br />
 v1.2.1<br />
 Added Metrics for usage statistics<br />
+Added Material.PORK to Foodpoisoning as raw material<br />
+Fixed Immunity permission for Tired Miner<br />
+Fixed Catching Fire and the messagespam from putting it out<br />
 v1.2.0<br />
 Added "Fisherman on hook", chance to carch more items or catch mobs<br />
 Added "Bump on the Rail", chance to get thrown out of the minecart<br />
