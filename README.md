@@ -5,15 +5,17 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.2.1<br /><br />
+version: 1.2.2<br /><br />
 
 <b>Latest Release</b><br />
-v1.2.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v1.2.2 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.2.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.2.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v1.2.2<br />
+Added language.yml for editing the messages<br />
 v1.2.1<br />
 Added Metrics for usage statistics<br />
 Added Material.PORK to Foodpoisoning as raw material<br />

@@ -51,7 +51,6 @@ import info.plugmania.ijmh.ijmh;
 public class PlayerEffects {
 	
 	ijmh plugin;
-	public String[] effects = new String[20 + 1];
 	int effect;
 	public long StruckTime = 0;
 	public long HitTime = 0;
@@ -60,44 +59,6 @@ public class PlayerEffects {
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
-	
-		// CATCH FIRE
-		effects[1] = ChatColor.GOLD + "You caught fire, use a bucket of water or find water to put it out!";	
-		// PUT OUT FIRE
-		effects[2] = ChatColor.AQUA + "You really need to be careful next time.";
-		// FOODPOISONING
-		effects[3] = ChatColor.GREEN + "Your belly starts to rumble, that food must have been bad!? Milk Milk!!";
-	    // CURE FOOD POISONING
-		effects[4] = ChatColor.AQUA + "You feel better! You where lucky this time.";
-	    // STRUCK BY LIGHTNING UNDER A TREE
-		effects[5] = ChatColor.RED + "Struck by lightning, didn't your mom teach you not to hide under trees during a storm!?";
-		// CONCUSSION FROM FALL
-		effects[6] = ChatColor.LIGHT_PURPLE + "" + ChatColor.ITALIC + "You might have hit the ground a bit too hard there ...";
-		// REDSTONE ELECTROCUTION
-		effects[7] = ChatColor.GOLD + "You got lucky, the redstone was only carrying low voltage!";
-		effects[8] = ChatColor.GOLD + "Aaaaaarggghhh, the redstone zapped you with HIGH VOLTAGE!";
-		// CRAFT MESSAGES
-		effects[9] = ChatColor.GOLD + "Auch! You struck your thumb.";
-		// MILKING A COW
-		effects[10] = ChatColor.GOLD + "Seriously ... Do you know any cows that can be milked like that?!";
-		effects[11] = ChatColor.GOLD + "That might leave a mark ...!";
-		// THE HAPPY MINER
-		effects[12] = ChatColor.GOLD + "This is fun! you feel energized!!";
-		effects[13] = ChatColor.GOLD + "So tired... must slow down ...";
-		// WALKING ON RED ROSES
-		effects[14] = ChatColor.GOLD + "Thorns... why... thorns...! ";
-		// SQUID DEFENSE
-		effects[15] = ChatColor.GOLD + "" + ChatColor.ITALIC + "The Squid tries to defend itself!";
-		// TAR
-		effects[16] = ChatColor.GOLD + "The ground under you suddenly feels terribly sticky ...";
-		// BOW
-		effects[17] = ChatColor.RED + "Your bow suddenly broke, not your day it seems ...";
-		// BUMP IN THE RAIL
-		effects[18] = ChatColor.GOLD + "Your cart hits a bump, what the ... oh no !";
-		// LUCKY FISHERMAN
-		effects[19] = ChatColor.GREEN + "Lucky you! You also caught ";
-		// FISHERMAN ON HOOK
-		effects[20] = ChatColor.GOLD + "What! Something more on the hook, it's a ";
 	}
 	
 	public void addEffectCraft(CraftItemEvent event){
@@ -110,7 +71,7 @@ public class PlayerEffects {
 				if(event.getCursor().getAmount()>0) moreCraft = (event.getCursor().getAmount() / 100)^(event.getCursor().getAmount() / 2);
 				if(Util.pctChance(Util.config("craftthumb",null).getInt("chance") / (1 + moreCraft),Util.config("craftthumb",null).getInt("chancemod"))) {
 					player.damage(Util.config("craftthumb",null).getInt("damage"));
-					if(Util.config("craftthumb",null).getBoolean("message")) player.sendMessage(effects[9]);
+					if(Util.config("craftthumb",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_09"));
 				} 
 				
 			}
@@ -133,7 +94,7 @@ public class PlayerEffects {
 					Material[] material = {Material.RAW_BEEF, Material.RAW_CHICKEN, Material.RAW_FISH, Material.ROTTEN_FLESH, Material.PORK};
 					if(Arrays.asList(material).contains(event.getMaterial())) {
 						player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoison",null).getInt("duration")), Util.config("foodpoison",null).getInt("multiplier")));
-						if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[3]);
+						if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_03"));
 			
 					}
 				}
@@ -150,7 +111,7 @@ public class PlayerEffects {
 						) {
 						if(Util.pctChance(Util.config("fire",null).getInt("chance"),Util.config("fire",null).getInt("chancemod"))) {
 							player.setFireTicks(Util.sec2tic(Util.config("fire",null).getInt("duration")));
-							if(Util.config("fire",null).getBoolean("message")) player.sendMessage(effects[1]);
+							if(Util.config("fire",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_01"));
 						}
 					}
 				}
@@ -162,14 +123,14 @@ public class PlayerEffects {
 				player.setFireTicks(0);
 				event.setCancelled(true);
 				if(Util.config("fire",null).getBoolean("message")) {
-					if(curTime>FireTime) player.sendMessage(effects[2]);
+					if(curTime>FireTime) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_02"));
 					FireTime = curTime + 2000;
 				}
 			}
 		}
 		// CURE FOODPOISON
 		if(player.hasPotionEffect(PotionEffectType.POISON) && event.getMaterial().equals(Material.MILK_BUCKET) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(effects[4]);
+			if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_04"));
 		} 
 	}
 
@@ -193,13 +154,13 @@ public class PlayerEffects {
 					float diff = Math.abs(playerYaw - entityYaw);
 					int threshhold = 40;
 					if(diff > 180 - threshhold && diff < 180 + threshhold){
-						if(Util.config("cows",null).getBoolean("message")) player.sendMessage(effects[10]);
+						if(Util.config("cows",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_10"));
 						if(plugin.debug) plugin.getLogger().info("DEBUG: Front " + diff);
 					}	
 					else if((diff < threshhold - 10  || diff > 360 - threshhold + 10) && (!player.hasPermission("ijmh.immunity.cowskick"))) {
 						player.damage(Util.config("cows","kick").getInt("damage"));
 						player.setVelocity(new Vector(-entity.getLocation().getDirection().getX()-Util.config("cows","kick").getInt("backwards"),Util.config("cows","kick").getInt("upwards"),-entity.getLocation().getDirection().getZ()-Util.config("cows","kick").getInt("backwards")));
-						if(Util.config("cows","kick").getBoolean("message")) player.sendMessage(effects[11]);
+						if(Util.config("cows","kick").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_11"));
 						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("cows","kick").getInt("time")), 1));
 						if(plugin.debug) plugin.getLogger().info("DEBUG: Back " + diff);
 					} 
@@ -231,11 +192,11 @@ public class PlayerEffects {
 				){
 				if(Util.pctChance(Util.config("electro","high").getInt("chance"),Util.config("electro","high").getInt("chancemod"))) {
 					player.damage(Util.config("electro","high").getInt("damage"));
-					if(Util.config("electro","high").getBoolean("message")) player.sendMessage(effects[8]);
+					if(Util.config("electro","high").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_08"));
 				}
 				else {
 					player.damage(Util.config("electro","low").getInt("chance"));
-					if(Util.config("electro","low").getBoolean("message")) player.sendMessage(effects[7]);
+					if(Util.config("electro","low").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_07"));
 				}
 			}
 		}
@@ -266,7 +227,7 @@ public class PlayerEffects {
 				} else if(event.getPlayer().getFallDistance()>6){
 					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
 				}
-				if(Util.config("fall",null).getBoolean("message") && event.getPlayer().getFallDistance()>6) player.sendMessage(effects[6]);
+				if(Util.config("fall",null).getBoolean("message") && event.getPlayer().getFallDistance()>6) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.language.getString("lan_06"));
 			}	
 		}
 		// PUT OUT FIRE
@@ -276,7 +237,7 @@ public class PlayerEffects {
 				from.getBlock().getType().equals(Material.STATIONARY_WATER) && 
 				player.getFireTicks()>0){
 				
-			if(curTime>FireTime) player.sendMessage(effects[2]);
+			if(curTime>FireTime) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_02"));
 			FireTime = curTime + 2000;
 		}
 		// QUICKSAND
@@ -300,7 +261,7 @@ public class PlayerEffects {
 				if(
 						Util.config("tar",null).getBoolean("message")
 						) {
-					if(curTime>SlowTime) player.sendMessage(effects[16]);
+					if(curTime>SlowTime) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_16"));
 					SlowTime = curTime + 10000;
 				}
 			}
@@ -320,7 +281,7 @@ public class PlayerEffects {
 							Util.config("roses",null).getBoolean("message") && 
 							to.getBlock().getType()!=from.getBlock().getType()
 							) {
-						if(curTime>HitTime) player.sendMessage(effects[14]);
+						if(curTime>HitTime) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_14"));
 						HitTime = curTime + 10000;
 					}		
 				}
@@ -352,7 +313,7 @@ public class PlayerEffects {
 						StruckTime = curTime + (Util.config("lightning",null).getInt("cooldown") * 1000);
 						player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
 						player.damage(Util.config("lightning",null).getInt("damage"));
-						if(Util.config("lightning",null).getBoolean("message")) player.sendMessage(effects[5]);
+						if(Util.config("lightning",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_05"));
 					}
 				}
 			}	
@@ -373,8 +334,8 @@ public class PlayerEffects {
 						int amount = 1;
 						player.getInventory().addItem(new ItemStack(material, amount, data));
 						player.updateInventory();
-						if(Util.config("fishing","lucky").getBoolean("message")) player.sendMessage(effects[19] + material.name());
-						Util.toLog(effects[19] + material.name(), true);
+						if(Util.config("fishing","lucky").getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_19") + material.name());
+						Util.toLog(ChatColor.GOLD + Util.language.getString("lan_19") + material.name(), true);
 					}
 				}
 				else if(Util.pctChance(Util.config("fishing","spawn").getInt("chance"),Util.config("fishing","spawn").getInt("chancemod"))) {
@@ -382,7 +343,7 @@ public class PlayerEffects {
 						if(!Util.config("fishing","spawn").getList("mobs").isEmpty()) {
 							EntityType mob = EntityType.fromName((String) Util.config("fishing","spawn").getList("mobs").get((int) (Util.config("fishing","spawn").getList("mobs").size()*Math.random())));
 							plugin.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation().add(new Vector(2,0,0)), mob);
-							if(Util.config("fishing","spawn").getBoolean("message")) player.sendMessage(effects[20] + mob.getName());
+							if(Util.config("fishing","spawn").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20") + mob.getName());
 						}
 				
 					}
@@ -403,11 +364,11 @@ public class PlayerEffects {
 				
 				if(Util.pctChance(Util.config("happyminer","energized").getInt("chance"),Util.config("happyminer","energized").getInt("chancemod"))) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(Util.config("happyminer","energized").getInt("duration")), Util.config("happyminer","energized").getInt("multiplier")));
-					if(Util.config("happyminer","energized").getBoolean("message")) player.sendMessage(effects[12]);
+					if(Util.config("happyminer","energized").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_12"));
 				} 
 				else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.immunity.tiredminer")) {
 					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(Util.config("happyminer","tired").getInt("duration")), Util.config("happyminer","tired").getInt("multiplier")));
-					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(effects[13]);
+					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_13"));
 				}
 				
 			} 
@@ -446,7 +407,7 @@ public class PlayerEffects {
 						} else if(event.getDamage()>=4){
 							player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
 						}
-						if(event.getDamage()>=4 && Util.config("fall",null).getBoolean("message")) player.sendMessage(effects[6]);
+						if(event.getDamage()>=4 && Util.config("fall",null).getBoolean("message")) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.language.getString("lan_06"));
 					}
 				}
 			}
@@ -467,7 +428,7 @@ public class PlayerEffects {
 				if(Util.pctChance(Util.config("squid",null).getInt("chance"),Util.config("squid",null).getInt("chancemod"))) {
 					damager.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("squid",null).getInt("duration")), Util.config("squid",null).getInt("multiplier")));
 					damager.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("squid",null).getInt("duration")), 1));
-					if(Util.config("fall",null).getBoolean("message")) damager.sendMessage(effects[15]);
+					if(Util.config("fall",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD+ "" + ChatColor.ITALIC + Util.language.getString("lan_15"));
 				}
 			}
 		}
@@ -483,7 +444,7 @@ public class PlayerEffects {
 							Inventory inv = damager.getInventory();
 							inv.remove(itemHand);
 							damager.damage(Util.config("bow",null).getInt("damage"));
-							if(Util.config("bow",null).getBoolean("message")) damager.sendMessage(effects[17]);
+							if(Util.config("bow",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD + Util.language.getString("lan_17"));
 						}
 					}
 				}
@@ -504,8 +465,8 @@ public class PlayerEffects {
 		
 					Sign sign = (Sign) b.getState();
 					sign.setLine(0, "===============");
-					sign.setLine(1, "Equipment");
-					sign.setLine(2, "exploded!");
+					sign.setLine(1, "BOOM");
+					sign.setLine(2, "!");
 					sign.setLine(3, "===============");
 					sign.update();
 				}
@@ -525,7 +486,7 @@ public class PlayerEffects {
 						event.getVehicle().eject();
 						Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
 						player.setVelocity(new Vector(vector.getX()+Util.config("rail",null).getInt("distance"),Util.config("rail",null).getInt("angle"),vector.getZ()+Util.config("rail",null).getInt("distance")));
-						if(Util.config("rail",null).getBoolean("message")) player.sendMessage(effects[18]);
+						if(Util.config("rail",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_18"));
 					}
 				}
 			}

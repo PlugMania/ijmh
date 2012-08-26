@@ -1,8 +1,12 @@
 package info.plugmania.ijmh;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,6 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
@@ -32,7 +37,10 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
 
 public class Util{
+	
 	static ijmh plugin;
+	public File languageFile;
+	public static FileConfiguration language;
 	
 	public Util(ijmh instance) {
 		plugin = instance;
@@ -140,6 +148,47 @@ public class Util{
 		return result;
 	}
 
+	// YAML ------------------------------------------------------------------------------
+	
+    void firstRun() throws Exception {
+        if(!languageFile.exists()){                        
+        	languageFile.getParentFile().mkdirs();         
+            copy(plugin.getResource("language.yml"), languageFile);
+        }
+    }
+
+    private void copy(InputStream in, File file) {
+        try {
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while((len=in.read(buf))>0){
+                out.write(buf,0,len);
+            }
+            out.close();
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadYamls() {
+        try {
+        	language.load(languageFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveYamls() {
+    	
+        /* try {
+        	language.save(languageFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } */
+    }
+	
 	// HOOKS ------------------------------------------------------------------------------
 	
 	public static boolean WorldGuard(StateFlag flag, Location loc, Player p) {

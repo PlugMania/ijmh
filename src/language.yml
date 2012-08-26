@@ -1,0 +1,51 @@
+# -------------------------------------------------
+# -----------| LANGUAGE FILE FOR ijmh |------------
+# -------------------------------------------------
+
+# ON FIRE
+lan_01: You caught fire, use a bucket of water or find water to put it out!
+lan_02: You really need to be careful next time.
+
+# FOODPOISONING
+lan_03: Your belly starts to rumble, that food must have been bad!? Milk Milk!!
+lan_04: You feel better! You where lucky this time.
+
+# STRUCK BY LIGHTNING
+lan_05: Struck by lightning, didn''t your mom teach you not to hide under trees during a storm!?
+
+# CONCUSSION
+lan_06: You might have hit the ground a bit too hard there ...
+
+# ELECTROCUTION
+lan_07: You got lucky, the redstone was only carrying low voltage!
+lan_08: Aaaaaarggghhh, the redstone zapped you with HIGH VOLTAGE!
+
+# CRAFTING THUMB
+lan_09: Auch! You struck your thumb.
+
+# COWS DO KICK
+lan_10: Seriously ... Do you know any cows that can be milked like that?!
+lan_11: That might leave a mark ...!
+
+# THE HAPPY MINER
+lan_12: This is fun! you feel energized!!
+lan_13: So tired... must slow down ...
+
+# ROSES HAVE THORNS
+lan_14: Thorns... why... thorns...!
+
+# SQUID DEFENSE
+lan_15: The Squid tries to defend itself!
+
+# STICKY TAR
+lan_16: The ground under you suddenly feels terribly sticky ...
+
+# BOW BREAKER
+lan_17: Your bow suddenly broke, not your day it seems ...
+
+# BUMP IN THE RAIL
+lan_18: Your cart hits a bump, what the ... oh no !
+
+# FISHERMAN ON HOOK
+lan_19: 'Lucky you! You also caught '
+lan_20: 'What! Something more on the hook, it''s a '

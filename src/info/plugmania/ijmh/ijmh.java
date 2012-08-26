@@ -1,5 +1,6 @@
 package info.plugmania.ijmh;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -36,7 +38,7 @@ public class ijmh extends JavaPlugin {
 	}
 	
 	public void onDisable (){
-
+		util.saveYamls();
 	}
 	
 	public void onEnable(){
@@ -46,6 +48,15 @@ public class ijmh extends JavaPlugin {
 		} catch (IOException e) {
 		}
 		
+		util.languageFile = new File(getDataFolder(), "language.yml");
+		try {
+            util.firstRun();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+		util.language = new YamlConfiguration();
+		util.loadYamls();
+		
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerListener(this), this);
 		
@@ -54,7 +65,7 @@ public class ijmh extends JavaPlugin {
 		
         if(this.getConfig().getBoolean("update_message")) util.checkVersion(false, null, null);
 		if(this.getConfig().getBoolean("debug")) this.debug = true;
-		if(this.debug) getLogger().info("Debug enabled.");
+		util.toLog("Debug enabled", true);
 		
 		Plugin p = this.getServer().getPluginManager().getPlugin("MazeMania");
 		if(p != null){
