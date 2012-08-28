@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -149,6 +150,7 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.AQUA + "| toggle");
 					
 					if(args[0].equalsIgnoreCase("fire")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("fire",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("fire",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("fire",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("fire",null).getInt("chancemod"));
@@ -156,10 +158,12 @@ public class ijmh extends JavaPlugin {
 					}
 					else if(args[0].equalsIgnoreCase("fall")) {
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("fall",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("fall",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| duration (5): " + ChatColor.GOLD + util.config("fall",null).getInt("duration"));		
 						sender.sendMessage(ChatColor.GREEN + "The duration for "  + args[0] + " is for the shortest effect, rest will sync to this value.");
 					}
 					else if(args[0].equalsIgnoreCase("foodpoison")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("foodpoison",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("foodpoison",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("foodpoison",null).getInt("chancemod"));
@@ -168,13 +172,15 @@ public class ijmh extends JavaPlugin {
 					} 
 					else if(args[0].equalsIgnoreCase("lightning")) {
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("lightning",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| skip: " + ChatColor.GOLD + util.config("lightning",null).getList("skip_biome"));
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("lightning",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| skipbiome: " + ChatColor.GOLD + util.config("lightning",null).getList("skip_biome"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (5): " + ChatColor.GOLD + util.config("lightning",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + util.config("lightning",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| damage (10): " + ChatColor.GOLD + util.config("lightning",null).getInt("damage"));
 						sender.sendMessage(ChatColor.AQUA + "| cooldown (10): " + ChatColor.GOLD + util.config("lightning",null).getInt("cooldown"));
 					} 
 					else if(args[0].equalsIgnoreCase("electro")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("electro",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "high | message (true): " + ChatColor.GOLD + util.config("electro","high").getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "high | chance (5): " + ChatColor.GOLD + util.config("electro","high").getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "high | chancemod (1): " + ChatColor.GOLD + util.config("electro","high").getInt("chancemod"));
@@ -183,12 +189,14 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "low | damage (2): " + ChatColor.GOLD + util.config("electro","low").getInt("damage"));						
 					} 
 					else if(args[0].equalsIgnoreCase("craftthumb")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("craftthumb",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("craftthumb",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("craftthumb",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("craftthumb",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| damage (2): " + ChatColor.GOLD + util.config("craftthumb",null).getInt("damage"));
 					} 
 					else if(args[0].equalsIgnoreCase("cows")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("cows",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("cows",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "kick | message (true): " + ChatColor.GOLD + util.config("cows","kick").getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "kick | damage (4): " + ChatColor.GOLD + util.config("cows","kick").getInt("damage"));
@@ -197,6 +205,7 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "kick | upwards (1): " + ChatColor.GOLD + util.config("cows","kick").getInt("upwards"));
 					} 
 					else if(args[0].equalsIgnoreCase("happyminer")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("happyminer",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "tired | message (true): " + ChatColor.GOLD + util.config("happyminer","tired").getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "tired | multiplier (1): " + ChatColor.GOLD + util.config("happyminer","tired").getInt("multiplier"));
 						sender.sendMessage(ChatColor.AQUA + "tired | chance (5): " + ChatColor.GOLD + util.config("happyminer","tired").getInt("chance"));
@@ -211,12 +220,14 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "energized | duration (10): " + ChatColor.GOLD + util.config("happyminer","energized").getInt("duration"));   
 					}
 					else if(args[0].equalsIgnoreCase("roses")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("roses",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("roses",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| damage (1): " + ChatColor.GOLD + util.config("roses",null).getInt("damage"));
 						sender.sendMessage(ChatColor.AQUA + "| multiplier (3): " + ChatColor.GOLD + util.config("roses",null).getInt("multiplier"));
 						sender.sendMessage(ChatColor.AQUA + "| duration (2): " + ChatColor.GOLD + util.config("roses",null).getInt("duration"));
 					}
 					else if(args[0].equalsIgnoreCase("brew")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("brew",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| signs (false): " + ChatColor.GOLD + util.config("brew",null).getBoolean("signs"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("brew",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + util.config("brew",null).getInt("chancemod"));
@@ -224,23 +235,27 @@ public class ijmh extends JavaPlugin {
 					}
 					else if(args[0].equalsIgnoreCase("squid")) {
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("squid",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("squid",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (25): " + ChatColor.GOLD + util.config("squid",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("squid",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + util.config("squid",null).getInt("multiplier"));
 						sender.sendMessage(ChatColor.AQUA + "| duration (5): " + ChatColor.GOLD + util.config("squid",null).getInt("duraton"));
 					}
 					else if(args[0].equalsIgnoreCase("tar")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("tar",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("tar",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| multiplier (5): " + ChatColor.GOLD + util.config("tar",null).getInt("multiplier"));
 						sender.sendMessage(ChatColor.AQUA + "| duration (1): " + ChatColor.GOLD + util.config("tar",null).getInt("duration"));
 					}
 					else if(args[0].equalsIgnoreCase("bow")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("bow",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("bow",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("bow",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("bow",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| damage (4): " + ChatColor.GOLD + util.config("bow",null).getInt("damage"));
 					}
 					else if(args[0].equalsIgnoreCase("rail")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("rail",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("rail",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("rail",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("rail",null).getInt("chancemod"));
@@ -248,6 +263,7 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| angle (1): " + ChatColor.GOLD + util.config("rail",null).getInt("angle"));
 					}
 					else if(args[0].equalsIgnoreCase("quicksand")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("quicksand",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("quicksand",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("quicksand",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("quicksand",null).getInt("chancemod"));
@@ -264,6 +280,7 @@ public class ijmh extends JavaPlugin {
 						if(util.config("fishing", "spawn").getBoolean("active")) state2 = ChatColor.GREEN + "enabled";
 						else state2 = ChatColor.RED + "disabled";
 						
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("fishing",null).getList("skip_world"));
 						sender.sendMessage(ChatColor.AQUA + "lucky | toggle: " + state1);
 						sender.sendMessage(ChatColor.AQUA + "lucky | message (true): " + ChatColor.GOLD + util.config("fishing","lucky").getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "lucky | chance (5): " + ChatColor.GOLD + util.config("fishing","lucky").getInt("chance"));
@@ -314,13 +331,13 @@ public class ijmh extends JavaPlugin {
 					}
 				} 
 				else if(effects.contains(args[0].toLowerCase()) && args.length==3){
-					if(util.config(args[0],null).isSet(args[1]) || args[1].equalsIgnoreCase("skip")) {
+					if(util.config(args[0],null).isSet(args[1]) || args[1].equalsIgnoreCase("skipbiome") || args[1].equalsIgnoreCase("skipworld")) {
 						
 						if(args[1].equalsIgnoreCase("message")) {
 							boolean valueB = Boolean.parseBoolean(args[2]);
 							util.config(args[0],null).set(args[1], valueB);
 						}
-						else if(args[1].equalsIgnoreCase("skip")) {
+						else if(args[1].equalsIgnoreCase("skipbiome")) {
 							if(Util.isBiome(args[2])) {
 								if(Util.config("lightning",null).getList("skip_biome").contains(args[2].toUpperCase())) {
 									Util.config("lightning",null).getList("skip_biome").remove(args[2].toUpperCase());
@@ -334,12 +351,27 @@ public class ijmh extends JavaPlugin {
 								sender.sendMessage(ChatColor.RED + "[ijhm] Biome not recognized!");
 							}
 						}
+						else if(args[1].equalsIgnoreCase("skipworld")) {
+							World world = this.getServer().getWorld(args[2].toString());
+							if(this.getServer().getWorlds().contains(world)) {
+								if(Util.config(args[0],null).getList("skip_world").contains(args[2])) {
+									Util.config(args[0],null).getList("skip_world").remove(args[2]);
+									sender.sendMessage(ChatColor.AQUA + "[ijhm] World:" + args[2] + " was removed from the list");
+								} else {
+									List skip_world = Util.config(args[0],null).getList("skip_world");
+									skip_world.add(args[2]);
+									sender.sendMessage(ChatColor.AQUA + "[ijhm] World:" + args[2] + " was added to the list");
+								}
+							} else {
+								sender.sendMessage(ChatColor.RED + "[ijhm] World not recognized!");
+							}
+						}
 						else {
 							int valueI = Integer.parseInt(args[2]);
 							util.config(args[0],null).set(args[1], valueI);
 						}
 						
-						if(!args[1].equalsIgnoreCase("skip")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
+						if(!args[1].equalsIgnoreCase("skipbiome") && !args[1].equalsIgnoreCase("skipworld")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
 						this.saveConfig();
 					}
 					else err = true;

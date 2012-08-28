@@ -68,13 +68,14 @@ public class PlayerEffects {
 		// CRAFTTHUMB
 		if(!player.hasPermission("ijmh.immunity.craftthumb")){
 			if(Util.config("craftthumb",null).getBoolean("active")){
-				int moreCraft = event.getCursor().getAmount();
-				if(event.getCursor().getAmount()>0) moreCraft = (event.getCursor().getAmount() / 100)^(event.getCursor().getAmount() / 2);
-				if(Util.pctChance(Util.config("craftthumb",null).getInt("chance") / (1 + moreCraft),Util.config("craftthumb",null).getInt("chancemod"))) {
-					player.damage(Util.config("craftthumb",null).getInt("damage"));
-					if(Util.config("craftthumb",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_09"));
-				} 
-				
+				if(!Util.config("craftthumb",null).getList("skip_world").contains(player.getWorld().getName())) {
+					int moreCraft = event.getCursor().getAmount();
+					if(event.getCursor().getAmount()>0) moreCraft = (event.getCursor().getAmount() / 100)^(event.getCursor().getAmount() / 2);
+					if(Util.pctChance(Util.config("craftthumb",null).getInt("chance") / (1 + moreCraft),Util.config("craftthumb",null).getInt("chancemod"))) {
+						player.damage(Util.config("craftthumb",null).getInt("damage"));
+						if(Util.config("craftthumb",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_09"));
+					}
+				}
 			}
 		}
 	}
@@ -88,23 +89,24 @@ public class PlayerEffects {
 		if(!player.hasPermission("ijmh.immunity.foodpoison") || !player.hasPotionEffect(PotionEffectType.POISON)) {
 			if(
 				Util.config("foodpoison",null).getBoolean("active") &&
-				player.getFoodLevel()!=20 &&
-				event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+				!Util.config("foodpoison",null).getList("skip_world").contains(player.getWorld().getName())
 				) {
-				if(Util.pctChance(Util.config("foodpoison",null).getInt("chance"),Util.config("foodpoison",null).getInt("chancemod"))) {
-					Material[] material = {Material.RAW_BEEF, Material.RAW_CHICKEN, Material.RAW_FISH, Material.ROTTEN_FLESH, Material.PORK};
-					if(Arrays.asList(material).contains(event.getMaterial())) {
-						player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoison",null).getInt("duration")), Util.config("foodpoison",null).getInt("multiplier")));
-						if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_03"));
-			
+				if(player.getFoodLevel()!=20 && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+					if(Util.pctChance(Util.config("foodpoison",null).getInt("chance"),Util.config("foodpoison",null).getInt("chancemod"))) {
+						Material[] material = {Material.RAW_BEEF, Material.RAW_CHICKEN, Material.RAW_FISH, Material.ROTTEN_FLESH, Material.PORK};
+						if(Arrays.asList(material).contains(event.getMaterial())) {
+							player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoison",null).getInt("duration")), Util.config("foodpoison",null).getInt("multiplier")));
+							if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_03"));
+				
+						}
 					}
 				}
 			}
 		}		
 		// CATCH FIRE
 		if(!player.hasPermission("ijmh.immunity.fire")) {
-			if(player.getItemInHand().getType().equals(Material.FLINT_AND_STEEL) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
-				if(Util.config("fire",null).getBoolean("active")) {
+			if(Util.config("fire",null).getBoolean("active") && !Util.config("fire",null).getList("skip_world").contains(player.getWorld().getName())) {
+				if(player.getItemInHand().getType().equals(Material.FLINT_AND_STEEL) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 					Util.toLog("Fire: Active passed", true);
 					if(
 						!player.getWorld().getBlockAt(player.getLocation()).isLiquid() && 
@@ -140,7 +142,7 @@ public class PlayerEffects {
 		Entity entity = event.getRightClicked();
 		
 		// MILKING A COW
-		if(Util.config("cows",null).getBoolean("active")) {
+		if(Util.config("cows",null).getBoolean("active") && !Util.config("cows",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(entity.getType().equals(EntityType.COW)) {
 				if(
 					player.getItemInHand().getType().equals(Material.BUCKET) ||
@@ -182,54 +184,57 @@ public class PlayerEffects {
 		// ELECTRICUTION ON REDSTONE TOUCH
 		if(!player.hasPermission("ijmh.immunity.electro")) {
 			if(
-				Util.config("electro",null).getBoolean("active") &&
-				!player.isInsideVehicle() &&
-				to.getBlock().isBlockPowered() && 
-				(
+				Util.config("electro",null).getBoolean("active") && !Util.config("electro",null).getList("skip_world").contains(player.getWorld().getName())) {
+				if(
+						!player.isInsideVehicle() &&
+						to.getBlock().isBlockPowered() && 
+						(
 						to.getBlockX()!=from.getBlockX() ||
 						to.getBlockY()!=from.getBlockY() ||
 						to.getBlockZ()!=from.getBlockZ()
-				)
-				){
-				if(Util.pctChance(Util.config("electro","high").getInt("chance"),Util.config("electro","high").getInt("chancemod"))) {
-					player.damage(Util.config("electro","high").getInt("damage"));
-					if(Util.config("electro","high").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_08"));
-				}
-				else {
-					player.damage(Util.config("electro","low").getInt("chance"));
-					if(Util.config("electro","low").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_07"));
+						)
+						){
+					if(Util.pctChance(Util.config("electro","high").getInt("chance"),Util.config("electro","high").getInt("chancemod"))) {
+						player.damage(Util.config("electro","high").getInt("damage"));
+						if(Util.config("electro","high").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_08"));
+					}
+					else {
+						player.damage(Util.config("electro","low").getInt("chance"));
+						if(Util.config("electro","low").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_07"));
+					}
 				}
 			}
 		}
 		// CONCUSSION FROM FALL EVENT BASED ON AIRBLOCKS
-		if(
-			Util.config("fall",null).getBoolean("active") &&
-			!player.hasPermission("ijmh.immunity.fall") && 
-			!player.getAllowFlight() && event.getPlayer().getFallDistance()>4 && 
-			event.getPlayer().getLastDamage()<4 &&
-			!player.hasPotionEffect(PotionEffectType.CONFUSION) &&
-			!player.getLocation().getBlock().isEmpty() && !player.getLocation().getBlock().isLiquid()
-			){
-			Util.toLog("CONCUSSION FROM FALL EVENT BASED ON AIRBLOCKS",true);
-			
-			if(plugin.debug) plugin.getLogger().info("Landing block is: " + pUnder.getBlock().getType().name());
-
-			boolean INVINCIBILITY = false;
-			if(plugin.wg!=null) INVINCIBILITY = Util.WorldGuard(DefaultFlag.INVINCIBILITY, player.getLocation(), player);
-			
-			if(!INVINCIBILITY) {
-				if(event.getPlayer().getFallDistance()>14){
-					player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*3), 1));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));
-				} else if(event.getPlayer().getFallDistance()>11){
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));	
-				} else if(event.getPlayer().getFallDistance()>6){
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+		if(Util.config("fall",null).getBoolean("active") && !Util.config("fall",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(
+					!player.hasPermission("ijmh.immunity.fall") && 
+					!player.getAllowFlight() && event.getPlayer().getFallDistance()>4 && 
+					event.getPlayer().getLastDamage()<4 &&
+					!player.hasPotionEffect(PotionEffectType.CONFUSION) &&
+					!player.getLocation().getBlock().isEmpty() && !player.getLocation().getBlock().isLiquid()
+					){
+				Util.toLog("CONCUSSION FROM FALL EVENT BASED ON AIRBLOCKS",true);
+				
+				if(plugin.debug) plugin.getLogger().info("Landing block is: " + pUnder.getBlock().getType().name());
+	
+				boolean INVINCIBILITY = false;
+				if(plugin.wg!=null) INVINCIBILITY = Util.WorldGuard(DefaultFlag.INVINCIBILITY, player.getLocation(), player);
+				
+				if(!INVINCIBILITY) {
+					if(event.getPlayer().getFallDistance()>14){
+						player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*3), 1));
+						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));
+					} else if(event.getPlayer().getFallDistance()>11){
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+						player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));	
+					} else if(event.getPlayer().getFallDistance()>6){
+						player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+					}
+					if(Util.config("fall",null).getBoolean("message") && event.getPlayer().getFallDistance()>6) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.language.getString("lan_06"));
 				}
-				if(Util.config("fall",null).getBoolean("message") && event.getPlayer().getFallDistance()>6) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.language.getString("lan_06"));
-			}	
+			}
 		}
 		// PUT OUT FIRE
 		if(
@@ -242,73 +247,75 @@ public class PlayerEffects {
 			FireTime = curTime + 2000;
 		}
 		// QUICKSAND
-		if(
-				Util.config("quicksand",null).getBoolean("active") &&
-				pUnder.getBlock().getType().equals(Material.SAND) && 
-				(
+		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(
+					pUnder.getBlock().getType().equals(Material.SAND) && 
+					(
 						to.getBlockX()!=from.getBlockX() ||
 						to.getBlockY()!=from.getBlockY() ||
 						to.getBlockZ()!=from.getBlockZ()
-				)) {
-			if(!plugin.store.quicksand.containsKey(player) && Util.pctChance(Util.config("quicksand",null).getInt("chance"),Util.config("quicksand",null).getInt("chancemod"))) {
-				plugin.store.quicksand.put(player, 0);
-				
-				player.teleport(pUnder);
-				suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
-				
-				if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20"));
-			} else if(event.getFrom().getY() < event.getTo().getY() && plugin.store.quicksand.containsKey(player)) {
-				plugin.store.quicksand.put(player, plugin.store.quicksand.get(player)+1);
-				player.teleport(event.getFrom());
-				if(plugin.store.quicksand.get(player)>=Util.config("quicksand",null).getInt("jumps")) {
-					player.teleport(player.getLocation().add(new Vector(0,1,0)));
-					if(player.getLocation().getBlock().getType().equals(Material.AIR)) {
-						plugin.store.quicksand.remove(player);
-						if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
+					)) {
+				if(!plugin.store.quicksand.containsKey(player) && Util.pctChance(Util.config("quicksand",null).getInt("chance"),Util.config("quicksand",null).getInt("chancemod"))) {
+					plugin.store.quicksand.put(player, 0);
+					
+					player.teleport(pUnder);
+					suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+					
+					if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20"));
+				} else if(event.getFrom().getY() < event.getTo().getY() && plugin.store.quicksand.containsKey(player)) {
+					plugin.store.quicksand.put(player, plugin.store.quicksand.get(player)+1);
+					player.teleport(event.getFrom());
+					if(plugin.store.quicksand.get(player)>=Util.config("quicksand",null).getInt("jumps")) {
+						player.teleport(player.getLocation().add(new Vector(0,1,0)));
+						if(player.getLocation().getBlock().getType().equals(Material.AIR)) {
+							plugin.store.quicksand.remove(player);
+							if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
+						}
+					} 
+					else if(curTime>suffocateTime) {
+						player.teleport(pUnder);
+						suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 					}
-				} 
-				else if(curTime>suffocateTime) {
+				} else if(curTime>suffocateTime && plugin.store.quicksand.containsKey(player)) {
 					player.teleport(pUnder);
 					suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 				}
-			} else if(curTime>suffocateTime && plugin.store.quicksand.containsKey(player)) {
-				player.teleport(pUnder);
-				suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+				
+			} 
+			else if(
+					plugin.store.quicksand.containsKey(player) &&
+					!pUnder.getBlock().getType().equals(Material.SAND) &&
+					!pUnder.getBlock().getType().equals(Material.AIR) 
+					){
+				plugin.store.quicksand.remove(player);
 			}
-			
-		} 
-		else if(
-				plugin.store.quicksand.containsKey(player) &&
-				!pUnder.getBlock().getType().equals(Material.SAND) &&
-				!pUnder.getBlock().getType().equals(Material.AIR) 
-				){
-			plugin.store.quicksand.remove(player);
 		}
 		// TAR
-		if(
-				Util.config("tar",null).getBoolean("active") &&
+		if(Util.config("tar",null).getBoolean("active") && !Util.config("tar",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(
 				pUnder.getBlock().getType().equals(Material.WOOL) &&
 				(
-						to.getBlockX()!=from.getBlockX() ||
-						to.getBlockY()!=from.getBlockY() ||
-						to.getBlockZ()!=from.getBlockZ()
+					to.getBlockX()!=from.getBlockX() ||
+					to.getBlockY()!=from.getBlockY() ||
+					to.getBlockZ()!=from.getBlockZ()
 				)) {
 
-			Block block = pUnder.getBlock();
-			Wool wool = new Wool(block.getType(), block.getData());
-			if(wool.getColor().equals(DyeColor.BLACK)) {
-				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("tar",null).getInt("duration")), Util.config("tar",null).getInt("multiplier")));
-				if(Util.config("tar",null).getBoolean("message")) {
-					if(curTime>SlowTime) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_16"));
-					SlowTime = curTime + 10000;
+				Block block = pUnder.getBlock();
+				Wool wool = new Wool(block.getType(), block.getData());
+				if(wool.getColor().equals(DyeColor.BLACK)) {
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("tar",null).getInt("duration")), Util.config("tar",null).getInt("multiplier")));
+					if(Util.config("tar",null).getBoolean("message")) {
+						if(curTime>SlowTime) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_16"));
+						SlowTime = curTime + 10000;
+					}
 				}
 			}
 		}		
 		// WALK ON RED ROSES
 		if(!player.hasPermission("ijmh.immunity.roses")) {
-			if(to.getBlock().getType().equals(Material.RED_ROSE)){
+			if(Util.config("roses",null).getBoolean("active") && !Util.config("roses",null).getList("skip_world").contains(player.getWorld().getName())){
 				if(
-						Util.config("roses",null).getBoolean("active") &&
+						to.getBlock().getType().equals(Material.RED_ROSE) &&
 						(to.getBlockX()!=from.getBlockX() ||
 						 to.getBlockY()!=from.getBlockY() ||
 						 to.getBlockZ()!=from.getBlockZ()
@@ -328,30 +335,31 @@ public class PlayerEffects {
 		// STRUCK BY LIGHTNING UNDER A TREE
 		if(player.getWorld().hasStorm()){
 			if(!player.hasPermission("ijmh.immunity.lightning")) {
-				if(
-					Util.config("lightning",null).getBoolean("active") &&
-					!Util.config("lightning",null).getList("skip_biome").contains(player.getLocation().getBlock().getBiome().name()) &&
-					(plugin.mazeMania==null || (plugin.mazeMania!=null && !plugin.mazeMania.arena.playing.contains(player))) &&
-					curTime>StruckTime
-					) {
-					int i = 0;
-					boolean isHit = false;
-					boolean doBreak = false;
-					while(i++<=10 && !doBreak && !isHit){
-						Material testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i, to.getBlockZ()).getType();
-						if(testBlock.equals(Material.LEAVES)) {
-							isHit = true;
-						} else if(!testBlock.equals(Material.AIR)) {
-							doBreak = true;
-							isHit = false;
+				if(Util.config("lightning",null).getBoolean("active") && !Util.config("fall",null).getList("skip_world").contains(player.getWorld().getName())) {
+					if(
+							!Util.config("lightning",null).getList("skip_biome").contains(player.getLocation().getBlock().getBiome().name()) &&
+							(plugin.mazeMania==null || (plugin.mazeMania!=null && !plugin.mazeMania.arena.playing.contains(player))) &&
+							curTime>StruckTime
+							) {
+						int i = 0;
+						boolean isHit = false;
+						boolean doBreak = false;
+						while(i++<=10 && !doBreak && !isHit){
+							Material testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i, to.getBlockZ()).getType();
+							if(testBlock.equals(Material.LEAVES)) {
+								isHit = true;
+							} else if(!testBlock.equals(Material.AIR)) {
+								doBreak = true;
+								isHit = false;
+							}
 						}
-					}
-				
-					if(isHit==true && Util.pctChance(Util.config("lightning",null).getInt("chance"),Util.config("lightning",null).getInt("chancemod"))) {
-						StruckTime = curTime + (Util.config("lightning",null).getInt("cooldown") * 1000);
-						player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
-						player.damage(Util.config("lightning",null).getInt("damage"));
-						if(Util.config("lightning",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_05"));
+					
+						if(isHit==true && Util.pctChance(Util.config("lightning",null).getInt("chance"),Util.config("lightning",null).getInt("chancemod"))) {
+							StruckTime = curTime + (Util.config("lightning",null).getInt("cooldown") * 1000);
+							player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
+							player.damage(Util.config("lightning",null).getInt("damage"));
+							if(Util.config("lightning",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_05"));
+						}
 					}
 				}
 			}	
@@ -362,7 +370,7 @@ public class PlayerEffects {
 		Player player = event.getPlayer();
 
 		// FISHERMAN
-		if(Util.config("fishing",null).getBoolean("active")) {
+		if(Util.config("fishing",null).getBoolean("active") && !Util.config("fishing",null).getList("skip_world").contains(player.getWorld().getName())) {
 			// LUCKY FISHERMAN
 			if(event.getState().equals(State.CAUGHT_FISH)) {
 				if(Util.pctChance(Util.config("fishing","lucky").getInt("chance"),Util.config("fishing","lucky").getInt("chancemod")) && Util.config("fishing","lucky").getBoolean("active")) {
@@ -394,7 +402,7 @@ public class PlayerEffects {
 		Player player = (Player) event.getPlayer();
 		
 		// THE HAPPY MINER
-		if(Util.config("happyminer",null).getBoolean("active")) {
+		if(Util.config("happyminer",null).getBoolean("active") && !Util.config("happyminer",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(
 				!player.hasPotionEffect(PotionEffectType.FAST_DIGGING) &&
 				!player.hasPotionEffect(PotionEffectType.SLOW_DIGGING)
@@ -418,7 +426,7 @@ public class PlayerEffects {
 			}
 		}
 		// QUICKSAND PREVENT BREAKOUT 
-		if(Util.config("quicksand",null).getBoolean("active")) {
+		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(plugin.store.quicksand.containsKey(player)) {
 				event.setCancelled(true);
 			}
@@ -433,25 +441,24 @@ public class PlayerEffects {
 			
 			// CONCUSSION FROM FALL
 			if(!player.hasPermission("ijmh.immunity.fall")) {
-				if(
-					Util.config("fall",null).getBoolean("active") &&
-					event.getCause().equals(DamageCause.FALL)
-					) {
-					boolean INVINCIBILITY = false;
-					if(plugin.wg!=null) INVINCIBILITY = Util.WorldGuard(DefaultFlag.INVINCIBILITY, player.getLocation(), player);
-					
-					if(!INVINCIBILITY) {
-						if(event.getDamage()>=12) {
-							player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));
-							player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*3), 1));
-							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));	
-						} else if(event.getDamage()>=8) {
-							player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
-							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));	
-						} else if(event.getDamage()>=4){
-							player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+				if(Util.config("fall",null).getBoolean("active") && !Util.config("fall",null).getList("skip_world").contains(player.getWorld().getName())) {
+					if(event.getCause().equals(DamageCause.FALL)) {
+						boolean INVINCIBILITY = false;
+						if(plugin.wg!=null) INVINCIBILITY = Util.WorldGuard(DefaultFlag.INVINCIBILITY, player.getLocation(), player);
+						
+						if(!INVINCIBILITY) {
+							if(event.getDamage()>=12) {
+								player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));
+								player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*3), 1));
+								player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));	
+							} else if(event.getDamage()>=8) {
+								player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+								player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("fall",null).getInt("duration")), 1));	
+							} else if(event.getDamage()>=4){
+								player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("fall",null).getInt("duration")*2), 1));				
+							}
+							if(event.getDamage()>=4 && Util.config("fall",null).getBoolean("message")) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.language.getString("lan_06"));
 						}
-						if(event.getDamage()>=4 && Util.config("fall",null).getBoolean("message")) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.language.getString("lan_06"));
 					}
 				}
 			}
@@ -468,11 +475,13 @@ public class PlayerEffects {
 			LivingEntity entity = (LivingEntity) event.getEntity();
 			
 			// SQUID SELFDEFENSE
-			if(entity.getType().equals(EntityType.SQUID) && damager.getGameMode().equals(GameMode.SURVIVAL)) {
-				if(Util.pctChance(Util.config("squid",null).getInt("chance"),Util.config("squid",null).getInt("chancemod"))) {
-					damager.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("squid",null).getInt("duration")), Util.config("squid",null).getInt("multiplier")));
-					damager.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("squid",null).getInt("duration")), 1));
-					if(Util.config("fall",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD+ "" + ChatColor.ITALIC + Util.language.getString("lan_15"));
+			if(Util.config("squid",null).getBoolean("active") && !Util.config("squid",null).getList("skip_world").contains(damager.getWorld().getName())) {
+				if(entity.getType().equals(EntityType.SQUID) && damager.getGameMode().equals(GameMode.SURVIVAL)) {
+					if(Util.pctChance(Util.config("squid",null).getInt("chance"),Util.config("squid",null).getInt("chancemod"))) {
+						damager.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("squid",null).getInt("duration")), Util.config("squid",null).getInt("multiplier")));
+						damager.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("squid",null).getInt("duration")), 1));
+						if(Util.config("fall",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD+ "" + ChatColor.ITALIC + Util.language.getString("lan_15"));
+					}
 				}
 			}
 		}
@@ -482,7 +491,7 @@ public class PlayerEffects {
 			if(arrow.getShooter() instanceof Player) {
 				damager = (Player) arrow.getShooter();
 				if(!damager.hasPermission("ijmh.immunity.bow")) {
-					if(Util.config("bow",null).getBoolean("active")) {
+					if(Util.config("bow",null).getBoolean("active") && !Util.config("bow",null).getList("skip_world").contains(damager.getWorld().getName())) {
 						if(Util.pctChance(Util.config("bow",null).getInt("chance"),Util.config("bow",null).getInt("chancemod"))) {
 							ItemStack itemHand = (ItemStack) damager.getItemInHand();
 							Inventory inv = damager.getInventory();
@@ -498,7 +507,7 @@ public class PlayerEffects {
 	
 	public void addEffectBrew(BrewEvent event) {
 		// BREW EXPLOSION
-		if(Util.config("brew",null).getBoolean("active")) {
+		if(Util.config("brew",null).getBoolean("active") && !Util.config("brew",null).getList("skip_world").contains(event.getBlock().getLocation().getWorld().getName())) {
 			if(Util.pctChance(Util.config("brew",null).getInt("chance"),Util.config("brew",null).getInt("chancemod"))) {
 				Block b = event.getBlock();
 				b.getWorld().createExplosion(b.getLocation(), Util.config("brew",null).getInt("multiplier"));
@@ -523,7 +532,7 @@ public class PlayerEffects {
 		Player player = (Player) event.getVehicle().getPassenger();
 
 		// BUMP IN THE RAIL
-		if(Util.config("rail",null).getBoolean("active")) {
+		if(Util.config("rail",null).getBoolean("active") && !Util.config("rail",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(event.getTo().getBlock().getType().equals(Material.RAILS) && event.getVehicle().getType().equals(EntityType.MINECART)) {
 				if(!player.hasPermission("ijmh.immunity.rail")) {
 					Rails rail = new Rails(event.getTo().getBlock().getType(), event.getTo().getBlock().getData());

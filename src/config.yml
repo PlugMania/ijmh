@@ -1,12 +1,14 @@
 update_message: true
 fire:
   active: true
+  skip_world: []
   message: true
   chance: 10
   chancemod: 1
   duration: 300
 electro:
   active: true
+  skip_world: []
   high:
     message: true
     chance: 5
@@ -17,6 +19,7 @@ electro:
     damage: 2  
 lightning:
   active: true
+  skip_world: []
   skip_biome:
     - JUNGLE
   message: true
@@ -26,10 +29,12 @@ lightning:
   cooldown: 10
 fall:    
   active: true
+  skip_world: []
   message: true
   duration: 5
 foodpoison:
   active: true
+  skip_world: []
   message: true
   chance: 10
   chancemod: 1
@@ -37,12 +42,14 @@ foodpoison:
   duration: 5
 craftthumb:
   active: true
+  skip_world: []
   message: true
   chance: 10
   chancemod: 1
   damage: 2
 cows:
   active: true
+  skip_world: []
   message: true
   kick:
     message: true
@@ -52,6 +59,7 @@ cows:
     upwards: 1
 happyminer:
   active: true
+  skip_world: []
   tired:
     message: true
     chance: 2
@@ -69,18 +77,21 @@ happyminer:
     duration: 10
 roses:    
   active: true
+  skip_world: []
   message: true
   damage: 1
   multiplier: 3
   duration: 2
 brew:
   active: false
+  skip_world: []
   signs: false
   chance: 1
   chancemod: 10
   multiplier: 1
 squid:
   active: true
+  skip_world: []
   message: true
   chance: 25
   chancemod: 1
@@ -88,17 +99,20 @@ squid:
   duration: 5 
 tar:    
   active: true
+  skip_world: []
   message: true
   multiplier: 5
   duration: 1
 bow:    
   active: true
+  skip_world: []
   message: true
   chance: 1
   chancemod: 1  
   damage: 4
 rail:
   active: true
+  skip_world: []
   message: true
   chance: 1
   chancemod: 1
@@ -106,6 +120,7 @@ rail:
   angle: 1
 fishing:
   active: true
+  skip_world: []
   lucky:
     active: true
     message: true
@@ -122,6 +137,7 @@ fishing:
       - SILVERFISH
 quicksand:
   active: true
+  skip_world: []
   message: true
   chance: 1
   chancemod: 1  
