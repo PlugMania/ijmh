@@ -56,6 +56,7 @@ public class PlayerEffects {
 	public long HitTime = 0;
 	public long SlowTime = 0;
 	public long FireTime = 0;
+	public long suffocateTime = 0;
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
@@ -241,8 +242,47 @@ public class PlayerEffects {
 			FireTime = curTime + 2000;
 		}
 		// QUICKSAND
-		if(pUnder.getBlock().getType().equals(Material.SAND)) {
-			// YET TO COME
+		if(
+				Util.config("quicksand",null).getBoolean("active") &&
+				pUnder.getBlock().getType().equals(Material.SAND) && 
+				(
+						to.getBlockX()!=from.getBlockX() ||
+						to.getBlockY()!=from.getBlockY() ||
+						to.getBlockZ()!=from.getBlockZ()
+				)) {
+			if(!plugin.store.quicksand.containsKey(player) && Util.pctChance(Util.config("quicksand",null).getInt("chance"),Util.config("quicksand",null).getInt("chancemod"))) {
+				plugin.store.quicksand.put(player, 0);
+				
+				player.teleport(pUnder);
+				suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+				
+				if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20"));
+			} else if(event.getFrom().getY() < event.getTo().getY() && plugin.store.quicksand.containsKey(player)) {
+				plugin.store.quicksand.put(player, plugin.store.quicksand.get(player)+1);
+				player.teleport(event.getFrom());
+				if(plugin.store.quicksand.get(player)>=Util.config("quicksand",null).getInt("jumps")) {
+					player.teleport(player.getLocation().add(new Vector(0,1,0)));
+					if(player.getLocation().getBlock().getType().equals(Material.AIR)) {
+						plugin.store.quicksand.remove(player);
+						if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
+					}
+				} 
+				else if(curTime>suffocateTime) {
+					player.teleport(pUnder);
+					suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+				}
+			} else if(curTime>suffocateTime && plugin.store.quicksand.containsKey(player)) {
+				player.teleport(pUnder);
+				suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+			}
+			
+		} 
+		else if(
+				plugin.store.quicksand.containsKey(player) &&
+				!pUnder.getBlock().getType().equals(Material.SAND) &&
+				!pUnder.getBlock().getType().equals(Material.AIR) 
+				){
+			plugin.store.quicksand.remove(player);
 		}
 		// TAR
 		if(
@@ -258,9 +298,7 @@ public class PlayerEffects {
 			Wool wool = new Wool(block.getType(), block.getData());
 			if(wool.getColor().equals(DyeColor.BLACK)) {
 				player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("tar",null).getInt("duration")), Util.config("tar",null).getInt("multiplier")));
-				if(
-						Util.config("tar",null).getBoolean("message")
-						) {
+				if(Util.config("tar",null).getBoolean("message")) {
 					if(curTime>SlowTime) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_16"));
 					SlowTime = curTime + 10000;
 				}
@@ -379,6 +417,12 @@ public class PlayerEffects {
 				player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, Util.sec2tic(Util.config("happyminer","hunger").getInt("duration")), Util.config("happyminer","hunger").getInt("multiplier")));
 			}
 		}
+		// QUICKSAND PREVENT BREAKOUT 
+		if(Util.config("quicksand",null).getBoolean("active")) {
+			if(plugin.store.quicksand.containsKey(player)) {
+				event.setCancelled(true);
+			}
+		}
 	}
 	
 	public void addEffectDamage(EntityDamageEvent event){
@@ -453,6 +497,7 @@ public class PlayerEffects {
 	}
 	
 	public void addEffectBrew(BrewEvent event) {
+		// BREW EXPLOSION
 		if(Util.config("brew",null).getBoolean("active")) {
 			if(Util.pctChance(Util.config("brew",null).getInt("chance"),Util.config("brew",null).getInt("chancemod"))) {
 				Block b = event.getBlock();

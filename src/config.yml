@@ -120,3 +120,10 @@ fishing:
     chancemod: 1
     mobs:
       - SILVERFISH
+quicksand:
+  active: true
+  message: true
+  chance: 1
+  chancemod: 1  
+  cooldown: 5
+  jumps: 5

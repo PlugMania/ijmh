@@ -49,3 +49,8 @@ lan_18: Your cart hits a bump, what the ... oh no !
 # FISHERMAN ON HOOK
 lan_19: 'Lucky you! You also caught '
 lan_20: 'What! Something more on the hook, it''s a '
+
+# QUICK SAND
+lan_20: Your feet suddenly dissapears in the sand... JUMP !
+lan_21: Pew, that was close.
+lan_22: ' was eaten by quicksand'

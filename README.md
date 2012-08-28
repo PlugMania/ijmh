@@ -14,6 +14,8 @@ v1.2.2 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v1.2.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v1.2.x<br />
+Added "Quicksand", chance to get sucked into the ground if not jumped enough<br />
 v1.2.2<br />
 Added language.yml for editing the messages<br />
 v1.2.1<br />

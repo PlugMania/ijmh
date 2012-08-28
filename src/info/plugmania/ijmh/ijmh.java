@@ -21,10 +21,12 @@ import info.plugmania.ijmh.listeners.PlayerListener;
 import info.plugmania.ijmh.effects.PlayerEffects;
 
 import info.plugmania.mazemania.MazeMania;
+
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class ijmh extends JavaPlugin {
 	
+	public Store store;
 	public final Util util;
 	public final PlayerEffects playerEffects;
 	public boolean debug;
@@ -37,7 +39,8 @@ public class ijmh extends JavaPlugin {
 		this.playerEffects = new PlayerEffects(this);
 	}
 	
-	public void onDisable (){
+	public void onDisable(){
+		this.store.quicksand.clear();
 		util.saveYamls();
 	}
 	
@@ -77,6 +80,8 @@ public class ijmh extends JavaPlugin {
 	        wg = (WorldGuardPlugin) p;
 	        getLogger().info("WorldGuard hooked");
 	    }
+	    
+	    store = new Store(this);
 	}
 	
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
@@ -102,6 +107,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("bow");
 			effects.add("rail");
 			effects.add("fishing");
+			effects.add("quicksand");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -240,6 +246,14 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("rail",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| distance (1): " + ChatColor.GOLD + util.config("rail",null).getInt("distance"));
 						sender.sendMessage(ChatColor.AQUA + "| angle (1): " + ChatColor.GOLD + util.config("rail",null).getInt("angle"));
+					}
+					else if(args[0].equalsIgnoreCase("quicksand")) {
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("quicksand",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("quicksand",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("quicksand",null).getInt("chancemod"));
+						sender.sendMessage(ChatColor.AQUA + "| cooldown (5): " + ChatColor.GOLD + util.config("quicksand",null).getInt("cooldown"));
+						sender.sendMessage(ChatColor.AQUA + "| jumps (5): " + ChatColor.GOLD + util.config("quicksand",null).getInt("jumps"));
+						sender.sendMessage(ChatColor.GOLD + "* Cooldown is the duration before sinking 1 block deeper");
 					}
 					else if(args[0].equalsIgnoreCase("fishing")) {
 						String state1;

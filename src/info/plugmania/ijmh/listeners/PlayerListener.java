@@ -1,5 +1,6 @@
 package info.plugmania.ijmh.listeners;
 
+import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
 import org.bukkit.GameMode;
@@ -9,17 +10,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent;
-import org.bukkit.event.entity.EntityRegainHealthEvent.RegainReason;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerInventoryEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 
 public class PlayerListener implements Listener {
@@ -37,8 +39,33 @@ public class PlayerListener implements Listener {
 		if((player.hasPermission("ijmh.admin") || player.isOp()) && plugin.getConfig().getBoolean("update_message")){
 			plugin.util.checkVersion(false, player, null);
 		}
-	} 
+	}
+	
+	@EventHandler
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+		Player player = event.getPlayer();
+		
+		// QUICKSAND PREVENT COMMANDS 
+		if(Util.config("quicksand",null).getBoolean("active")) {
+			if(plugin.store.quicksand.containsKey(player)) {
+				event.setCancelled(true);
+			}
+		}
+	}
 
+	@EventHandler
+	public void onPlayerChat(AsyncPlayerChatEvent event) {
+		Player player = event.getPlayer();
+		
+		// QUICKSAND PREVENT COMMANDS POSTED 
+		if(Util.config("quicksand",null).getBoolean("active")) {
+			if(plugin.store.quicksand.containsKey(player)) {
+				if(event.getMessage().substring(0, 1)=="/") event.setCancelled(true);
+				Util.toLog(event.getMessage().substring(0, 1), true);
+			}
+		}		
+	}
+	
 	@EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		Player player = event.getPlayer();
@@ -67,7 +94,27 @@ public class PlayerListener implements Listener {
 			plugin.playerEffects.addEffectMove(event);			
 		}
 	}
-	 
+	
+	@EventHandler
+	public void onPlayerQuit(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+		plugin.store.quicksand.remove(player);
+	}
+
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		Player player = event.getEntity();
+		
+		if(Util.config("quicksand",null).getBoolean("active")) {
+			if(plugin.store.quicksand.containsKey(player)) {
+				plugin.store.quicksand.remove(player);
+				
+				event.setDeathMessage(player.getName() + Util.language.getString("lan_22"));
+			}
+		}
+		
+	}
+	
 	@EventHandler
 	public void onPlayerFish(PlayerFishEvent event) {
 		Player player = event.getPlayer();
@@ -102,6 +149,12 @@ public class PlayerListener implements Listener {
 			Player player = (Player) event.getEntity();
 			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 				plugin.playerEffects.addEffectDamage(event);
+				
+				if(event.isCancelled() && plugin.store.quicksand.containsKey(player)) {
+					if(event.getCause().equals(DamageCause.SUFFOCATION)) {
+						player.damage(event.getDamage());
+					}
+				}
 			}
 		} else {
 			plugin.playerEffects.addEffectDamage(event);
