@@ -109,7 +109,7 @@ public class PlayerListener implements Listener {
 			if(plugin.store.quicksand.containsKey(player)) {
 				plugin.store.quicksand.remove(player);
 				
-				event.setDeathMessage(player.getName() + Util.language.getString("lan_23"));
+				event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_23"));
 			}
 		}
 		

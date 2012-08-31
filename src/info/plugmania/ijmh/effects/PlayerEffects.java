@@ -381,7 +381,7 @@ public class PlayerEffects {
 						player.getInventory().addItem(new ItemStack(material, amount, data));
 						player.updateInventory();
 						if(Util.config("fishing","lucky").getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_19") + material.name());
-						Util.toLog(ChatColor.GOLD + Util.language.getString("lan_19") + material.name(), true);
+						Util.toLog(ChatColor.GOLD + Util.language.getString("lan_19") + " " + material.name(), true);
 					}
 				}
 				else if(Util.pctChance(Util.config("fishing","spawn").getInt("chance"),Util.config("fishing","spawn").getInt("chancemod"))) {
@@ -389,7 +389,7 @@ public class PlayerEffects {
 						if(!Util.config("fishing","spawn").getList("mobs").isEmpty()) {
 							EntityType mob = EntityType.fromName((String) Util.config("fishing","spawn").getList("mobs").get((int) (Util.config("fishing","spawn").getList("mobs").size()*Math.random())));
 							plugin.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation().add(new Vector(2,0,0)), mob);
-							if(Util.config("fishing","spawn").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20") + mob.getName());
+							if(Util.config("fishing","spawn").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20") + " " + mob.getName());
 						}
 				
 					}
