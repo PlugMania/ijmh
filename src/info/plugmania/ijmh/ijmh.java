@@ -71,6 +71,8 @@ public class ijmh extends JavaPlugin {
 		if(this.getConfig().getBoolean("debug")) this.debug = true;
 		util.toLog("Debug enabled", true);
 		
+		util.checkYamls();
+		
 		Plugin p = this.getServer().getPluginManager().getPlugin("MazeMania");
 		if(p != null){
 		  mazeMania = (MazeMania) p;

@@ -261,7 +261,7 @@ public class PlayerEffects {
 					player.teleport(pUnder);
 					suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 					
-					if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20"));
+					if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
 				} else if(event.getFrom().getY() < event.getTo().getY() && plugin.store.quicksand.containsKey(player)) {
 					plugin.store.quicksand.put(player, plugin.store.quicksand.get(player)+1);
 					player.teleport(event.getFrom());
@@ -269,7 +269,7 @@ public class PlayerEffects {
 						player.teleport(player.getLocation().add(new Vector(0,1,0)));
 						if(player.getLocation().getBlock().getType().equals(Material.AIR)) {
 							plugin.store.quicksand.remove(player);
-							if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
+							if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_22"));
 						}
 					} 
 					else if(curTime>suffocateTime) {

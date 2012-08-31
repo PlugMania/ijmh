@@ -46,7 +46,7 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 		
 		// QUICKSAND PREVENT COMMANDS 
-		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("squid",null).getList("skip_world").contains(player.getWorld().getName())) {
+		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(plugin.store.quicksand.containsKey(player)) {
 				event.setCancelled(true);
 			}
@@ -58,7 +58,7 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 		
 		// QUICKSAND PREVENT COMMANDS POSTED 
-		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("squid",null).getList("skip_world").contains(player.getWorld().getName())) {
+		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(plugin.store.quicksand.containsKey(player)) {
 				if(event.getMessage().substring(0, 1)=="/") event.setCancelled(true);
 				Util.toLog(event.getMessage().substring(0, 1), true);
@@ -105,11 +105,11 @@ public class PlayerListener implements Listener {
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		
-		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("squid",null).getList("skip_world").contains(player.getWorld().getName())) {
+		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(plugin.store.quicksand.containsKey(player)) {
 				plugin.store.quicksand.remove(player);
 				
-				event.setDeathMessage(player.getName() + Util.language.getString("lan_22"));
+				event.setDeathMessage(player.getName() + Util.language.getString("lan_23"));
 			}
 		}
 		

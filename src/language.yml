@@ -1,6 +1,8 @@
 # -------------------------------------------------
 # -----------| LANGUAGE FILE FOR ijmh |------------
 # -------------------------------------------------
+file-version: 1.2.2
+# -------------------------------------------------
 
 # ON FIRE
 lan_01: You caught fire, use a bucket of water or find water to put it out!
@@ -51,6 +53,6 @@ lan_19: 'Lucky you! You also caught '
 lan_20: 'What! Something more on the hook, it''s a '
 
 # QUICK SAND
-lan_20: Your feet suddenly dissapears in the sand... JUMP !
-lan_21: Pew, that was close.
-lan_22: ' was eaten by quicksand'
+lan_21: Your feet suddenly dissapears in the sand... JUMP !
+lan_22: Pew, that was close.
+lan_23: ' was eaten by quicksand'
