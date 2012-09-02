@@ -47,6 +47,12 @@ permissions:
   ijmh.immunity.spawn:
     description: Immunity to catching mobs while fishing.
     default: false 
+  ijmh.immunity.quicksand:
+    description: Immunity to be effected by quicksand.
+    default: false 
+  ijmh.immunity.boat:
+    description: Immunity to boats sinking and player getting stuck to drown.
+    default: false 
   ijmh.admin:
     description: Grant access to the toggle event.
     default: op

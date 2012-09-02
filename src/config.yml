@@ -138,8 +138,21 @@ fishing:
 quicksand:
   active: true
   skip_world: []
+  when_raining: true
   message: true
   chance: 1
   chancemod: 1  
   cooldown: 5
   jumps: 5
+desert:
+  active: true
+  skip_world: []
+  chance: 1
+  chancemod: 1
+  multiplier: 1  
+boat:
+  active: true
+  skip_world: []
+  message: true
+  chance: 1
+  chancemod: 1

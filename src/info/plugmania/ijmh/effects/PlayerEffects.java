@@ -57,6 +57,7 @@ public class PlayerEffects {
 	public long SlowTime = 0;
 	public long FireTime = 0;
 	public long suffocateTime = 0;
+	public long drowningTime = 0;
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
@@ -248,46 +249,50 @@ public class PlayerEffects {
 		}
 		// QUICKSAND
 		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(
-					pUnder.getBlock().getType().equals(Material.SAND) && 
-					(
-						to.getBlockX()!=from.getBlockX() ||
-						to.getBlockY()!=from.getBlockY() ||
-						to.getBlockZ()!=from.getBlockZ()
-					)) {
-				if(!plugin.store.quicksand.containsKey(player) && Util.pctChance(Util.config("quicksand",null).getInt("chance"),Util.config("quicksand",null).getInt("chancemod"))) {
-					plugin.store.quicksand.put(player, 0);
-					
-					player.teleport(pUnder);
-					suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
-					
-					if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
-				} else if(event.getFrom().getY() < event.getTo().getY() && plugin.store.quicksand.containsKey(player)) {
-					plugin.store.quicksand.put(player, plugin.store.quicksand.get(player)+1);
-					player.teleport(event.getFrom());
-					if(plugin.store.quicksand.get(player)>=Util.config("quicksand",null).getInt("jumps")) {
-						player.teleport(player.getLocation().add(new Vector(0,1,0)));
-						if(player.getLocation().getBlock().getType().equals(Material.AIR)) {
-							plugin.store.quicksand.remove(player);
-							if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_22"));
+			if(!player.hasPermission("ijmh.immunity.quicksand") && (Util.config("quicksand",null).getBoolean("when_raining") && player.getWorld().isThundering())) {
+				if(
+						pUnder.getBlock().getType().equals(Material.SAND) &&
+						!player.isInsideVehicle() &&
+						!event.getTo().getBlock().isLiquid() &&
+						(
+							to.getBlockX()!=from.getBlockX() ||
+							to.getBlockY()!=from.getBlockY() ||
+							to.getBlockZ()!=from.getBlockZ()
+						)) {
+					if(!plugin.store.quicksand.containsKey(player) && Util.pctChance(Util.config("quicksand",null).getInt("chance"),Util.config("quicksand",null).getInt("chancemod"))) {
+						plugin.store.quicksand.put(player, 0);
+						
+						player.teleport(pUnder);
+						suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+						
+						if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
+					} else if(event.getFrom().getY() < event.getTo().getY() && plugin.store.quicksand.containsKey(player)) {
+						plugin.store.quicksand.put(player, plugin.store.quicksand.get(player)+1);
+						player.teleport(event.getFrom());
+						if(plugin.store.quicksand.get(player)>=Util.config("quicksand",null).getInt("jumps")) {
+							player.teleport(player.getLocation().add(new Vector(0,1,0)));
+							if(player.getLocation().getBlock().getType().equals(Material.AIR)) {
+								plugin.store.quicksand.remove(player);
+								if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_22"));
+							}
+						} 
+						else if(curTime>suffocateTime) {
+							player.teleport(pUnder);
+							suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 						}
-					} 
-					else if(curTime>suffocateTime) {
+					} else if(curTime>suffocateTime && plugin.store.quicksand.containsKey(player)) {
 						player.teleport(pUnder);
 						suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 					}
-				} else if(curTime>suffocateTime && plugin.store.quicksand.containsKey(player)) {
-					player.teleport(pUnder);
-					suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+					
+				} 
+				else if(
+						plugin.store.quicksand.containsKey(player) &&
+						!pUnder.getBlock().getType().equals(Material.SAND) &&
+						!pUnder.getBlock().getType().equals(Material.AIR) 
+						){
+					plugin.store.quicksand.remove(player);
 				}
-				
-			} 
-			else if(
-					plugin.store.quicksand.containsKey(player) &&
-					!pUnder.getBlock().getType().equals(Material.SAND) &&
-					!pUnder.getBlock().getType().equals(Material.AIR) 
-					){
-				plugin.store.quicksand.remove(player);
 			}
 		}
 		// TAR
@@ -529,6 +534,8 @@ public class PlayerEffects {
 	}
 
 	public void addEffectVehicleMove(VehicleMoveEvent event) {
+		Date curDate = new Date();
+		long curTime = curDate.getTime();
 		Player player = (Player) event.getVehicle().getPassenger();
 
 		// BUMP IN THE RAIL
@@ -541,6 +548,48 @@ public class PlayerEffects {
 						Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
 						player.setVelocity(new Vector(vector.getX()+Util.config("rail",null).getInt("distance"),Util.config("rail",null).getInt("angle"),vector.getZ()+Util.config("rail",null).getInt("distance")));
 						if(Util.config("rail",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_18"));
+					}
+				}
+			}
+		}
+		// ROW YOUR BOAT
+		if(Util.config("boat",null).getBoolean("active") && !Util.config("boat",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(!player.hasPermission("ijmh.immunity.boat")) {	
+				if(
+						event.getVehicle().getType().equals(EntityType.BOAT) &&
+						(
+							event.getTo().getBlockX()!=event.getFrom().getBlockX() ||
+							event.getTo().getBlockY()!=event.getFrom().getBlockY() ||
+							event.getTo().getBlockZ()!=event.getFrom().getBlockZ()
+						)) {
+					
+					int y = 0;
+					while(player.getLocation().add(new Vector(0,-1,0)).getBlock().isLiquid() && y<=10){
+						y++;
+					}
+					
+					if(y>2-1) {
+						if(Util.pctChance(Util.config("boat",null).getInt("chance"),Util.config("boat",null).getInt("chancemod"))) {
+							player.eject();
+							event.getVehicle().remove();
+							
+							if(Util.config("boat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_24"));
+							
+							if(y<5) {
+								Block block = player.getLocation().add(new Vector(0,-2,0)).getBlock();
+								block.setType(Material.WOOD);
+								
+								player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(60), 1));
+								plugin.store.drowning.put(player, block);
+							}
+							else {
+								Block block = player.getLocation().add(new Vector(0,-4,0)).getBlock();
+								block.setType(Material.WOOD);
+								
+								player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(60), 1));
+								plugin.store.drowning.put(player, block);
+							}
+						}
 					}
 				}
 			}

@@ -247,6 +247,9 @@ public class Util{
 	    	key = "lan_21";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Your feet suddenly dissapears in the sand... JUMP !";
 	    	key = "lan_22";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Pew, that was close.";
 	    	key = "lan_23";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "was eaten by quicksand";
+			filecontents += "\n\n# ROW YOUR BOAT";
+			key = "lan_24";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "The boat.. what.. you seem stuck! Break loose from the piece of the boat below you, break it and survive!";
+			key = "lan_25";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "You're free, hurry to the surface!";
 	    	
 	    	try{
 	    		  // Create file 

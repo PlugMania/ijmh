@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,6 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.listeners.PlayerListener;
@@ -42,6 +45,12 @@ public class ijmh extends JavaPlugin {
 	
 	public void onDisable(){
 		this.store.quicksand.clear();
+		for(Player player : this.store.drowning.keySet()){
+			this.store.drowning.get(player).breakNaturally();
+			player.removePotionEffect(PotionEffectType.BLINDNESS);
+		}
+		
+		this.store.drowning.clear();
 		util.saveYamls();
 	}
 	
@@ -111,6 +120,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("rail");
 			effects.add("fishing");
 			effects.add("quicksand");
+			effects.add("boat");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -266,12 +276,19 @@ public class ijmh extends JavaPlugin {
 					}
 					else if(args[0].equalsIgnoreCase("quicksand")) {
 						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("quicksand",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| whenrain (true): " + ChatColor.GOLD + util.config("quicksand",null).getBoolean("when_raining"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("quicksand",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("quicksand",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("quicksand",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| cooldown (5): " + ChatColor.GOLD + util.config("quicksand",null).getInt("cooldown"));
 						sender.sendMessage(ChatColor.AQUA + "| jumps (5): " + ChatColor.GOLD + util.config("quicksand",null).getInt("jumps"));
 						sender.sendMessage(ChatColor.GOLD + "* Cooldown is the duration before sinking 1 block deeper");
+					}
+					else if(args[0].equalsIgnoreCase("boat")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("boat",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("boat",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("boat",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("boat",null).getInt("chancemod"));
 					}
 					else if(args[0].equalsIgnoreCase("fishing")) {
 						String state1;
@@ -334,8 +351,7 @@ public class ijmh extends JavaPlugin {
 				} 
 				else if(effects.contains(args[0].toLowerCase()) && args.length==3){
 					if(util.config(args[0],null).isSet(args[1]) || args[1].equalsIgnoreCase("skipbiome") || args[1].equalsIgnoreCase("skipworld")) {
-						
-						if(args[1].equalsIgnoreCase("message")) {
+						if(args[1].equalsIgnoreCase("message") || args[1].equalsIgnoreCase("whenrain")) {
 							boolean valueB = Boolean.parseBoolean(args[2]);
 							util.config(args[0],null).set(args[1], valueB);
 						}
