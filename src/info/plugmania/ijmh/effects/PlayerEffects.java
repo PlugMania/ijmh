@@ -8,6 +8,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -310,7 +311,12 @@ public class PlayerEffects {
 		}
 		// DIZZY IN THE DESERT
 		if(Util.config("desert",null).getBoolean("active") && !Util.config("desert",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(!player.hasPermission("ijmh.immunity.desert") && !player.getWorld().isThundering() && player.getWorld().getTime()<Util.sec2tic(600)) {
+			if(
+					!player.hasPermission("ijmh.immunity.desert") && 
+					!player.getWorld().isThundering() && 
+					player.getWorld().getTime()<Util.sec2tic(600) &&
+					(Util.config("desert",null).getBoolean("whendesert") && player.getLocation().getBlock().getBiome().equals(Biome.DESERT))
+					) {
 				if(!plugin.store.desert.contains(player)) {
 					if(
 							pUnder.getBlock().getType().equals(Material.SAND) &&
