@@ -132,6 +132,19 @@ public class PlayerEffects {
 				}
 			}
 		}
+		// CURE DIZZY IN THE DESERT
+		if(plugin.store.desert.contains(player)) {
+			if(event.getItem().getType().equals(Material.WATER_BUCKET)) {
+				plugin.store.desert.remove(player);
+				player.removePotionEffect(PotionEffectType.SLOW);
+				player.removePotionEffect(PotionEffectType.CONFUSION);
+				if(Util.config("desert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_27"));
+			}
+		}		
+		plugin.store.desert.remove(player);
+		player.removePotionEffect(PotionEffectType.SLOW);
+		player.removePotionEffect(PotionEffectType.CONFUSION);
+		
 		// CURE FOODPOISON
 		if(player.hasPotionEffect(PotionEffectType.POISON) && event.getMaterial().equals(Material.MILK_BUCKET) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 			if(Util.config("foodpoison",null).getBoolean("message")) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_04"));
@@ -294,6 +307,48 @@ public class PlayerEffects {
 					plugin.store.quicksand.remove(player);
 				}
 			}
+		}
+		// DIZZY IN THE DESERT
+		if(Util.config("desert",null).getBoolean("active") && !Util.config("desert",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(!player.hasPermission("ijmh.immunity.desert") && !player.getWorld().isThundering() && player.getWorld().getTime()<Util.sec2tic(600)) {
+				if(!plugin.store.desert.contains(player)) {
+					if(
+							pUnder.getBlock().getType().equals(Material.SAND) &&
+							!player.isInsideVehicle() &&
+							!event.getTo().getBlock().isLiquid() &&
+							(
+								to.getBlockX()!=from.getBlockX() ||
+								to.getBlockY()!=from.getBlockY() ||
+								to.getBlockZ()!=from.getBlockZ()
+							)) {
+						if(Util.pctChance(Util.config("desert",null).getInt("chance"),Util.config("desert",null).getInt("chancemod"))) {
+							Util.toLog("was here " + player.getWorld().getTime(), true);
+							plugin.store.desert.add(player);
+							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(60), Util.config("desert",null).getInt("multiplier")));
+							player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(60), Util.config("desert",null).getInt("multiplier")));
+							if(Util.config("desert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_26"));
+						}
+					}
+				}
+			}	
+		}
+		if(
+				plugin.store.desert.contains(player) &&
+				(
+						to.getBlockX()!=from.getBlockX() ||
+						to.getBlockY()!=from.getBlockY() ||
+						to.getBlockZ()!=from.getBlockZ()
+					)) {
+			if(player.getWorld().isThundering() || !pUnder.getBlock().getType().equals(Material.SAND)) {
+				Util.toLog("was here too " + player.getWorld().getTime(), true);
+				plugin.store.desert.remove(player);
+				player.removePotionEffect(PotionEffectType.SLOW);
+				player.removePotionEffect(PotionEffectType.CONFUSION);
+			}
+		} 
+		else if(plugin.store.desert.contains(player) && !player.hasPotionEffect(PotionEffectType.CONFUSION)) {
+			player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(60), Util.config("desert",null).getInt("multiplier")));
+			player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(60), Util.config("desert",null).getInt("multiplier")));	
 		}
 		// TAR
 		if(Util.config("tar",null).getBoolean("active") && !Util.config("tar",null).getList("skip_world").contains(player.getWorld().getName())) {

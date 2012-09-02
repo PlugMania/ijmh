@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class Store {
+	public List<Player> desert = new ArrayList<Player>();
 	
 	public HashMap<Player, Integer> quicksand = new HashMap<Player, Integer>();
 	public HashMap<Player, Block> drowning = new HashMap<Player, Block>();

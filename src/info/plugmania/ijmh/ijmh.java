@@ -49,7 +49,10 @@ public class ijmh extends JavaPlugin {
 			this.store.drowning.get(player).breakNaturally();
 			player.removePotionEffect(PotionEffectType.BLINDNESS);
 		}
-		
+		for(Player player : this.store.desert){
+			player.removePotionEffect(PotionEffectType.SLOW);
+			player.removePotionEffect(PotionEffectType.CONFUSION);
+		}		
 		this.store.drowning.clear();
 		util.saveYamls();
 	}
@@ -121,6 +124,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("fishing");
 			effects.add("quicksand");
 			effects.add("boat");
+			effects.add("desert");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -283,6 +287,14 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| cooldown (5): " + ChatColor.GOLD + util.config("quicksand",null).getInt("cooldown"));
 						sender.sendMessage(ChatColor.AQUA + "| jumps (5): " + ChatColor.GOLD + util.config("quicksand",null).getInt("jumps"));
 						sender.sendMessage(ChatColor.GOLD + "* Cooldown is the duration before sinking 1 block deeper");
+					}
+					else if(args[0].equalsIgnoreCase("desert")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("desert",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("desert",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("desert",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("desert",null).getInt("chancemod"));
+						sender.sendMessage(ChatColor.AQUA + "| multiplier (2): " + ChatColor.GOLD + util.config("desert",null).getInt("multiplier"));
+
 					}
 					else if(args[0].equalsIgnoreCase("boat")) {
 						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("boat",null).getList("skip_world"));

@@ -113,6 +113,10 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
+
+		if(plugin.store.desert.contains(player)) {
+			plugin.store.drowning.remove(player);
+		}
 		
 		if(plugin.store.drowning.containsKey(player)) {
 			plugin.store.drowning.remove(player);

@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # -----------| LANGUAGE FILE FOR ijmh |------------
 # -------------------------------------------------
-file-version: 1.2.2
+file-version: 1.3.0
 # -------------------------------------------------
 
 # ON FIRE
@@ -58,5 +58,9 @@ lan_22: Pew, that was close.
 lan_23: ' was eaten by quicksand'
 
 # ROW YOUR BOAT
-lan_24: The boat.. what.. you seem stuck! Break loose from the piece of the boat below you, break it and survive!
+lan_24: The boat... what... you seem stuck! Break loose from the piece of the boat below you, break it and survive!
 lan_25: You're free, hurry to the surface!
+
+# DIZZY IN THE DESERT
+lan_26: Sooooo thirsty... too hot...
+lan_27: Ahhhhh, time to move on!

@@ -2,7 +2,7 @@ name: ijmh
 description: -It Just Might Happen- is reality added based on events
 author: nsordk & PlugMania
 main: info.plugmania.ijmh.ijmh
-version: 1.2.2
+version: 1.3.0
 commands:
   ijmh:
     usage: /ijmh
@@ -49,6 +49,9 @@ permissions:
     default: false 
   ijmh.immunity.quicksand:
     description: Immunity to be effected by quicksand.
+    default: false
+  ijmh.immunity.desert:
+    description: Immunity getting thirsty when in the sunny desert.
     default: false 
   ijmh.immunity.boat:
     description: Immunity to boats sinking and player getting stuck to drown.

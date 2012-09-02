@@ -147,9 +147,10 @@ quicksand:
 desert:
   active: true
   skip_world: []
+  message: true
   chance: 1
   chancemod: 1
-  multiplier: 1  
+  multiplier: 2 
 boat:
   active: true
   skip_world: []

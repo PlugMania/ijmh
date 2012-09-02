@@ -250,7 +250,10 @@ public class Util{
 			filecontents += "\n\n# ROW YOUR BOAT";
 			key = "lan_24";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "The boat.. what.. you seem stuck! Break loose from the piece of the boat below you, break it and survive!";
 			key = "lan_25";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "You're free, hurry to the surface!";
-	    	
+			filecontents += "\n\n# DIZZY IN THE DESERT";
+			key = "lan_26";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Sooooo thirsty... too hot...";
+			key = "lan_27";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Ahhhhh, time to move on!";
+			
 	    	try{
 	    		  // Create file 
 	    		  FileWriter fstream = new FileWriter(languageFile);
