@@ -198,7 +198,7 @@ public class Util{
     public void checkYamls() {
 
     	// language.yml
-    	if(!Util.language.getString("file-version").equals(plugin.getDescription().getVersion())) {
+    	if(!Util.language.isString("file-version") || !Util.language.getString("file-version").equals(plugin.getDescription().getVersion())) {
     		
 	    	Util.toLog("Updating language.yml",false);
 	    	
