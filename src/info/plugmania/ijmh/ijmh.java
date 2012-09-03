@@ -280,7 +280,6 @@ public class ijmh extends JavaPlugin {
 					}
 					else if(args[0].equalsIgnoreCase("quicksand")) {
 						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("quicksand",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| whenrain (true): " + ChatColor.GOLD + util.config("quicksand",null).getBoolean("whenrain"));
 						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("quicksand",null).getBoolean("message"));
 						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("quicksand",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("quicksand",null).getInt("chancemod"));
@@ -364,7 +363,7 @@ public class ijmh extends JavaPlugin {
 				} 
 				else if(effects.contains(args[0].toLowerCase()) && args.length==3){
 					if(util.config(args[0],null).isSet(args[1]) || args[1].equalsIgnoreCase("skipbiome") || args[1].equalsIgnoreCase("skipworld")) {
-						if(args[1].equalsIgnoreCase("message") || args[1].equalsIgnoreCase("whenrain") || args[1].equalsIgnoreCase("whendesert")) {
+						if(args[1].equalsIgnoreCase("message") || args[1].equalsIgnoreCase("whendesert")) {
 							boolean valueB = Boolean.parseBoolean(args[2]);
 							util.config(args[0],null).set(args[1], valueB);
 						}

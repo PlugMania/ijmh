@@ -138,7 +138,6 @@ fishing:
 quicksand:
   active: true
   skip_world: []
-  whenrain: true
   message: true
   chance: 1
   chancemod: 1  

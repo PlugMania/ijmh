@@ -263,7 +263,7 @@ public class PlayerEffects {
 		}
 		// QUICKSAND
 		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(!player.hasPermission("ijmh.immunity.quicksand") && (Util.config("quicksand",null).getBoolean("when_raining") && player.getWorld().isThundering())) {
+			if(!player.hasPermission("ijmh.immunity.quicksand")) {
 				if(
 						pUnder.getBlock().getType().equals(Material.SAND) &&
 						!player.isInsideVehicle() &&

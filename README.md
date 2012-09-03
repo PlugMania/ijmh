@@ -5,17 +5,20 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.3.0<br /><br />
+version: 1.3.1<br /><br />
 
 <b>Latest Release</b><br />
-v1.3.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v1.3.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.3.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.3.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+
+v1.3.1<br />
+Removed setting from Quicksand to restrict when raining (was bugged).<br />
 v1.3.0<br />
-Added "Dizzy In the Desert", chance during sunny daytime to get thirsty/dizzy. 
+Added "Dizzy In the Desert", chance during sunny daytime to get thirsty/dizzy. <br />
 Added "Row your Boat", chance for boat to sink and player will fight not to drown<br />
 Added Updatefunction for language.yml to use current language when updating with new version<br />
 Added MultiWorld support, to disable worlds in each feature<br />
