@@ -253,6 +253,9 @@ public class Util{
 			filecontents += "\n\n# DIZZY IN THE DESERT";
 			key = "lan_26";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Sooooo thirsty... too hot...";
 			key = "lan_27";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Ahhhhh, time to move on!";
+			filecontents += "\n\n# BUGGYBLOCK";
+			key = "lan_28";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "BuggyBlock placed";
+			key = "lan_29";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "The block beneath you breaks!";
 			
 	    	try{
 	    		  // Create file 

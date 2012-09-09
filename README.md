@@ -11,10 +11,12 @@ version: 1.3.1<br /><br />
 v1.3.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.3.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.3.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
 
+v1.3.2<br />
+Added "BuggyBlock", check (100% default) for a range of blocktype to break underneath the player.<br /> 
 v1.3.1<br />
 Removed setting from Quicksand to restrict when raining (was bugged).<br />
 v1.3.0<br />

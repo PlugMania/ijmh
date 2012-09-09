@@ -24,6 +24,7 @@ import org.bukkit.entity.Vehicle;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -376,6 +377,25 @@ public class PlayerEffects {
 					}
 				}
 			}
+		}
+		// BUGGYBLOCK
+		if(Util.config("buggyblock",null).getBoolean("active") && !Util.config("buggyblock",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(
+				Util.config("buggyblock",null).getList("blocks").contains(pUnder.getBlock().getType().name()) &&
+				(
+					to.getBlockX()!=from.getBlockX() ||
+					to.getBlockY()!=from.getBlockY() ||
+					to.getBlockZ()!=from.getBlockZ()
+				)) {
+	
+				if(Util.pctChance(Util.config("buggyblock",null).getInt("chance"),Util.config("buggyblock",null).getInt("chancemod"))) {
+					
+					pUnder.getBlock().breakNaturally();
+					event.setCancelled(true);
+					if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_29"));
+				}
+				
+			}
 		}		
 		// WALK ON RED ROSES
 		if(!player.hasPermission("ijmh.immunity.roses")) {
@@ -460,6 +480,17 @@ public class PlayerEffects {
 				
 					}
 				}
+			}
+		}
+	}
+	
+	public void addEffectBlockPlace(BlockPlaceEvent event) {
+		Player player = (Player) event.getPlayer();
+		
+		// BYGGYBLOCK PLACED
+		if(Util.config("buggyblock",null).getBoolean("active") && !Util.config("buggyblock",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(Util.config("buggyblock",null).getList("blocks").contains(event.getBlock().getType().name())) {
+				if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_28"));
 			}
 		}
 	}

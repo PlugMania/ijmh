@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -26,6 +27,7 @@ import info.plugmania.ijmh.effects.PlayerEffects;
 
 import info.plugmania.mazemania.MazeMania;
 
+import com.sk89q.worldedit.blocks.BlockType;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class ijmh extends JavaPlugin {
@@ -125,6 +127,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("quicksand");
 			effects.add("boat");
 			effects.add("desert");
+			effects.add("buggyblock");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -302,6 +305,13 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("boat",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("boat",null).getInt("chancemod"));
 					}
+					else if(args[0].equalsIgnoreCase("buggyblock")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("buggyblock",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("buggyblock",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (100): " + ChatColor.GOLD + util.config("buggyblock",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("buggyblock",null).getInt("chancemod"));
+						sender.sendMessage(ChatColor.AQUA + "| blocks: " + ChatColor.GOLD + util.config("buggyblock",null).getList("blocks"));
+					}
 					else if(args[0].equalsIgnoreCase("fishing")) {
 						String state1;
 						String state2;
@@ -396,12 +406,26 @@ public class ijmh extends JavaPlugin {
 								sender.sendMessage(ChatColor.RED + "[ijhm] World not recognized!");
 							}
 						}
+						else if(args[1].equalsIgnoreCase("blocks")) {
+							if(Material.matchMaterial(args[2])!=null) {
+								if(Util.config(args[0],null).getList("blocks").contains(args[2].toUpperCase())) {
+									Util.config(args[0],null).getList("blocks").remove(args[2].toUpperCase());
+									sender.sendMessage(ChatColor.AQUA + "[ijhm] Blocktype:" + args[2].toUpperCase() + " was removed from the list");
+								} else {
+									List blocks = Util.config(args[0],null).getList("blocks");
+									blocks.add(args[2].toUpperCase());
+									sender.sendMessage(ChatColor.AQUA + "[ijhm] Blocktype:" + args[2].toUpperCase() + " was added to the list");
+								}
+							} else {
+								sender.sendMessage(ChatColor.RED + "[ijhm] Blocktype not recognized!");
+							}
+						}
 						else {
 							int valueI = Integer.parseInt(args[2]);
 							util.config(args[0],null).set(args[1], valueI);
 						}
 						
-						if(!args[1].equalsIgnoreCase("skipbiome") && !args[1].equalsIgnoreCase("skipworld")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
+						if(!args[1].equalsIgnoreCase("skipbiome") && !args[1].equalsIgnoreCase("skipworld") && !args[1].equalsIgnoreCase("blocks")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
 						this.saveConfig();
 					}
 					else err = true;

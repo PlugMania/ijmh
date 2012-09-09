@@ -157,3 +157,10 @@ boat:
   message: true
   chance: 1
   chancemod: 1
+buggyblock:
+  active: true
+  skip_world: []
+  message: true
+  chance: 100
+  chancemod: 1
+  blocks: []
