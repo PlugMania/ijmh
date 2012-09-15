@@ -128,6 +128,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("boat");
 			effects.add("desert");
 			effects.add("buggyblock");
+			effects.add("tnt");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -311,6 +312,11 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| chance (100): " + ChatColor.GOLD + util.config("buggyblock",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("buggyblock",null).getInt("chancemod"));
 						sender.sendMessage(ChatColor.AQUA + "| blocks: " + ChatColor.GOLD + util.config("buggyblock",null).getList("blocks"));
+					}
+					else if(args[0].equalsIgnoreCase("tnt")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("tnt",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("tnt",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + util.config("tnt",null).getInt("chancemod"));
 					}
 					else if(args[0].equalsIgnoreCase("fishing")) {
 						String state1;

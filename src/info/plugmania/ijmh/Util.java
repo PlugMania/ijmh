@@ -260,6 +260,8 @@ public class Util{
 			filecontents += "\n\n# BUGGYBLOCK";
 			key = "lan_28";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "BuggyBlock placed";
 			key = "lan_29";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "The block beneath you breaks!";
+			filecontents += "\n\n# UNSTABLE TNT";
+			key = "lan_30";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "was killed by unstable TNT!";
 			
 	    	try{
 	    		  // Create file 
@@ -268,6 +270,9 @@ public class Util{
 	    		  out.write(filecontents);
 	    		  //Close the output stream
 	    		  out.close();
+	    		  
+	    		  language.load(languageFile);
+	    		  
 	    		}catch (Exception e){//Catch exception if any
 	    		  Util.toLog("Failed to update language.yml! Please delete it and restart server.",false);
 	    		}

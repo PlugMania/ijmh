@@ -2,7 +2,7 @@ name: ijmh
 description: -It Just Might Happen- is reality added based on events
 author: nsordk & PlugMania
 main: info.plugmania.ijmh.ijmh
-version: 1.3.2
+version: 1.3.3
 commands:
   ijmh:
     usage: /ijmh
@@ -55,6 +55,9 @@ permissions:
     default: false 
   ijmh.immunity.boat:
     description: Immunity to boats sinking and player getting stuck to drown.
+    default: false
+  ijmh.immunity.tnt:
+    description: Immunity to unstable explosion and get killed from it when placing tnt.
     default: false 
   ijmh.admin:
     description: Grant access to the toggle event.

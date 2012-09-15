@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # -----------| LANGUAGE FILE FOR ijmh |------------
 # -------------------------------------------------
-file-version: 1.3.2
+file-version: 1.3.3
 # -------------------------------------------------
 
 # ON FIRE
@@ -68,3 +68,6 @@ lan_27: Ahhhhh, time to move on!
 # BUGGYBLOCK
 lan_28: BuggyBlock placed
 lan_29: The block beneath you breaks!
+
+# UNSTABLE TNT
+lan_30: was killed by unstable TNT!

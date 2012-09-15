@@ -129,6 +129,11 @@ public class PlayerListener implements Listener {
 			event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_23"));
 		}
 		
+		if(plugin.store.tnt.contains(player)) {
+			plugin.store.tnt.remove(player);
+			event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_30"));
+		}
+		
 	}
 	
 	@EventHandler

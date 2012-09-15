@@ -164,3 +164,8 @@ buggyblock:
   chance: 100
   chancemod: 1
   blocks: []
+tnt:
+  active: true
+  skip_world: []
+  chance: 10
+  chancemod: 1

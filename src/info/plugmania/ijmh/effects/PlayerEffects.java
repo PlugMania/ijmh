@@ -20,6 +20,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
@@ -487,11 +488,28 @@ public class PlayerEffects {
 	
 	public void addEffectBlockPlace(BlockPlaceEvent event) {
 		Player player = (Player) event.getPlayer();
+		Block block = event.getBlock();
 		
 		// BYGGYBLOCK PLACED
 		if(Util.config("buggyblock",null).getBoolean("active") && !Util.config("buggyblock",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(Util.config("buggyblock",null).getList("blocks").contains(event.getBlock().getType().name())) {
+			if(Util.config("buggyblock",null).getList("blocks").contains(block.getType().name())) {
 				if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_28"));
+			}
+		}
+		if(!player.getGameMode().equals(GameMode.CREATIVE)) {
+			// UNSTABLE TNT
+			if(Util.config("tnt",null).getBoolean("active") && !Util.config("tnt",null).getList("skip_world").contains(event.getBlock().getLocation().getWorld().getName())) {
+				if(block.getType().equals(Material.TNT)) {
+					if(!player.hasPermission("ijmh.immunity.tnt")) {
+						if(Util.pctChance(Util.config("tnt",null).getInt("chance"),Util.config("tnt",null).getInt("chancemod"))) {
+							block.setType(Material.AIR);
+							TNTPrimed tnt = (TNTPrimed) block.getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
+							tnt.setFuseTicks(0);
+							plugin.store.tnt.add(player);
+							player.damage(1000);
+						}
+					}
+				}
 			}
 		}
 	}

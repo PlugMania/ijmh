@@ -5,17 +5,19 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.3.1<br /><br />
+version: 1.3.3<br /><br />
 
 <b>Latest Release</b><br />
 v1.3.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.3.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.3.3 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
 
-v1.3.x<br />
+v1.3.3<br />
+Added "Unstable TNT", chance for TNT, when placed, to explode instantly and kill player.<br />
+Fixed added messages from new version being null on the first load.<br />
 Fixed damage on pressure plates that activates redstone.<br />
 v1.3.2<br />
 Added "BuggyBlock", check (100% default) for a range of blocktype to break underneath the player.<br /> 
