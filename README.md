@@ -15,6 +15,8 @@ v1.3.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.
               
 <b>Changelog</b><br />
 
+v1.3.x<br />
+Fixed damage on pressure plates that activates redstone.<br />
 v1.3.2<br />
 Added "BuggyBlock", check (100% default) for a range of blocktype to break underneath the player.<br /> 
 v1.3.1<br />

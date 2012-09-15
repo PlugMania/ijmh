@@ -138,7 +138,7 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh update" + ChatColor.AQUA + " - Toggle the update messages on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates"); 
-				} 
+				}
 				else if(args[0].equalsIgnoreCase("version")){
 					util.checkVersion(true,null,sender);
 				}

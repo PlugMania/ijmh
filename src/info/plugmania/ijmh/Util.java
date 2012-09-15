@@ -93,7 +93,11 @@ public class Util{
 		ConfigurationSection config = plugin.getConfig().getConfigurationSection(s1);
 		if(s2!=null) config = config.getConfigurationSection(s2);
 		
-		return config;
+		return config; 
+	}
+	
+	public void SavetoConfig(String s1, String s2, String key, String value) {
+			this.config(s1,s2).set(key, value);
 	}
 	
 	static public void toLog(String s, boolean isDebug){

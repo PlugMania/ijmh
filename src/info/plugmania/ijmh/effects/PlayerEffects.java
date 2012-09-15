@@ -203,7 +203,8 @@ public class PlayerEffects {
 				Util.config("electro",null).getBoolean("active") && !Util.config("electro",null).getList("skip_world").contains(player.getWorld().getName())) {
 				if(
 						!player.isInsideVehicle() &&
-						to.getBlock().isBlockPowered() && 
+						to.getBlock().isBlockPowered() &&
+						!(to.getBlock().getType().equals(Material.WOOD_PLATE) || to.getBlock().getType().equals(Material.STONE_PLATE)) &&
 						(
 						to.getBlockX()!=from.getBlockX() ||
 						to.getBlockY()!=from.getBlockY() ||
