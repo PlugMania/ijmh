@@ -25,6 +25,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -67,6 +69,15 @@ public class PlayerListener implements Listener {
 		if(plugin.store.quicksand.containsKey(player) || plugin.store.drowning.containsKey(player)) {
 			if(event.getMessage().substring(0, 1)=="/") event.setCancelled(true);
 			Util.toLog(event.getMessage().substring(0, 1), true);
+		}
+		// UNTAMED RIDE SURVIVAL
+		if(plugin.store.riding.contains(player) && plugin.playerEffects.timeLimit>0) {
+			if(event.getMessage().substring(0, 1)=="/") event.setCancelled(true);
+			if(event.getMessage().toLowerCase().contains(Util.language.getString("lan_32").toLowerCase())) {
+				event.setCancelled(true);
+				plugin.playerEffects.timeLimit = 0;
+				if(Util.config("ride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_33"));
+			}
 		}		
 	}
 	
@@ -101,6 +112,10 @@ public class PlayerListener implements Listener {
 			}
 		}
 		
+		if(plugin.store.riding.contains(player)) {
+			Util.toLog("" + event.getTo(), true);
+		}		
+		
 		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 			plugin.playerEffects.addEffectMove(event);			
 		}
@@ -117,6 +132,10 @@ public class PlayerListener implements Listener {
 
 		if(plugin.store.desert.contains(player)) {
 			plugin.store.drowning.remove(player);
+		}
+		
+		if(plugin.store.riding.contains(player)) {
+			plugin.store.riding.remove(player);
 		}
 		
 		if(plugin.store.drowning.containsKey(player)) {
@@ -204,6 +223,37 @@ public class PlayerListener implements Listener {
 			plugin.playerEffects.addEffectDamageByEntity(event);
 		}
     }	
+
+	@EventHandler
+    public void onVehicleEnter(VehicleEnterEvent event) {
+		
+		Util.toLog(event.getEntered() + " mounted " + event.getVehicle().getType(), true);
+		
+		if(event.getEntered() instanceof Player) {
+			Player player = (Player) event.getEntered();
+	
+			if(!plugin.disabled.contains("ride") && Util.config("ride",null).getBoolean("active") && !Util.config("ride",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(!player.hasPermission("ijmh.immunity.ride")) {
+					if(Util.config("ride",null).getList("entitytype").contains(event.getVehicle().getType())) {
+						plugin.store.riding.add(player);
+						Util.toLog(player.getName() + " mounted " + event.getVehicle().getType(), true);
+					}
+				}
+			}
+		}
+	}
+	
+	@EventHandler
+    public void onVehicleExit(VehicleExitEvent event) {
+		if(event.getExited() instanceof Player) {
+			Player player = (Player) event.getExited();
+			
+			if(plugin.store.riding.contains(event.getExited())) {
+				plugin.store.riding.remove(event.getExited());
+				Util.toLog(player.getName() + " unmounted " + event.getVehicle().getType().getName(), true);
+			}	
+		}		
+	}
 	
 	@EventHandler
     public void onVehicleMove(VehicleMoveEvent event) {	

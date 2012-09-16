@@ -14,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -36,6 +37,7 @@ public class ijmh extends JavaPlugin {
 	public final Util util;
 	public final PlayerEffects playerEffects;
 	public boolean debug;
+	public List disabled = new LinkedList(); 
 	
 	public MazeMania mazeMania;
 	public WorldGuardPlugin wg;
@@ -129,6 +131,9 @@ public class ijmh extends JavaPlugin {
 			effects.add("desert");
 			effects.add("buggyblock");
 			effects.add("tnt");
+			effects.add("ride");
+			
+			this.disabled.add("ride");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				if (args[0].equalsIgnoreCase("help")) {
@@ -158,6 +163,9 @@ public class ijmh extends JavaPlugin {
 				else if(args[0].equalsIgnoreCase("load")) {
 					this.reloadConfig();
 					sender.sendMessage(ChatColor.AQUA + "[ijhm] Configuration loaded");
+				}
+				else if(this.disabled.contains(args[0])) {
+					sender.sendMessage(ChatColor.RED + "[ijhm] This feature is disabled for now");
 				}
 				else if(effects.contains(args[0].toLowerCase()) && args.length==1){
 					String state;
@@ -318,6 +326,15 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("tnt",null).getInt("chance"));
 						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + util.config("tnt",null).getInt("chancemod"));
 					}
+					else if(args[0].equalsIgnoreCase("ride")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("ride",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("ride",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| entitytype: " + ChatColor.GOLD + util.config("ride",null).getList("entitytype"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + util.config("ride",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("ride",null).getInt("chancemod"));
+						sender.sendMessage(ChatColor.AQUA + "| distance (1): " + ChatColor.GOLD + util.config("ride",null).getInt("distance"));
+						sender.sendMessage(ChatColor.AQUA + "| angle (1): " + ChatColor.GOLD + util.config("ride",null).getInt("angle"));
+					}
 					else if(args[0].equalsIgnoreCase("fishing")) {
 						String state1;
 						String state2;
@@ -426,12 +443,26 @@ public class ijmh extends JavaPlugin {
 								sender.sendMessage(ChatColor.RED + "[ijhm] Blocktype not recognized!");
 							}
 						}
+						else if(args[1].equalsIgnoreCase("entitytype")) {
+							if(EntityType.fromName(args[2])!=null) {
+								if(Util.config(args[0],null).getList("entitytype").contains(args[2].toUpperCase())) {
+									Util.config(args[0],null).getList("entitytype").remove(args[2].toUpperCase());
+									sender.sendMessage(ChatColor.AQUA + "[ijhm] Entitytype:" + args[2].toUpperCase() + " was removed from the list");
+								} else {
+									List entitytype = Util.config(args[0],null).getList("entitytype");
+									entitytype.add(args[2].toUpperCase());
+									sender.sendMessage(ChatColor.AQUA + "[ijhm] Entitytype:" + args[2].toUpperCase() + " was added to the list");
+								}
+							} else {
+								sender.sendMessage(ChatColor.RED + "[ijhm] Entitytype not recognized!");
+							}
+						}						
 						else {
 							int valueI = Integer.parseInt(args[2]);
 							util.config(args[0],null).set(args[1], valueI);
 						}
 						
-						if(!args[1].equalsIgnoreCase("skipbiome") && !args[1].equalsIgnoreCase("skipworld") && !args[1].equalsIgnoreCase("blocks")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
+						if(!args[1].equalsIgnoreCase("skipbiome") && !args[1].equalsIgnoreCase("skipworld") && !args[1].equalsIgnoreCase("blocks") && !args[1].equalsIgnoreCase("entitytype")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
 						this.saveConfig();
 					}
 					else err = true;

@@ -36,6 +36,7 @@ import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -61,6 +62,7 @@ public class PlayerEffects {
 	public long FireTime = 0;
 	public long suffocateTime = 0;
 	public long drowningTime = 0;
+	public long timeLimit = 0;
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
@@ -643,7 +645,7 @@ public class PlayerEffects {
 			}
 		}
 	}
-
+	
 	public void addEffectVehicleMove(VehicleMoveEvent event) {
 		Date curDate = new Date();
 		long curTime = curDate.getTime();
@@ -660,6 +662,24 @@ public class PlayerEffects {
 						player.setVelocity(new Vector(vector.getX()+Util.config("rail",null).getInt("distance"),Util.config("rail",null).getInt("angle"),vector.getZ()+Util.config("rail",null).getInt("distance")));
 						if(Util.config("rail",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_18"));
 					}
+				}
+			}
+		}
+		// UNTAMED RIDE
+		if(plugin.store.riding.contains(player)) {
+			if(Util.config("ride",null).getList("entitytype").contains(event.getVehicle().getType())) {
+				if(timeLimit>0) {
+					if(curTime>timeLimit) {
+						event.getVehicle().eject();
+						Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
+						player.setVelocity(new Vector(vector.getX()+Util.config("ride",null).getInt("distance"),Util.config("ride",null).getInt("angle"),vector.getZ()+Util.config("ride",null).getInt("distance")));
+						if(Util.config("ride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_34"));
+						timeLimit = 0;
+					}
+				}
+				else if(Util.pctChance(Util.config("ride",null).getInt("chance"),Util.config("ride",null).getInt("chancemod"))) {
+					timeLimit = curTime + Util.config("ride",null).getInt("limit");
+					if(Util.config("ride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_31"));
 				}
 			}
 		}

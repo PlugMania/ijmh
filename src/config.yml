@@ -169,3 +169,12 @@ tnt:
   skip_world: []
   chance: 10
   chancemod: 1
+ride:
+  active: true
+  skip_world: []
+  message: true
+  entitytype: []
+  chance: 10
+  chancemod: 1
+  distance: 1
+  angle: 1

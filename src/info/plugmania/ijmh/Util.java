@@ -262,6 +262,11 @@ public class Util{
 			key = "lan_29";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "The block beneath you breaks!";
 			filecontents += "\n\n# UNSTABLE TNT";
 			key = "lan_30";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "was killed by unstable TNT!";
+			filecontents += "\n\n# UNTAMED RIDE";
+			key = "lan_31";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "becomes wild, you need to control it, say";
+			key = "lan_32";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "brrrrr";
+			key = "lan_33";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "is under control again, you can relax !";
+			key = "lan_34";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "-whisperer is NOT in your near future !";
 			
 	    	try{
 	    		  // Create file 

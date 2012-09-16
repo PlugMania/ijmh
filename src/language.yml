@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # -----------| LANGUAGE FILE FOR ijmh |------------
 # -------------------------------------------------
-file-version: 1.3.3
+file-version: 1.3.4
 # -------------------------------------------------
 
 # ON FIRE
@@ -71,3 +71,9 @@ lan_29: The block beneath you breaks!
 
 # UNSTABLE TNT
 lan_30: was killed by unstable TNT!
+
+# UNTAMED RIDE
+lan_31: becomes wild, you need to control it, say
+lan_32: brrrrr
+lan_33: is under control again, you can relax !
+lan_34: -whisperer is NOT in your near future !

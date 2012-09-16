@@ -15,6 +15,8 @@ v1.3.3 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.
               
 <b>Changelog</b><br />
 
+v1.3.x<br />
+Partially added "Untamed Ride" and disabled it until actual riding plugin is decided or MC1.4 where pigs are controlable for riding<br />
 v1.3.3<br />
 Added "Unstable TNT", chance for TNT, when placed, to explode instantly and kill player.<br />
 Fixed added messages from new version being null on the first load.<br />
