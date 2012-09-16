@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class PlayerListener implements Listener {
@@ -141,6 +142,13 @@ public class PlayerListener implements Listener {
 			event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_30"));
 		}
 		
+	}
+	
+	@EventHandler
+	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+		Player player = event.getPlayer();
+		
+		plugin.playerEffects.addEffectPickupItem(event);
 	}
 	
 	@EventHandler

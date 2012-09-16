@@ -190,3 +190,6 @@ worlddrop:
   amount: 10 
   items:
   - APPLE
+sneaky:
+  active: true
+  skip_world: []

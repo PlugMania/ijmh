@@ -36,6 +36,7 @@ import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 import org.bukkit.inventory.Inventory;
@@ -454,6 +455,18 @@ public class PlayerEffects {
 				}
 			}	
 		}
+	}
+	
+	public void addEffectPickupItem(PlayerPickupItemEvent event) {
+		Player player = event.getPlayer();
+		
+		// SNEAKY PICKUP
+		if(Util.config("sneaky",null).getBoolean("active") && !Util.config("sneaky",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(!player.hasPermission("ijmh.immunity.sneaky")) {
+				if(!player.isSneaking()) event.setCancelled(true);
+			}
+		}
+		
 	}
 	
 	public void addEffectFish(PlayerFishEvent event) {

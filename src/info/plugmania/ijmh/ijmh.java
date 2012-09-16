@@ -143,6 +143,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("tnt");
 			effects.add("ride");
 			effects.add("worlddrop");
+			effects.add("sneaky");
 			
 			this.disabled.add("ride");
 			
@@ -356,6 +357,9 @@ public class ijmh extends JavaPlugin {
 						sender.sendMessage(ChatColor.AQUA + "| cooldown (900): " + ChatColor.GOLD + util.config("worlddrop",null).getInt("cooldown"));
 						sender.sendMessage(ChatColor.AQUA + "| amount (10): " + ChatColor.GOLD + util.config("worlddrop",null).getInt("maxlocs"));
 						sender.sendMessage(ChatColor.AQUA + "| items: " + ChatColor.GOLD + util.config("worlddrop",null).getList("items"));
+					}
+					else if(args[0].equalsIgnoreCase("sneaky")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("sneaky",null).getList("skip_world"));
 					}
 					else if(args[0].equalsIgnoreCase("fishing")) {
 						String state1;
