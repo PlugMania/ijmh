@@ -178,3 +178,15 @@ ride:
   chancemod: 1
   distance: 1
   angle: 1
+worlddrop:
+  active: true
+  skip_world: []
+  chance: 10
+  chancemod: 1
+  radius: 30
+  abovesealvl: 20
+  maxlocs: 1  
+  cooldown: 900
+  amount: 10 
+  items:
+  - APPLE

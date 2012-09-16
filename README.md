@@ -5,17 +5,18 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.3.3<br /><br />
+version: 1.3.4<br /><br />
 
 <b>Latest Release</b><br />
 v1.3.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.3.3 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.3.4 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
 
-v1.3.x<br />
+v1.3.4<br />
+Added "World Drop", chance for items to fall out of the sky around players online<br />
 Partially added "Untamed Ride" and disabled it until actual riding plugin is decided or MC1.4 where pigs are controlable for riding<br />
 v1.3.3<br />
 Added "Unstable TNT", chance for TNT, when placed, to explode instantly and kill player.<br />

@@ -156,6 +156,18 @@ public class Util{
 		if(plugin.debug) plugin.getLogger().info(rNum + " <= " + d + " State:" + result);
 		return result;
 	}
+	
+	public static Object shuffle(List<?> list) {
+		int size = list.size();
+		int item = new Random().nextInt(size); // In real life, the Random object should be rather more shared than this
+		int i = 0;
+		Util.toLog("Rand:" + item, true);
+		for(Object obj : list) {
+		    if (i == item) return obj;
+		    i = i + 1;
+		}
+		return null;
+	}
 
 	// YAML ------------------------------------------------------------------------------
 	
