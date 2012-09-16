@@ -23,6 +23,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import info.plugmania.ijmh.Util;
+import info.plugmania.ijmh.listeners.BlockListener;
+import info.plugmania.ijmh.listeners.CraftListener;
+import info.plugmania.ijmh.listeners.EntityListener;
 import info.plugmania.ijmh.listeners.PlayerListener;
 import info.plugmania.ijmh.effects.PlayerEffects;
 
@@ -79,6 +82,9 @@ public class ijmh extends JavaPlugin {
 		
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerListener(this), this);
+		pm.registerEvents(new BlockListener(this), this);
+		pm.registerEvents(new EntityListener(this), this);
+		pm.registerEvents(new CraftListener(this), this);
 		
 		this.getConfig().options().copyDefaults(true);
         this.saveConfig();

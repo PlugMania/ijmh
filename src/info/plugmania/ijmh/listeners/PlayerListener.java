@@ -5,18 +5,12 @@ import info.plugmania.ijmh.ijmh;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
@@ -25,12 +19,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
-import org.bukkit.event.vehicle.VehicleMoveEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 public class PlayerListener implements Listener {
 	
@@ -163,36 +151,6 @@ public class PlayerListener implements Listener {
 			plugin.playerEffects.addEffectFish(event);			
 		}
 	}
-
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
-		plugin.playerEffects.addEffectBlockPlace(event);
-	}
-	
-	@EventHandler
-	public void onBlockBreak(BlockBreakEvent event) {
-		Player player = event.getPlayer();
-		
-		if(plugin.store.drowning.containsKey(player) && event.getBlock().getType().equals(Material.WOOD)) {
-			plugin.store.drowning.remove(player);
-			player.removePotionEffect(PotionEffectType.BLINDNESS);
-			if(Util.config("boat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_25"));
-		}
-		
-		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
-			plugin.playerEffects.addEffectBlockBreak(event);			
-		}
-	}
-	
-	@EventHandler
-	public void onCraftItem(CraftItemEvent event) {
-		plugin.playerEffects.addEffectCraft(event);			
-	}
-	
-	@EventHandler
-	public void onBrew(BrewEvent event) {
-		plugin.playerEffects.addEffectBrew(event);			
-	}
 	
 	@EventHandler
     public void onEntityDamage(EntityDamageEvent event) {		
@@ -211,55 +169,5 @@ public class PlayerListener implements Listener {
 			plugin.playerEffects.addEffectDamage(event);
 		}
     }
-	
-	@EventHandler
-    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {		
-		if(event.getEntity() instanceof Player) {
-			Player player = (Player) event.getEntity();
-			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
-				plugin.playerEffects.addEffectDamage(event);
-			}
-		} else {
-			plugin.playerEffects.addEffectDamageByEntity(event);
-		}
-    }	
-
-	@EventHandler
-    public void onVehicleEnter(VehicleEnterEvent event) {
-		
-		Util.toLog(event.getEntered() + " mounted " + event.getVehicle().getType(), true);
-		
-		if(event.getEntered() instanceof Player) {
-			Player player = (Player) event.getEntered();
-	
-			if(!plugin.disabled.contains("ride") && Util.config("ride",null).getBoolean("active") && !Util.config("ride",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(!player.hasPermission("ijmh.immunity.ride")) {
-					if(Util.config("ride",null).getList("entitytype").contains(event.getVehicle().getType())) {
-						plugin.store.riding.add(player);
-						Util.toLog(player.getName() + " mounted " + event.getVehicle().getType(), true);
-					}
-				}
-			}
-		}
-	}
-	
-	@EventHandler
-    public void onVehicleExit(VehicleExitEvent event) {
-		if(event.getExited() instanceof Player) {
-			Player player = (Player) event.getExited();
-			
-			if(plugin.store.riding.contains(event.getExited())) {
-				plugin.store.riding.remove(event.getExited());
-				Util.toLog(player.getName() + " unmounted " + event.getVehicle().getType().getName(), true);
-			}	
-		}		
-	}
-	
-	@EventHandler
-    public void onVehicleMove(VehicleMoveEvent event) {	
-		if(event.getVehicle().getPassenger() instanceof Player) {
-			plugin.playerEffects.addEffectVehicleMove(event);
-		}
-	}
 	
 }
