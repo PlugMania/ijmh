@@ -193,3 +193,14 @@ worlddrop:
 sneaky:
   active: true
   skip_world: []
+zombie:
+  active: true
+  skip_world: []
+  message: true
+  whenzombie: true
+  chance: 10
+  chancemod: 1
+heavy:
+  active: true
+  skip_world: []
+  message: true

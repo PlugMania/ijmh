@@ -144,6 +144,8 @@ public class ijmh extends JavaPlugin {
 			effects.add("ride");
 			effects.add("worlddrop");
 			effects.add("sneaky");
+			effects.add("zombie");
+			effects.add("heavy");
 			
 			this.disabled.add("ride");
 			
@@ -361,6 +363,17 @@ public class ijmh extends JavaPlugin {
 					else if(args[0].equalsIgnoreCase("sneaky")) {
 						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("sneaky",null).getList("skip_world"));
 					}
+					else if(args[0].equalsIgnoreCase("zombie")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("zombie",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("zombie",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| whenzombie (true): " + ChatColor.GOLD + util.config("zombie",null).getBoolean("whenzombie"));
+						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + util.config("zombie",null).getInt("chance"));
+						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + util.config("zombie",null).getInt("chancemod"));	
+					}
+					else if(args[0].equalsIgnoreCase("heavy")) {
+						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("heavy",null).getList("skip_world"));
+						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("heavy",null).getBoolean("message"));
+					}					
 					else if(args[0].equalsIgnoreCase("fishing")) {
 						String state1;
 						String state2;

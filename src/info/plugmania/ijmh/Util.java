@@ -279,6 +279,8 @@ public class Util{
 			key = "lan_32";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "brrrrr";
 			key = "lan_33";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "is under control again, you can relax !";
 			key = "lan_34";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "-whisperer is NOT in your near future !";
+			filecontents += "\n\n# ZOMBIE NATION";
+			key = "lan_35";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "a zombie took his place in the world!";
 			
 	    	try{
 	    		  // Create file 

@@ -106,8 +106,15 @@ public class PlayerListener implements Listener {
 		}		
 		
 		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
-			plugin.playerEffects.addEffectMove(event);			
+			plugin.playerEffects.addEffectMove(event);		
 		}
+	}
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		
+		plugin.playerEffects.addEffectPlayerJoin(event);
 	}
 	
 	@EventHandler
@@ -142,6 +149,7 @@ public class PlayerListener implements Listener {
 			event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_30"));
 		}
 		
+		plugin.playerEffects.addEffectPlayerDeath(event);
 	}
 	
 	@EventHandler

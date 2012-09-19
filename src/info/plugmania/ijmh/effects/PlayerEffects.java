@@ -1,7 +1,11 @@
 package info.plugmania.ijmh.effects;
 
+import java.awt.geom.Arc2D.Double;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
@@ -29,12 +33,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
@@ -85,6 +91,84 @@ public class PlayerEffects {
 				}
 			}
 		}
+	}
+	
+	public void addEffectPlayerJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		
+		// HEAVY DUTY
+		if(Util.config("heavy",null).getBoolean("active") && !Util.config("heavy",null).getList("skip_world").contains(player.getWorld().getName())) {
+			if(!player.hasPermission("ijmh.immunity.heavy")) {
+				if(player.isFlying()) {
+					HashMap<Material, Integer> protection = new HashMap<Material, Integer>();
+					// LEATHER
+					protection.put(Material.LEATHER_HELMET, 1);
+					protection.put(Material.LEATHER_BOOTS, 1);
+					protection.put(Material.LEATHER_CHESTPLATE, 3);
+					protection.put(Material.LEATHER_LEGGINGS, 2);
+					// GOLD
+					protection.put(Material.GOLD_HELMET, 2);
+					protection.put(Material.GOLD_BOOTS, 1);
+					protection.put(Material.GOLD_CHESTPLATE, 5);
+					protection.put(Material.GOLD_LEGGINGS, 3);
+					// CHAINMAIL
+					protection.put(Material.CHAINMAIL_HELMET, 2);
+					protection.put(Material.CHAINMAIL_BOOTS, 1);
+					protection.put(Material.CHAINMAIL_CHESTPLATE, 5);
+					protection.put(Material.CHAINMAIL_LEGGINGS, 4);
+					// IRON
+					protection.put(Material.IRON_HELMET, 2);
+					protection.put(Material.IRON_BOOTS, 2);
+					protection.put(Material.IRON_CHESTPLATE, 6);
+					protection.put(Material.IRON_LEGGINGS, 5);
+					// DIAMOND
+					protection.put(Material.DIAMOND_HELMET, 3);
+					protection.put(Material.DIAMOND_BOOTS, 3);
+					protection.put(Material.DIAMOND_CHESTPLATE, 8);
+					protection.put(Material.DIAMOND_LEGGINGS, 6);				
+					
+					ItemStack helmet = player.getInventory().getHelmet();
+					ItemStack chest = player.getInventory().getChestplate();
+					ItemStack leggings =  player.getInventory().getLeggings();
+					ItemStack boots = player.getInventory().getBoots();
+
+					int curProt = 0;
+					if(helmet.getType()!=null) curProt += protection.get(helmet.getType());
+					if(chest.getType()!=null) curProt += protection.get(chest.getType());
+					if(leggings.getType()!=null) curProt += protection.get(leggings.getType());
+					if(boots.getType()!=null) curProt += protection.get(boots.getType());
+					
+					if(curProt>0) {
+						Util.toLog("Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is" + player.getFlySpeed(), true);
+					} 
+					else {
+						player.setFlySpeed(0);
+						player.setWalkSpeed(0);
+					}
+				}
+			}
+		}
+	}
+	
+	public void addEffectPlayerDeath(PlayerDeathEvent event) {
+		Player player = event.getEntity();
+		// ZOMBIE NATION
+		if(Util.config("zombie",null).getBoolean("active") && !Util.config("zombie",null).getList("skip_world").contains(player.getWorld().getName())) {
+			EntityDamageEvent deathCause = player.getLastDamageCause();
+	        if (deathCause.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+	            Entity entity = ((EntityDamageByEntityEvent)deathCause).getDamager(); 
+				if(
+						(entity.getType().equals(EntityType.ZOMBIE) && Util.config("zombie",null).getBoolean("whenzombie")) || 
+						!Util.config("zombie",null).getBoolean("whenzombie")
+					) {
+					if(Util.pctChance(Util.config("zombie",null).getInt("chance"),Util.config("zombie",null).getInt("chancemod"))) {
+						player.getServer().getWorld(player.getWorld().toString()).spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+						if(Util.config("zombie",null).getBoolean("message")) event.setDeathMessage(event.getDeathMessage() + ". " + Util.language.getString("lan_35"));
+					}
+				} 
+	        }
+		}
+		
 	}
 	
 	public void addEffectInteract(PlayerInteractEvent event){
