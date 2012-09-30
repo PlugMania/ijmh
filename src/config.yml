@@ -203,4 +203,6 @@ zombie:
 heavy:
   active: true
   skip_world: []
-  message: true
+  walkspeed: 0.1
+  flyspeed: 0.2
+  modifier: 1.0

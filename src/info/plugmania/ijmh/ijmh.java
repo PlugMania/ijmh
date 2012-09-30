@@ -26,6 +26,7 @@ import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.listeners.BlockListener;
 import info.plugmania.ijmh.listeners.CraftListener;
 import info.plugmania.ijmh.listeners.EntityListener;
+import info.plugmania.ijmh.listeners.InventoryListener;
 import info.plugmania.ijmh.listeners.PlayerListener;
 import info.plugmania.ijmh.effects.PlayerEffects;
 
@@ -86,6 +87,7 @@ public class ijmh extends JavaPlugin {
 		pm.registerEvents(new PlayerListener(this), this);
 		pm.registerEvents(new BlockListener(this), this);
 		pm.registerEvents(new EntityListener(this), this);
+		pm.registerEvents(new InventoryListener(this), this);
 		pm.registerEvents(new CraftListener(this), this);
 		
 		this.getConfig().options().copyDefaults(true);
@@ -109,8 +111,10 @@ public class ijmh extends JavaPlugin {
 	    }
 	    
 	    store = new Store(this);
-	    
 	    this.scheduler.worldevents();
+	    
+	    // ARMORVALUES TO HASHMAP
+	    util.armorval2type();
 	}
 	
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {
@@ -372,7 +376,15 @@ public class ijmh extends JavaPlugin {
 					}
 					else if(args[0].equalsIgnoreCase("heavy")) {
 						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + util.config("heavy",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + util.config("heavy",null).getBoolean("message"));
+						sender.sendMessage(ChatColor.AQUA + "| walkspeed (0.1): " + ChatColor.GOLD + util.config("heavy",null).getDouble("walkspeed"));
+						sender.sendMessage(ChatColor.AQUA + "| flyspeed (0.2): " + ChatColor.GOLD + util.config("heavy",null).getDouble("flyspeed"));
+						sender.sendMessage(ChatColor.AQUA + "| modifier (1.0): " + ChatColor.GOLD + util.config("heavy",null).getInt("modifier"));
+						sender.sendMessage(ChatColor.GOLD + "* There are limits to speed, for both client and server performance:");
+						sender.sendMessage(ChatColor.GOLD + "** 1 is moving very fast");
+						sender.sendMessage(ChatColor.GOLD + "** 0 is not moving at all");
+						sender.sendMessage(ChatColor.GOLD + "** negative values make you move backwards");
+						sender.sendMessage(ChatColor.GOLD + "* modifier must be larger than 0 and lesser or eaqual to 1.0 where max armor means no movement.");
+						sender.sendMessage(ChatColor.RED + "! Walkspeed effect is broken atm due to the client itself not changing the value.");
 					}					
 					else if(args[0].equalsIgnoreCase("fishing")) {
 						String state1;
@@ -509,6 +521,19 @@ public class ijmh extends JavaPlugin {
 							} else {
 								sender.sendMessage(ChatColor.RED + "[ijhm] Item (" + args[2] + ") not recognized!");
 							}
+						}
+						else if(args[0].equalsIgnoreCase("heavy") && args[1].equalsIgnoreCase("modifier")) {
+							double valueD = 1.0;
+							if(Double.parseDouble(args[2])<=1 && Double.parseDouble(args[2])>0) {
+								valueD = Double.parseDouble(args[2]);
+							} else {
+								sender.sendMessage(ChatColor.RED + "[ijhm] modifier larger than 0 and lesser or equal to 1.0! Value set to default,");
+							}
+							util.config(args[0],null).set(args[1], valueD);
+						}
+						else if(args[1].equalsIgnoreCase("walkspeed") || args[1].equalsIgnoreCase("flyspeed")) {
+							double valueD = Double.parseDouble(args[2]);
+							util.config(args[0],null).set(args[1], valueD);
 						}
 						else {
 							int valueI = Integer.parseInt(args[2]);

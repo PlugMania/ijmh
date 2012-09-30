@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -29,6 +30,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import com.sk89q.worldedit.Vector;
@@ -46,6 +48,8 @@ public class Util{
 	static ijmh plugin;
 	public static File languageFile;
 	public static FileConfiguration language;
+	
+	public static HashMap<Material, Integer> protection = new HashMap<Material, Integer>();
 	
 	public Util(ijmh instance) {
 		plugin = instance;
@@ -134,6 +138,55 @@ public class Util{
 		return material;
 	}
 
+	public void armorval2type() {
+		// LEATHER
+		protection.put(Material.LEATHER_HELMET, 1);
+		protection.put(Material.LEATHER_BOOTS, 1);
+		protection.put(Material.LEATHER_CHESTPLATE, 3);
+		protection.put(Material.LEATHER_LEGGINGS, 2);
+		// GOLD
+		protection.put(Material.GOLD_HELMET, 2);
+		protection.put(Material.GOLD_BOOTS, 1);
+		protection.put(Material.GOLD_CHESTPLATE, 5);
+		protection.put(Material.GOLD_LEGGINGS, 3);
+		// CHAINMAIL
+		protection.put(Material.CHAINMAIL_HELMET, 2);
+		protection.put(Material.CHAINMAIL_BOOTS, 1);
+		protection.put(Material.CHAINMAIL_CHESTPLATE, 5);
+		protection.put(Material.CHAINMAIL_LEGGINGS, 4);
+		// IRON
+		protection.put(Material.IRON_HELMET, 2);
+		protection.put(Material.IRON_BOOTS, 2);
+		protection.put(Material.IRON_CHESTPLATE, 6);
+		protection.put(Material.IRON_LEGGINGS, 5);
+		// DIAMOND
+		protection.put(Material.DIAMOND_HELMET, 3);
+		protection.put(Material.DIAMOND_BOOTS, 3);
+		protection.put(Material.DIAMOND_CHESTPLATE, 8);
+		protection.put(Material.DIAMOND_LEGGINGS, 6);	
+	}
+	
+	public static int getPlayerArmorValue(Player player) {
+		int curProt = 0;
+		if(player.getInventory().getHelmet()!=null) {
+			ItemStack helmet = player.getInventory().getHelmet();
+			curProt += Util.protection.get(helmet.getType());
+		}
+		if(player.getInventory().getChestplate()!=null) {
+			ItemStack chest = player.getInventory().getChestplate();
+			curProt += Util.protection.get(chest.getType());
+		}
+		if(player.getInventory().getLeggings()!=null) {
+			ItemStack leggings =  player.getInventory().getLeggings();
+			curProt += Util.protection.get(leggings.getType());
+		}
+		if(player.getInventory().getBoots()!=null) {
+			ItemStack boots = player.getInventory().getBoots();
+			curProt += Util.protection.get(boots.getType());
+		}
+		return curProt;
+	}
+	
 	public EntityType isEntity(String entity){
 		
 		EntityType entityType = null;
