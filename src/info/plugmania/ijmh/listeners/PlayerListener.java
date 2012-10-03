@@ -14,6 +14,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -122,6 +123,13 @@ public class PlayerListener implements Listener {
 		Player player = event.getPlayer();
 	}
 
+	@EventHandler
+	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {
+		Player player = event.getPlayer();
+		
+		plugin.playerEffects.addEffectPlayerGameModeChange(event);
+	}	
+	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();

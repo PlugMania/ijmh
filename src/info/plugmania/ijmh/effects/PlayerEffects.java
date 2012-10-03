@@ -39,6 +39,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerFishEvent.State;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -105,7 +106,36 @@ public class PlayerEffects {
 				
 			double curProt = Util.getPlayerArmorValue(player)*Util.config("heavy",null).getDouble("modifier");
 			
-			if(curProt>0) {
+			if(curProt>0 && !player.getGameMode().equals(GameMode.CREATIVE)) {
+				player.setWalkSpeed((float) (WalkSpeed-((WalkSpeed*curProt)/20)));					
+				player.setFlySpeed((float) (FlySpeed-((FlySpeed*curProt)/20)));
+				Util.toLog("Current Protection is: " + curProt + " Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
+			} 
+			else {
+				player.setWalkSpeed((float) WalkSpeed);
+				player.setFlySpeed((float) FlySpeed);
+			}
+		} else {
+			double WalkSpeed =  Util.config("heavy",null).getDouble("walkspeed");
+			double FlySpeed = Util.config("heavy",null).getDouble("flyspeed");
+			
+			player.setWalkSpeed((float) WalkSpeed);
+			player.setFlySpeed((float) FlySpeed);
+		}
+	}
+	
+	public void addEffectPlayerGameModeChange(PlayerGameModeChangeEvent event) {
+		Player player = event.getPlayer();
+		
+		// HEAVY DUTY
+		if(Util.config("heavy",null).getBoolean("active") && !Util.config("heavy",null).getList("skip_world").contains(player.getWorld().getName()) && !player.hasPermission("ijmh.immunity.heavy")) {
+												
+			double WalkSpeed =  Util.config("heavy",null).getDouble("walkspeed");
+			double FlySpeed = Util.config("heavy",null).getDouble("flyspeed");
+				
+			double curProt = Util.getPlayerArmorValue(player)*Util.config("heavy",null).getDouble("modifier");
+			
+			if(curProt>0 && !event.getNewGameMode().equals(GameMode.CREATIVE)) {
 				player.setWalkSpeed((float) (WalkSpeed-((WalkSpeed*curProt)/20)));					
 				player.setFlySpeed((float) (FlySpeed-((FlySpeed*curProt)/20)));
 				Util.toLog("Current Protection is: " + curProt + " Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
@@ -705,7 +735,7 @@ public class PlayerEffects {
 				
 				double curProt = Util.getPlayerArmorValue(player)*Util.config("heavy",null).getDouble("modifier");
 				
-				if(curProt>0) {
+				if(curProt>0 && !player.getGameMode().equals(GameMode.CREATIVE)) {
 					player.setWalkSpeed((float) (WalkSpeed-((WalkSpeed*curProt)/20)));					
 					player.setFlySpeed((float) (FlySpeed-((FlySpeed*curProt)/20)));
 					Util.toLog("Current Protection is: " + curProt + " Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);

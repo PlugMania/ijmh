@@ -5,15 +5,18 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.3.6<br /><br />
+version: 1.3.7<br /><br />
 
 <b>Latest Release</b><br />
-v1.3.6 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v1.3.7 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.3.6 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.3.7 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+
+v1.3.7<br />
+Fixed Creative mode movement being limited by protection points<br />
 v1.3.6<br />
 Added "Heavy Duty", Armor now reduce walk- and flyspeed based on protection points<br />
 Added "Zombie Nation", a zombie has a chance to raise upon player getting killed<br />
