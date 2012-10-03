@@ -11,10 +11,12 @@ version: 1.3.7<br /><br />
 v1.3.7 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.3.7 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.3.7a Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
 
+v1.3.7a<br />
+Testing ticket #5 to see if instanceof Player solves error<br />
 v1.3.7<br />
 Fixed Creative mode movement being limited by protection points<br />
 v1.3.6<br />

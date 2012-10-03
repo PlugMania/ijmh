@@ -19,10 +19,11 @@ public class InventoryListener implements Listener {
 	
 	@EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
-		Player player = (Player) event.getPlayer();
-	
-		if(!player.getGameMode().equals(GameMode.CREATIVE)) {
-			plugin.playerEffects.addEffectInventoryClose(event);
+
+		if(event.getPlayer() instanceof Player) {
+			if(!event.getPlayer().getGameMode().equals(GameMode.CREATIVE)) {
+				plugin.playerEffects.addEffectInventoryClose(event);
+			}
 		}
 	}
 }
