@@ -1,6 +1,7 @@
 package info.plugmania.ijmh.effects;
 
 import java.awt.geom.Arc2D.Double;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Arrays;
@@ -155,23 +156,25 @@ public class PlayerEffects {
 	
 	public void addEffectPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
+		
 		// ZOMBIE NATION
 		if(Util.config("zombie",null).getBoolean("active") && !Util.config("zombie",null).getList("skip_world").contains(player.getWorld().getName())) {
 			EntityDamageEvent deathCause = player.getLastDamageCause();
-	        if (deathCause.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-	            Entity entity = ((EntityDamageByEntityEvent)deathCause).getDamager(); 
-				if(
-						(entity.getType().equals(EntityType.ZOMBIE) && Util.config("zombie",null).getBoolean("whenzombie")) || 
-						!Util.config("zombie",null).getBoolean("whenzombie")
-					) {
-					if(Util.pctChance(Util.config("zombie",null).getInt("chance"),Util.config("zombie",null).getInt("chancemod"))) {
-						player.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation(), EntityType.ZOMBIE);
-						if(Util.config("zombie",null).getBoolean("message")) event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_35"));
+			if(deathCause != null) {
+		        if(deathCause.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
+		            Entity entity = ((EntityDamageByEntityEvent)deathCause).getDamager(); 
+					if(
+							(entity.getType().equals(EntityType.ZOMBIE) && Util.config("zombie",null).getBoolean("whenzombie")) || 
+							!Util.config("zombie",null).getBoolean("whenzombie")
+						) {
+						if(Util.pctChance(Util.config("zombie",null).getInt("chance"),Util.config("zombie",null).getInt("chancemod"))) {
+							player.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+							if(Util.config("zombie",null).getBoolean("message")) event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_35"));
+						}
 					}
-				} 
-	        }
+		        }
+			}
 		}
-		
 	}
 	
 	public void addEffectInteract(PlayerInteractEvent event){
