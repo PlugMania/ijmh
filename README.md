@@ -5,7 +5,7 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.3.7<br /><br />
+version: 1.4.0<br /><br />
 
 <b>Latest Release</b><br />
 v1.3.7 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
@@ -15,10 +15,12 @@ v1.3.7b Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh
               
 <b>Changelog</b><br />
 
-v1.3.7b<br />
+v1.4.0<br />
+Preperation started towards building v2.0.0<br />
+CraftThumb now merged into own class<br />
+v1.3.7<br />
 #5 Fixed error on suicide command<br />
 #5 Fixed error om inventoryCloseEvent with instanceof Player<br />
-v1.3.7<br />
 Fixed Creative mode movement being limited by protection points<br />
 v1.3.6<br />
 Added "Heavy Duty", Armor now reduce walk- and flyspeed based on protection points<br />

@@ -17,7 +17,8 @@ public class CraftListener implements Listener {
 
 	@EventHandler
 	public void onCraftItem(CraftItemEvent event) {
-		plugin.playerEffects.addEffectCraft(event);			
+		//plugin.playerEffects.addEffectCraft(event);
+		plugin.craftthumb.main(event);
 	}
 	
 	@EventHandler

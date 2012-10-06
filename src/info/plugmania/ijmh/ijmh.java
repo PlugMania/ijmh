@@ -28,6 +28,7 @@ import info.plugmania.ijmh.listeners.CraftListener;
 import info.plugmania.ijmh.listeners.EntityListener;
 import info.plugmania.ijmh.listeners.InventoryListener;
 import info.plugmania.ijmh.listeners.PlayerListener;
+import info.plugmania.ijmh.effects.CraftThumb;
 import info.plugmania.ijmh.effects.PlayerEffects;
 
 import info.plugmania.mazemania.MazeMania;
@@ -42,8 +43,12 @@ public class ijmh extends JavaPlugin {
 	public final Util util;
 	public final PlayerEffects playerEffects;
 	public boolean debug;
-	public List disabled = new LinkedList(); 
+	public List disabled = new LinkedList();
 	
+	// EFFECTS
+	public CraftThumb craftthumb;
+	
+	// PLUGIN SUPPORT
 	public MazeMania mazeMania;
 	public WorldGuardPlugin wg;
 	
@@ -51,6 +56,9 @@ public class ijmh extends JavaPlugin {
 		this.util = new Util(this);
 		this.scheduler = new Scheduler(this);
 		this.playerEffects = new PlayerEffects(this);
+		
+		// EFFECTS
+		this.craftthumb = new CraftThumb(this);
 	}
 	
 	public void onDisable(){
