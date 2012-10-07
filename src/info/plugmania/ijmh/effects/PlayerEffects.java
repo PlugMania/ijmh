@@ -77,83 +77,7 @@ public class PlayerEffects {
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
 	}
-	
-	public void addEffectCraft(CraftItemEvent event){
-		Player player = (Player) event.getWhoClicked();
 		
-		// CRAFTTHUMB
-		if(!player.hasPermission("ijmh.immunity.craftthumb")){
-			if(Util.config("craftthumb",null).getBoolean("active")){
-				if(!Util.config("craftthumb",null).getList("skip_world").contains(player.getWorld().getName())) {
-					int moreCraft = event.getCursor().getAmount();
-					if(event.getCursor().getAmount()>0) moreCraft = (event.getCursor().getAmount() / 100)^(event.getCursor().getAmount() / 2);
-					if(Util.pctChance(Util.config("craftthumb",null).getInt("chance") / (1 + moreCraft),Util.config("craftthumb",null).getInt("chancemod"))) {
-						player.damage(Util.config("craftthumb",null).getInt("damage"));
-						if(Util.config("craftthumb",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_09"));
-					}
-				}
-			}
-		}
-	}
-	
-	public void addEffectPlayerJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		
-		// HEAVY DUTY
-		if(Util.config("heavy",null).getBoolean("active") && !Util.config("heavy",null).getList("skip_world").contains(player.getWorld().getName()) && !player.hasPermission("ijmh.immunity.heavy")) {
-												
-			double WalkSpeed =  Util.config("heavy",null).getDouble("walkspeed");
-			double FlySpeed = Util.config("heavy",null).getDouble("flyspeed");
-				
-			double curProt = Util.getPlayerArmorValue(player)*Util.config("heavy",null).getDouble("modifier");
-			
-			if(curProt>0 && !player.getGameMode().equals(GameMode.CREATIVE)) {
-				player.setWalkSpeed((float) (WalkSpeed-((WalkSpeed*curProt)/20)));					
-				player.setFlySpeed((float) (FlySpeed-((FlySpeed*curProt)/20)));
-				Util.toLog("Current Protection is: " + curProt + " Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
-			} 
-			else {
-				player.setWalkSpeed((float) WalkSpeed);
-				player.setFlySpeed((float) FlySpeed);
-			}
-		} else {
-			double WalkSpeed =  Util.config("heavy",null).getDouble("walkspeed");
-			double FlySpeed = Util.config("heavy",null).getDouble("flyspeed");
-			
-			player.setWalkSpeed((float) WalkSpeed);
-			player.setFlySpeed((float) FlySpeed);
-		}
-	}
-	
-	public void addEffectPlayerGameModeChange(PlayerGameModeChangeEvent event) {
-		Player player = event.getPlayer();
-		
-		// HEAVY DUTY
-		if(Util.config("heavy",null).getBoolean("active") && !Util.config("heavy",null).getList("skip_world").contains(player.getWorld().getName()) && !player.hasPermission("ijmh.immunity.heavy")) {
-												
-			double WalkSpeed =  Util.config("heavy",null).getDouble("walkspeed");
-			double FlySpeed = Util.config("heavy",null).getDouble("flyspeed");
-				
-			double curProt = Util.getPlayerArmorValue(player)*Util.config("heavy",null).getDouble("modifier");
-			
-			if(curProt>0 && !event.getNewGameMode().equals(GameMode.CREATIVE)) {
-				player.setWalkSpeed((float) (WalkSpeed-((WalkSpeed*curProt)/20)));					
-				player.setFlySpeed((float) (FlySpeed-((FlySpeed*curProt)/20)));
-				Util.toLog("Current Protection is: " + curProt + " Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
-			} 
-			else {
-				player.setWalkSpeed((float) WalkSpeed);
-				player.setFlySpeed((float) FlySpeed);
-			}
-		} else {
-			double WalkSpeed =  Util.config("heavy",null).getDouble("walkspeed");
-			double FlySpeed = Util.config("heavy",null).getDouble("flyspeed");
-			
-			player.setWalkSpeed((float) WalkSpeed);
-			player.setFlySpeed((float) FlySpeed);
-		}
-	}
-	
 	public void addEffectPlayerDeath(PlayerDeathEvent event) {
 		Player player = event.getEntity();
 		
@@ -472,26 +396,7 @@ public class PlayerEffects {
 					}
 				}
 			}
-		}
-		// BUGGYBLOCK
-		if(Util.config("buggyblock",null).getBoolean("active") && !Util.config("buggyblock",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(
-				Util.config("buggyblock",null).getList("blocks").contains(pUnder.getBlock().getType().name()) &&
-				(
-					to.getBlockX()!=from.getBlockX() ||
-					to.getBlockY()!=from.getBlockY() ||
-					to.getBlockZ()!=from.getBlockZ()
-				)) {
-	
-				if(Util.pctChance(Util.config("buggyblock",null).getInt("chance"),Util.config("buggyblock",null).getInt("chancemod"))) {
-					
-					pUnder.getBlock().breakNaturally();
-					event.setCancelled(true);
-					if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_29"));
-				}
-				
-			}
-		}		
+		}	
 		// WALK ON RED ROSES
 		if(!player.hasPermission("ijmh.immunity.roses")) {
 			if(Util.config("roses",null).getBoolean("active") && !Util.config("roses",null).getList("skip_world").contains(player.getWorld().getName())){
@@ -599,22 +504,6 @@ public class PlayerEffects {
 		if(Util.config("buggyblock",null).getBoolean("active") && !Util.config("buggyblock",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(Util.config("buggyblock",null).getList("blocks").contains(block.getType().name())) {
 				if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_28"));
-			}
-		}
-		if(!player.getGameMode().equals(GameMode.CREATIVE)) {
-			// UNSTABLE TNT
-			if(Util.config("tnt",null).getBoolean("active") && !Util.config("tnt",null).getList("skip_world").contains(event.getBlock().getLocation().getWorld().getName())) {
-				if(block.getType().equals(Material.TNT)) {
-					if(!player.hasPermission("ijmh.immunity.tnt")) {
-						if(Util.pctChance(Util.config("tnt",null).getInt("chance"),Util.config("tnt",null).getInt("chancemod"))) {
-							block.setType(Material.AIR);
-							TNTPrimed tnt = (TNTPrimed) block.getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
-							tnt.setFuseTicks(0);
-							plugin.store.tnt.add(player);
-							player.damage(1000);
-						}
-					}
-				}
 			}
 		}
 	}
@@ -725,74 +614,12 @@ public class PlayerEffects {
 			}
 		}
 	}
-	
-	public void addEffectInventoryClose(InventoryCloseEvent event) {
-		Player player = (Player) event.getPlayer();
 		
-		// HEAVY DUTY
-		if(Util.config("heavy",null).getBoolean("active") && !Util.config("heavy",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(!player.hasPermission("ijmh.immunity.heavy")) {
-												
-				double WalkSpeed =  Util.config("heavy",null).getDouble("walkspeed");
-				double FlySpeed = Util.config("heavy",null).getDouble("flyspeed");
-				
-				double curProt = Util.getPlayerArmorValue(player)*Util.config("heavy",null).getDouble("modifier");
-				
-				if(curProt>0 && !player.getGameMode().equals(GameMode.CREATIVE)) {
-					player.setWalkSpeed((float) (WalkSpeed-((WalkSpeed*curProt)/20)));					
-					player.setFlySpeed((float) (FlySpeed-((FlySpeed*curProt)/20)));
-					Util.toLog("Current Protection is: " + curProt + " Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
-				} 
-				else {
-					player.setWalkSpeed((float) WalkSpeed);
-					player.setFlySpeed((float) FlySpeed);
-				}
-			}
-		}
-	}
-	
-	public void addEffectBrew(BrewEvent event) {
-		// BREW EXPLOSION
-		if(Util.config("brew",null).getBoolean("active") && !Util.config("brew",null).getList("skip_world").contains(event.getBlock().getLocation().getWorld().getName())) {
-			if(Util.pctChance(Util.config("brew",null).getInt("chance"),Util.config("brew",null).getInt("chancemod"))) {
-				Block b = event.getBlock();
-				b.getWorld().createExplosion(b.getLocation(), Util.config("brew",null).getInt("multiplier"));
-				
-				if(Util.config("brew",null).getBoolean("signs")) {
-					if(b.getRelative(BlockFace.DOWN).getType().equals(Material.AIR)) b.getRelative(BlockFace.DOWN).setType(Material.GRASS);
-		
-					b.setTypeId(Material.SIGN_POST.getId());
-		
-					Sign sign = (Sign) b.getState();
-					sign.setLine(0, "===============");
-					sign.setLine(1, "BOOM");
-					sign.setLine(2, "!");
-					sign.setLine(3, "===============");
-					sign.update();
-				}
-			}
-		}
-	}
-	
 	public void addEffectVehicleMove(VehicleMoveEvent event) {
 		Date curDate = new Date();
 		long curTime = curDate.getTime();
 		Player player = (Player) event.getVehicle().getPassenger();
 
-		// BUMP IN THE RAIL
-		if(Util.config("rail",null).getBoolean("active") && !Util.config("rail",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(event.getTo().getBlock().getType().equals(Material.RAILS) && event.getVehicle().getType().equals(EntityType.MINECART)) {
-				if(!player.hasPermission("ijmh.immunity.rail")) {
-					Rails rail = new Rails(event.getTo().getBlock().getType(), event.getTo().getBlock().getData());
-					if(rail.isCurve() && Util.pctChance(Util.config("rail",null).getInt("chance"),Util.config("rail",null).getInt("chancemod"))) {
-						event.getVehicle().eject();
-						Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
-						player.setVelocity(new Vector(vector.getX()+Util.config("rail",null).getInt("distance"),Util.config("rail",null).getInt("angle"),vector.getZ()+Util.config("rail",null).getInt("distance")));
-						if(Util.config("rail",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_18"));
-					}
-				}
-			}
-		}
 		// UNTAMED RIDE
 		if(plugin.store.riding.contains(player)) {
 			if(Util.config("ride",null).getList("entitytype").contains(event.getVehicle().getType())) {

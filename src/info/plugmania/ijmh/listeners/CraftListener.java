@@ -17,13 +17,12 @@ public class CraftListener implements Listener {
 
 	@EventHandler
 	public void onCraftItem(CraftItemEvent event) {
-		//plugin.playerEffects.addEffectCraft(event);
-		plugin.craftthumb.main(event);
+		plugin.craftthumb.main(event); // CRAFTTUMB
 	}
 	
 	@EventHandler
 	public void onBrew(BrewEvent event) {
-		plugin.playerEffects.addEffectBrew(event);			
+		plugin.brewexplosion.main(event); // BREW EXPLOSION			
 	}
 	
 }

@@ -24,6 +24,10 @@ public class BlockListener implements Listener {
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
 		plugin.playerEffects.addEffectBlockPlace(event);
+		
+		
+		plugin.unstabletnt.main(event); // UNSTABLE TNT
+		plugin.buggyblock.main(event); // BUGGY BLOCK
 	}
 	
 	@EventHandler
@@ -39,6 +43,8 @@ public class BlockListener implements Listener {
 		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 			plugin.playerEffects.addEffectBlockBreak(event);			
 		}
+		
+		plugin.unstabletnt.main(event); // UNSTABLE TNT
 	}
 	
 }

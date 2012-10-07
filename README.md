@@ -18,6 +18,12 @@ v1.3.7b Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh
 v1.4.0<br />
 Preperation started towards building v2.0.0<br />
 CraftThumb now merged into own class<br />
+Brew Explosion now merged into own class<br />
+Heavy Duty now merged into own class<br />
+Bump In The Rail now merged into own class<br />
+Unstable TNT now merged into own class<br />
+Buggy Block now merged into own class<br />
+Fixed commands to change Zombie Nations "whenzombie" and Brew Explosion "signs"<br /> 
 v1.3.7<br />
 #5 Fixed error on suicide command<br />
 #5 Fixed error om inventoryCloseEvent with instanceof Player<br />

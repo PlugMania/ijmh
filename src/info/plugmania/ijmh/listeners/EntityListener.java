@@ -66,7 +66,8 @@ public class EntityListener implements Listener {
 	@EventHandler
     public void onVehicleMove(VehicleMoveEvent event) {	
 		if(event.getVehicle().getPassenger() instanceof Player) {
-			plugin.playerEffects.addEffectVehicleMove(event);
+			// BUMP IN THE RAIL
+			plugin.bumpintherail.main(event);
 		}
 	}
 	

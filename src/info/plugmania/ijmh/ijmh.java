@@ -28,8 +28,13 @@ import info.plugmania.ijmh.listeners.CraftListener;
 import info.plugmania.ijmh.listeners.EntityListener;
 import info.plugmania.ijmh.listeners.InventoryListener;
 import info.plugmania.ijmh.listeners.PlayerListener;
+import info.plugmania.ijmh.effects.BrewExplosion;
+import info.plugmania.ijmh.effects.BuggyBlock;
+import info.plugmania.ijmh.effects.BumpInTheRail;
 import info.plugmania.ijmh.effects.CraftThumb;
+import info.plugmania.ijmh.effects.HeavyDuty;
 import info.plugmania.ijmh.effects.PlayerEffects;
+import info.plugmania.ijmh.effects.UnstableTNT;
 
 import info.plugmania.mazemania.MazeMania;
 
@@ -47,6 +52,11 @@ public class ijmh extends JavaPlugin {
 	
 	// EFFECTS
 	public CraftThumb craftthumb;
+	public BrewExplosion brewexplosion;
+	public HeavyDuty heavyduty;
+	public BumpInTheRail bumpintherail;
+	public UnstableTNT unstabletnt;
+	public BuggyBlock buggyblock;
 	
 	// PLUGIN SUPPORT
 	public MazeMania mazeMania;
@@ -59,6 +69,11 @@ public class ijmh extends JavaPlugin {
 		
 		// EFFECTS
 		this.craftthumb = new CraftThumb(this);
+		this.brewexplosion = new BrewExplosion(this);
+		this.heavyduty = new HeavyDuty(this);
+		this.bumpintherail = new BumpInTheRail(this);
+		this.unstabletnt = new UnstableTNT(this);
+		this.buggyblock = new BuggyBlock(this);
 	}
 	
 	public void onDisable(){
@@ -455,7 +470,7 @@ public class ijmh extends JavaPlugin {
 				} 
 				else if(effects.contains(args[0].toLowerCase()) && args.length==3){
 					if(util.config(args[0],null).isSet(args[1]) || args[1].equalsIgnoreCase("skipbiome") || args[1].equalsIgnoreCase("skipworld")) {
-						if(args[1].equalsIgnoreCase("message") || args[1].equalsIgnoreCase("whendesert")) {
+						if(args[1].equalsIgnoreCase("message") || args[1].equalsIgnoreCase("signs") || args[1].equalsIgnoreCase("whenzombie") || args[1].equalsIgnoreCase("whendesert")) {
 							boolean valueB = Boolean.parseBoolean(args[2]);
 							util.config(args[0],null).set(args[1], valueB);
 						}

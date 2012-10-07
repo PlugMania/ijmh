@@ -37,6 +37,8 @@ public class PlayerListener implements Listener {
 		if((player.hasPermission("ijmh.admin") || player.isOp()) && plugin.getConfig().getBoolean("update_message")){
 			plugin.util.checkVersion(false, player, null);
 		}
+		
+		plugin.heavyduty.main(event); // HEAVY DUTY
 	}
 	
 	@EventHandler
@@ -109,13 +111,13 @@ public class PlayerListener implements Listener {
 		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 			plugin.playerEffects.addEffectMove(event);		
 		}
+		
+		plugin.buggyblock.main(event); // BUGGY BLOCK
 	}
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		
-		plugin.playerEffects.addEffectPlayerJoin(event);
+		plugin.heavyduty.main(event); // HEAVY DUTY
 	}
 	
 	@EventHandler
@@ -125,9 +127,7 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerGameModeChange(PlayerGameModeChangeEvent event) {
-		Player player = event.getPlayer();
-		
-		plugin.playerEffects.addEffectPlayerGameModeChange(event);
+		plugin.heavyduty.main(event); // HEAVY DUTY
 	}	
 	
 	@EventHandler
@@ -152,10 +152,8 @@ public class PlayerListener implements Listener {
 			event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_23"));
 		}
 		
-		if(plugin.store.tnt.contains(player)) {
-			plugin.store.tnt.remove(player);
-			event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_30"));
-		}
+		
+		plugin.unstabletnt.main(event); // UNSTABLE TNT
 		
 		plugin.playerEffects.addEffectPlayerDeath(event);
 	}
