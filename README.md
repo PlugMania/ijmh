@@ -23,7 +23,14 @@ Heavy Duty now merged into own class<br />
 Bump In The Rail now merged into own class<br />
 Unstable TNT now merged into own class<br />
 Buggy Block now merged into own class<br />
-Fixed commands to change Zombie Nations "whenzombie" and Brew Explosion "signs"<br /> 
+The Happy Miner now merged into own class<br />
+Quicksand now merged into own class (BROKEN)<br />
+Zombie Nation now merged into own class<br />
+Bow Breaker now merged into own class<br />
+Squid Defense now merged into own class<br />
+Sneaky Pickup now merged into own class<br />
+Fisherman On Hook now merged into own class<br />
+Fixed commands to change Zombie Nation "whenzombie" and Brew Explosion "signs"<br /> 
 v1.3.7<br />
 #5 Fixed error on suicide command<br />
 #5 Fixed error om inventoryCloseEvent with instanceof Player<br />

@@ -20,8 +20,6 @@ public class BrewExplosion {
 
 	public void main(Event e) {
 		
-		Util.toLog("EventName: " + e.getEventName(), true); // DEBUG
-		
 		if(Util.config("brew",null).getBoolean("active")) {
 			if(e.getEventName().equalsIgnoreCase("BrewEvent")) {
 				BrewEvent event = (BrewEvent) e;		

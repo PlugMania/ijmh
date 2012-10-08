@@ -43,22 +43,15 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-		Player player = event.getPlayer();
-		
-		// QUICKSAND PREVENT COMMANDS 
-		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(plugin.store.quicksand.containsKey(player)) {
-				event.setCancelled(true);
-			}
-		}
+		plugin.quicksand.main(event); // QUICKSAND
 	}
 
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
 		
-		// QUICKSAND PREVENT COMMANDS POSTED 
-		if(plugin.store.quicksand.containsKey(player) || plugin.store.drowning.containsKey(player)) {
+		// PREVENT COMMANDS POSTED 
+		if(plugin.store.drowning.containsKey(player)) {
 			if(event.getMessage().substring(0, 1)=="/") event.setCancelled(true);
 			Util.toLog(event.getMessage().substring(0, 1), true);
 		}
@@ -70,7 +63,9 @@ public class PlayerListener implements Listener {
 				plugin.playerEffects.timeLimit = 0;
 				if(Util.config("ride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_33"));
 			}
-		}		
+		}
+		
+		plugin.quicksand.main(event); // QUICKSAND
 	}
 	
 	@EventHandler
@@ -112,6 +107,7 @@ public class PlayerListener implements Listener {
 			plugin.playerEffects.addEffectMove(event);		
 		}
 		
+		plugin.quicksand.main(event); // QUICKSAND
 		plugin.buggyblock.main(event); // BUGGY BLOCK
 	}
 
@@ -122,7 +118,6 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
-		Player player = event.getPlayer();
 	}
 
 	@EventHandler
@@ -147,31 +142,19 @@ public class PlayerListener implements Listener {
 			plugin.store.drowning.get(player).breakNaturally();
 		}
 				
-		if(plugin.store.quicksand.containsKey(player)) {
-			plugin.store.quicksand.remove(player);
-			event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_23"));
-		}
-		
-		
+		plugin.quicksand.main(event); // QUICKSAND
 		plugin.unstabletnt.main(event); // UNSTABLE TNT
-		
-		plugin.playerEffects.addEffectPlayerDeath(event);
+		plugin.zombienation.main(event); // ZOMBIE NATION
 	}
 	
 	@EventHandler
-	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-		Player player = event.getPlayer();
-		
-		plugin.playerEffects.addEffectPickupItem(event);
+	public void onPlayerPickupItem(PlayerPickupItemEvent event) {		
+		plugin.sneakypickup.main(event); // SNEAKY PICKUP
 	}
 	
 	@EventHandler
 	public void onPlayerFish(PlayerFishEvent event) {
-		Player player = event.getPlayer();
-		
-		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
-			plugin.playerEffects.addEffectFish(event);			
-		}
+		plugin.fishermanonhook.main(event); // FISHERMAN ON HOOK
 	}
 	
 	@EventHandler
@@ -180,16 +163,12 @@ public class PlayerListener implements Listener {
 			Player player = (Player) event.getEntity();
 			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
 				plugin.playerEffects.addEffectDamage(event);
-				
-				if(event.isCancelled() && plugin.store.quicksand.containsKey(player)) {
-					if(event.getCause().equals(DamageCause.SUFFOCATION)) {
-						player.damage(event.getDamage());
-					}
-				}
 			}
 		} else {
 			plugin.playerEffects.addEffectDamage(event);
 		}
+		
+		plugin.quicksand.main(event); // QUICKSAND
     }
 	
 }

@@ -20,8 +20,6 @@ public class HeavyDuty {
 
 	public void main(Event e) {
 		
-		Util.toLog("EventName: " + e.getEventName(), true); // DEBUG
-		
 		if(Util.config("heavy",null).getBoolean("active")){
 			if(e.getEventName().equalsIgnoreCase("PlayerJoinEvent")) {
 				PlayerJoinEvent event = (PlayerJoinEvent) e;

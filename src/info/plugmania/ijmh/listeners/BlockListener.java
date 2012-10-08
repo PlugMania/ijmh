@@ -22,10 +22,7 @@ public class BlockListener implements Listener {
 	}
 	
 	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
-		plugin.playerEffects.addEffectBlockPlace(event);
-		
-		
+	public void onBlockPlace(BlockPlaceEvent event) {		
 		plugin.unstabletnt.main(event); // UNSTABLE TNT
 		plugin.buggyblock.main(event); // BUGGY BLOCK
 	}
@@ -40,10 +37,8 @@ public class BlockListener implements Listener {
 			if(Util.config("boat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_25"));
 		}
 		
-		if(player.getGameMode().equals(GameMode.SURVIVAL)) {
-			plugin.playerEffects.addEffectBlockBreak(event);			
-		}
-		
+		plugin.quicksand.main(event); // QUICKSAND
+		plugin.thehappyminer.main(event); // THE HAPPY MINER
 		plugin.unstabletnt.main(event); // UNSTABLE TNT
 	}
 	

@@ -28,7 +28,8 @@ public class EntityListener implements Listener {
 				plugin.playerEffects.addEffectDamage(event);
 			}
 		} else {
-			plugin.playerEffects.addEffectDamageByEntity(event);
+			plugin.squiddefense.main(event); // SQUID DEFENSE
+			plugin.bowbreaker.main(event); // BOW BREAKER
 		}
     }	
 	

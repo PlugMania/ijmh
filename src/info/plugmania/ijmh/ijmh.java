@@ -28,13 +28,20 @@ import info.plugmania.ijmh.listeners.CraftListener;
 import info.plugmania.ijmh.listeners.EntityListener;
 import info.plugmania.ijmh.listeners.InventoryListener;
 import info.plugmania.ijmh.listeners.PlayerListener;
+import info.plugmania.ijmh.effects.BowBreaker;
 import info.plugmania.ijmh.effects.BrewExplosion;
 import info.plugmania.ijmh.effects.BuggyBlock;
 import info.plugmania.ijmh.effects.BumpInTheRail;
 import info.plugmania.ijmh.effects.CraftThumb;
+import info.plugmania.ijmh.effects.FishermanOnHook;
 import info.plugmania.ijmh.effects.HeavyDuty;
 import info.plugmania.ijmh.effects.PlayerEffects;
+import info.plugmania.ijmh.effects.Quicksand;
+import info.plugmania.ijmh.effects.SneakyPickup;
+import info.plugmania.ijmh.effects.SquidDefense;
+import info.plugmania.ijmh.effects.TheHappyMiner;
 import info.plugmania.ijmh.effects.UnstableTNT;
+import info.plugmania.ijmh.effects.ZombieNation;
 
 import info.plugmania.mazemania.MazeMania;
 
@@ -57,6 +64,13 @@ public class ijmh extends JavaPlugin {
 	public BumpInTheRail bumpintherail;
 	public UnstableTNT unstabletnt;
 	public BuggyBlock buggyblock;
+	public TheHappyMiner thehappyminer;
+	public Quicksand quicksand;
+	public ZombieNation zombienation;
+	public BowBreaker bowbreaker;
+	public SquidDefense squiddefense;
+	public SneakyPickup sneakypickup;
+	public FishermanOnHook fishermanonhook;
 	
 	// PLUGIN SUPPORT
 	public MazeMania mazeMania;
@@ -74,10 +88,17 @@ public class ijmh extends JavaPlugin {
 		this.bumpintherail = new BumpInTheRail(this);
 		this.unstabletnt = new UnstableTNT(this);
 		this.buggyblock = new BuggyBlock(this);
+		this.thehappyminer = new TheHappyMiner(this);
+		this.quicksand = new Quicksand(this);
+		this.zombienation = new ZombieNation(this);
+		this.bowbreaker = new BowBreaker(this);
+		this.squiddefense = new SquidDefense(this);
+		this.sneakypickup = new SneakyPickup(this);
+		this.fishermanonhook = new FishermanOnHook(this);
 	}
 	
 	public void onDisable(){
-		this.store.quicksand.clear();
+		this.quicksand.quicksand.clear();
 		for(Player player : this.store.drowning.keySet()){
 			this.store.drowning.get(player).breakNaturally();
 			player.removePotionEffect(PotionEffectType.BLINDNESS);

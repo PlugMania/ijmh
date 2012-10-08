@@ -22,8 +22,6 @@ public class BuggyBlock {
 	
 	public void main(Event e) {
 		
-		Util.toLog("EventName: " + e.getEventName(), true); // DEBUG
-		
 		if(Util.config("tnt",null).getBoolean("active")) {
 			
 			if(e.getEventName().equalsIgnoreCase("BlockPlaceEvent")) {

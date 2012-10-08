@@ -1,56 +1,24 @@
 package info.plugmania.ijmh.effects;
 
-import java.awt.geom.Arc2D.Double;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Sign;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Vehicle;
-import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerFishEvent.State;
-import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Rails;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -76,29 +44,6 @@ public class PlayerEffects {
 
 	public PlayerEffects(ijmh instance){
 		plugin = instance;
-	}
-		
-	public void addEffectPlayerDeath(PlayerDeathEvent event) {
-		Player player = event.getEntity();
-		
-		// ZOMBIE NATION
-		if(Util.config("zombie",null).getBoolean("active") && !Util.config("zombie",null).getList("skip_world").contains(player.getWorld().getName())) {
-			EntityDamageEvent deathCause = player.getLastDamageCause();
-			if(deathCause != null) {
-		        if(deathCause.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-		            Entity entity = ((EntityDamageByEntityEvent)deathCause).getDamager(); 
-					if(
-							(entity.getType().equals(EntityType.ZOMBIE) && Util.config("zombie",null).getBoolean("whenzombie")) || 
-							!Util.config("zombie",null).getBoolean("whenzombie")
-						) {
-						if(Util.pctChance(Util.config("zombie",null).getInt("chance"),Util.config("zombie",null).getInt("chancemod"))) {
-							player.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation(), EntityType.ZOMBIE);
-							if(Util.config("zombie",null).getBoolean("message")) event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_35"));
-						}
-					}
-		        }
-			}
-		}
 	}
 	
 	public void addEffectInteract(PlayerInteractEvent event){
@@ -281,54 +226,6 @@ public class PlayerEffects {
 			if(curTime>FireTime) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_02"));
 			FireTime = curTime + 2000;
 		}
-		// QUICKSAND
-		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(!player.hasPermission("ijmh.immunity.quicksand")) {
-				if(
-						pUnder.getBlock().getType().equals(Material.SAND) &&
-						!player.isInsideVehicle() &&
-						!event.getTo().getBlock().isLiquid() &&
-						(
-							to.getBlockX()!=from.getBlockX() ||
-							to.getBlockY()!=from.getBlockY() ||
-							to.getBlockZ()!=from.getBlockZ()
-						)) {
-					if(!plugin.store.quicksand.containsKey(player) && Util.pctChance(Util.config("quicksand",null).getInt("chance"),Util.config("quicksand",null).getInt("chancemod"))) {
-						plugin.store.quicksand.put(player, 0);
-						
-						player.teleport(pUnder);
-						suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
-						
-						if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
-					} else if(event.getFrom().getY() < event.getTo().getY() && plugin.store.quicksand.containsKey(player)) {
-						plugin.store.quicksand.put(player, plugin.store.quicksand.get(player)+1);
-						player.teleport(event.getFrom());
-						if(plugin.store.quicksand.get(player)>=Util.config("quicksand",null).getInt("jumps")) {
-							player.teleport(player.getLocation().add(new Vector(0,1,0)));
-							if(player.getLocation().getBlock().getType().equals(Material.AIR)) {
-								plugin.store.quicksand.remove(player);
-								if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_22"));
-							}
-						} 
-						else if(curTime>suffocateTime) {
-							player.teleport(pUnder);
-							suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
-						}
-					} else if(curTime>suffocateTime && plugin.store.quicksand.containsKey(player)) {
-						player.teleport(pUnder);
-						suffocateTime = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
-					}
-					
-				} 
-				else if(
-						plugin.store.quicksand.containsKey(player) &&
-						!pUnder.getBlock().getType().equals(Material.SAND) &&
-						!pUnder.getBlock().getType().equals(Material.AIR) 
-						){
-					plugin.store.quicksand.remove(player);
-				}
-			}
-		}
 		// DIZZY IN THE DESERT
 		if(Util.config("desert",null).getBoolean("active") && !Util.config("desert",null).getList("skip_world").contains(player.getWorld().getName())) {
 			if(
@@ -451,98 +348,7 @@ public class PlayerEffects {
 			}	
 		}
 	}
-	
-	public void addEffectPickupItem(PlayerPickupItemEvent event) {
-		Player player = event.getPlayer();
 		
-		// SNEAKY PICKUP
-		if(Util.config("sneaky",null).getBoolean("active") && !Util.config("sneaky",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(!player.hasPermission("ijmh.immunity.sneaky")) {
-				if(!player.isSneaking()) event.setCancelled(true);
-			}
-		}
-		
-	}
-	
-	public void addEffectFish(PlayerFishEvent event) {
-		Player player = event.getPlayer();
-
-		// FISHERMAN
-		if(Util.config("fishing",null).getBoolean("active") && !Util.config("fishing",null).getList("skip_world").contains(player.getWorld().getName())) {
-			// LUCKY FISHERMAN
-			if(event.getState().equals(State.CAUGHT_FISH)) {
-				if(Util.pctChance(Util.config("fishing","lucky").getInt("chance"),Util.config("fishing","lucky").getInt("chancemod")) && Util.config("fishing","lucky").getBoolean("active")) {
-					if(!Util.config("fishing","lucky").getList("items").isEmpty()) {
-						Material material = Material.matchMaterial((String) Util.config("fishing","lucky").getList("items").get((int) (Util.config("fishing","lucky").getList("items").size()*Math.random())));
-						short data = 0;
-						int amount = 1;
-						player.getInventory().addItem(new ItemStack(material, amount, data));
-						player.updateInventory();
-						if(Util.config("fishing","lucky").getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_19") + material.name());
-						Util.toLog(ChatColor.GOLD + Util.language.getString("lan_19") + " " + material.name(), true);
-					}
-				}
-				else if(Util.pctChance(Util.config("fishing","spawn").getInt("chance"),Util.config("fishing","spawn").getInt("chancemod"))) {
-					if(Util.config("fishing","spawn").getBoolean("active")) {
-						if(!Util.config("fishing","spawn").getList("mobs").isEmpty()) {
-							EntityType mob = EntityType.fromName((String) Util.config("fishing","spawn").getList("mobs").get((int) (Util.config("fishing","spawn").getList("mobs").size()*Math.random())));
-							plugin.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation().add(new Vector(2,0,0)), mob);
-							if(Util.config("fishing","spawn").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20") + " " + mob.getName());
-						}
-				
-					}
-				}
-			}
-		}
-	}
-	
-	public void addEffectBlockPlace(BlockPlaceEvent event) {
-		Player player = (Player) event.getPlayer();
-		Block block = event.getBlock();
-		
-		// BYGGYBLOCK PLACED
-		if(Util.config("buggyblock",null).getBoolean("active") && !Util.config("buggyblock",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(Util.config("buggyblock",null).getList("blocks").contains(block.getType().name())) {
-				if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_28"));
-			}
-		}
-	}
-	
-	public void addEffectBlockBreak(BlockBreakEvent event){
-		Player player = (Player) event.getPlayer();
-		
-		// THE HAPPY MINER
-		if(Util.config("happyminer",null).getBoolean("active") && !Util.config("happyminer",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(
-				!player.hasPotionEffect(PotionEffectType.FAST_DIGGING) &&
-				!player.hasPotionEffect(PotionEffectType.SLOW_DIGGING)
-				){
-				
-				if(Util.pctChance(Util.config("happyminer","energized").getInt("chance"),Util.config("happyminer","energized").getInt("chancemod"))) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(Util.config("happyminer","energized").getInt("duration")), Util.config("happyminer","energized").getInt("multiplier")));
-					if(Util.config("happyminer","energized").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_12"));
-				} 
-				else if(Util.pctChance(Util.config("happyminer","tired").getInt("chance"),Util.config("happyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.immunity.tiredminer")) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(Util.config("happyminer","tired").getInt("duration")), Util.config("happyminer","tired").getInt("multiplier")));
-					if(Util.config("happyminer","tired").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_13"));
-				}
-				
-			} 
-			else if(
-				player.hasPotionEffect(PotionEffectType.SLOW_DIGGING) && 
-				!player.hasPotionEffect(PotionEffectType.HUNGER)
-				) {
-				player.addPotionEffect(new PotionEffect(PotionEffectType.HUNGER, Util.sec2tic(Util.config("happyminer","hunger").getInt("duration")), Util.config("happyminer","hunger").getInt("multiplier")));
-			}
-		}
-		// QUICKSAND PREVENT BREAKOUT 
-		if(Util.config("quicksand",null).getBoolean("active") && !Util.config("quicksand",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(plugin.store.quicksand.containsKey(player)) {
-				event.setCancelled(true);
-			}
-		}
-	}
-	
 	public void addEffectDamage(EntityDamageEvent event){
 		
 		if(event.getEntity().getType().equals(EntityType.PLAYER)) {
@@ -573,46 +379,6 @@ public class PlayerEffects {
 				}
 			}
 		} 	
-	}
-
-	public void addEffectDamageByEntity(EntityDamageByEntityEvent event) {
-		
-		Player damager = null;
-		
-		if(event.getEntity() instanceof LivingEntity && event.getDamager() instanceof Player) {
-			
-			damager = (Player) event.getDamager();
-			LivingEntity entity = (LivingEntity) event.getEntity();
-			
-			// SQUID SELFDEFENSE
-			if(Util.config("squid",null).getBoolean("active") && !Util.config("squid",null).getList("skip_world").contains(damager.getWorld().getName())) {
-				if(entity.getType().equals(EntityType.SQUID) && damager.getGameMode().equals(GameMode.SURVIVAL)) {
-					if(Util.pctChance(Util.config("squid",null).getInt("chance"),Util.config("squid",null).getInt("chancemod"))) {
-						damager.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("squid",null).getInt("duration")), Util.config("squid",null).getInt("multiplier")));
-						damager.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("squid",null).getInt("duration")), 1));
-						if(Util.config("fall",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD+ "" + ChatColor.ITALIC + Util.language.getString("lan_15"));
-					}
-				}
-			}
-		}
-		// BOW BREAKS
-		if(event.getDamager() instanceof Arrow && event.getEntity() instanceof Player) {
-			Arrow arrow = (Arrow) event.getDamager();
-			if(arrow.getShooter() instanceof Player) {
-				damager = (Player) arrow.getShooter();
-				if(!damager.hasPermission("ijmh.immunity.bow")) {
-					if(Util.config("bow",null).getBoolean("active") && !Util.config("bow",null).getList("skip_world").contains(damager.getWorld().getName())) {
-						if(Util.pctChance(Util.config("bow",null).getInt("chance"),Util.config("bow",null).getInt("chancemod"))) {
-							ItemStack itemHand = (ItemStack) damager.getItemInHand();
-							Inventory inv = damager.getInventory();
-							inv.remove(itemHand);
-							damager.damage(Util.config("bow",null).getInt("damage"));
-							if(Util.config("bow",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD + Util.language.getString("lan_17"));
-						}
-					}
-				}
-			}
-		}
 	}
 		
 	public void addEffectVehicleMove(VehicleMoveEvent event) {

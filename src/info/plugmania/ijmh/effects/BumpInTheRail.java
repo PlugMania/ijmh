@@ -21,8 +21,6 @@ public class BumpInTheRail {
 	}
 	
 	public void main(Event e) {
-
-		Util.toLog("EventName: " + e.getEventName(), true); // DEBUG
 		
 		if(Util.config("rail",null).getBoolean("active")){
 

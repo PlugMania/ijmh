@@ -29,8 +29,6 @@ public class UnstableTNT {
 	
 	public void main(Event e) {
 		
-		Util.toLog("EventName: " + e.getEventName(), true); // DEBUG
-		
 		if(Util.config("tnt",null).getBoolean("active")){
 
 			if(e.getEventName().equalsIgnoreCase("BlockPlaceEvent")) {
@@ -46,7 +44,7 @@ public class UnstableTNT {
 								TNTPrimed tnt = (TNTPrimed) block.getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
 								tnt.setFuseTicks(0);
 								if(player.getGameMode().equals(GameMode.CREATIVE)) player.setGameMode(GameMode.SURVIVAL);
-								this.tnt.add(player);
+								plugin.unstabletnt.tnt.add(player);
 								player.damage(1000);
 							}
 						}
@@ -57,8 +55,8 @@ public class UnstableTNT {
 				PlayerDeathEvent event = (PlayerDeathEvent) e;
 				Player player = (Player) event.getEntity();
 				
-				if(plugin.store.tnt.contains(player)) {
-					plugin.store.tnt.remove(player);
+				if(plugin.unstabletnt.tnt.contains(player)) {
+					plugin.unstabletnt.tnt.remove(player);
 					event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_30"));
 				}
 				

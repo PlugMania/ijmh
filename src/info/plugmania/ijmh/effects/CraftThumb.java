@@ -18,8 +18,6 @@ public class CraftThumb {
 
 	public void main(Event e) {
 		
-		Util.toLog("EventName: " + e.getEventName(), true); // DEBUG
-		
 		if(Util.config("craftthumb",null).getBoolean("active")){
 		
 			if(e.getEventName().equalsIgnoreCase("CraftItemEvent")) {
