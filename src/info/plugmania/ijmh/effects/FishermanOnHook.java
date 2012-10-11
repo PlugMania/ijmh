@@ -41,7 +41,7 @@ public class FishermanOnHook {
 								int amount = 1;
 								player.getInventory().addItem(new ItemStack(material, amount, data));
 								player.updateInventory();
-								if(Util.config("fishing","lucky").getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_19") + material.name());
+								if(Util.config("fishing","lucky").getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_19") + " " + material.name());
 								Util.toLog(ChatColor.GOLD + Util.language.getString("lan_19") + " " + material.name(), true);
 							}
 						}

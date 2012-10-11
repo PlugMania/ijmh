@@ -30,7 +30,7 @@ public class UntamedRide {
 	
 	public void main(Event e) {
 		
-		if(Util.config("ride",null).getBoolean("active")){
+		if(!plugin.disabled.contains("ride") && Util.config("ride",null).getBoolean("active")){
 
 			if(e.getEventName().equalsIgnoreCase("VehicleMoveEvent")) {
 				VehicleMoveEvent event = (VehicleMoveEvent) e;
