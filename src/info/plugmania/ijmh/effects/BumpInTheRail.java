@@ -26,17 +26,20 @@ public class BumpInTheRail {
 
 			if(e.getEventName().equalsIgnoreCase("VehicleMoveEvent")) {
 				VehicleMoveEvent event = (VehicleMoveEvent) e;
-				Player player = (Player) event.getVehicle().getPassenger();
 				
-				if(!Util.config("rail",null).getList("skip_world").contains(player.getWorld().getName())) {
-					if(event.getTo().getBlock().getType().equals(Material.RAILS) && event.getVehicle().getType().equals(EntityType.MINECART)) {
-						if(!player.hasPermission("ijmh.immunity.rail")) {
-							Rails rail = new Rails(event.getTo().getBlock().getType(), event.getTo().getBlock().getData());
-							if(rail.isCurve() && Util.pctChance(Util.config("rail",null).getInt("chance"),Util.config("rail",null).getInt("chancemod"))) {
-								event.getVehicle().eject();
-								Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
-								player.setVelocity(new Vector(vector.getX()+Util.config("rail",null).getInt("distance"),Util.config("rail",null).getInt("angle"),vector.getZ()+Util.config("rail",null).getInt("distance")));
-								if(Util.config("rail",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_18"));
+				if(event.getVehicle().getPassenger() instanceof Player) {
+					Player player = (Player) event.getVehicle().getPassenger();
+				
+					if(!Util.config("rail",null).getList("skip_world").contains(player.getWorld().getName())) {
+						if(event.getTo().getBlock().getType().equals(Material.RAILS) && event.getVehicle().getType().equals(EntityType.MINECART)) {
+							if(!player.hasPermission("ijmh.immunity.rail")) {
+								Rails rail = new Rails(event.getTo().getBlock().getType(), event.getTo().getBlock().getData());
+								if(rail.isCurve() && Util.pctChance(Util.config("rail",null).getInt("chance"),Util.config("rail",null).getInt("chancemod"))) {
+									event.getVehicle().eject();
+									Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
+									player.setVelocity(new Vector(vector.getX()+Util.config("rail",null).getInt("distance"),Util.config("rail",null).getInt("angle"),vector.getZ()+Util.config("rail",null).getInt("distance")));
+									if(Util.config("rail",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_18"));
+								}
 							}
 						}
 					}

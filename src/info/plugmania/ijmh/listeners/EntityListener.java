@@ -22,54 +22,25 @@ public class EntityListener implements Listener {
 	
 	@EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {		
-		if(event.getEntity() instanceof Player) {
-			Player player = (Player) event.getEntity();
-			if(player.getGameMode().equals(GameMode.SURVIVAL)) {
-				plugin.playerEffects.addEffectDamage(event);
-			}
-		} else {
 			plugin.squiddefense.main(event); // SQUID DEFENSE
 			plugin.bowbreaker.main(event); // BOW BREAKER
-		}
     }	
 	
 	@EventHandler
     public void onVehicleEnter(VehicleEnterEvent event) {
-		
-		Util.toLog(event.getEntered() + " mounted " + event.getVehicle().getType(), true);
-		
-		if(event.getEntered() instanceof Player) {
-			Player player = (Player) event.getEntered();
-	
-			if(!plugin.disabled.contains("ride") && Util.config("ride",null).getBoolean("active") && !Util.config("ride",null).getList("skip_world").contains(player.getWorld().getName())) {
-			if(!player.hasPermission("ijmh.immunity.ride")) {
-					if(Util.config("ride",null).getList("entitytype").contains(event.getVehicle().getType())) {
-						plugin.store.riding.add(player);
-						Util.toLog(player.getName() + " mounted " + event.getVehicle().getType(), true);
-					}
-				}
-			}
-		}
+		plugin.untamedride.main(event); // UNTAIMED RIDE
 	}
 	
 	@EventHandler
     public void onVehicleExit(VehicleExitEvent event) {
-		if(event.getExited() instanceof Player) {
-			Player player = (Player) event.getExited();
-			
-			if(plugin.store.riding.contains(event.getExited())) {
-				plugin.store.riding.remove(event.getExited());
-				Util.toLog(player.getName() + " unmounted " + event.getVehicle().getType().getName(), true);
-			}	
-		}		
+		plugin.untamedride.main(event); // UNTAIMED RIDE		
 	}
 	
 	@EventHandler
-    public void onVehicleMove(VehicleMoveEvent event) {	
-		if(event.getVehicle().getPassenger() instanceof Player) {
-			// BUMP IN THE RAIL
-			plugin.bumpintherail.main(event);
-		}
+    public void onVehicleMove(VehicleMoveEvent event) {
+		plugin.untamedride.main(event); // UNTAIMED RIDE
+		plugin.rowyourboat.main(event); // ROW YOUR BOAT
+		plugin.bumpintherail.main(event); // BUMP IN THE RAIL
 	}
 	
 }

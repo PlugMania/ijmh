@@ -2,9 +2,7 @@ package info.plugmania.ijmh;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -22,16 +20,12 @@ import java.util.Random;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
@@ -101,7 +95,7 @@ public class Util{
 	}
 	
 	public void SavetoConfig(String s1, String s2, String key, String value) {
-			this.config(s1,s2).set(key, value);
+			Util.config(s1,s2).set(key, value);
 	}
 	
 	static public void toLog(String s, boolean isDebug){
@@ -112,7 +106,7 @@ public class Util{
 	static public boolean isBiome(String biome){
 		boolean isBiome = false;
 		
-		List BiomeList = new LinkedList(); 
+		List<String> BiomeList = new LinkedList<String>(); 
 		BiomeList.add("FOREST"); 
 		BiomeList.add("DESERT"); 
 		BiomeList.add("PLAINS");
@@ -246,7 +240,7 @@ public class Util{
         }
     }
 
-    public void loadYamls() {
+    public static void loadYamls() {
         try {
         	Util.toLog("Loading Languagefile",true);
         	language.load(languageFile);
@@ -361,7 +355,7 @@ public class Util{
 
 		WorldGuardPlugin wg = plugin.wg;
 		Vector pt = toVector(loc); // This also takes a location
-		LocalPlayer localPlayer = wg.wrapPlayer(p);
+		//LocalPlayer localPlayer = wg.wrapPlayer(p);
 		 
 		RegionManager regionManager = wg.getRegionManager(p.getWorld());
 		ApplicableRegionSet set = regionManager.getApplicableRegions(pt);

@@ -32,7 +32,7 @@ public class Quicksand {
 	// STORED PLAYERS AND REGISTERED JUMPS
 	public HashMap<Player, Integer> quicksand = new HashMap<Player, Integer>();
 	// TIMED EVENTS & COOLDOWNS
-	int timer = 0;
+	public long timer = 0;
 	
 	public void main(Event e) {
 		
@@ -62,7 +62,7 @@ public class Quicksand {
 								plugin.quicksand.quicksand.put(player, 0);
 								
 								player.teleport(pUnder);
-								timer = (int) curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+								timer = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 								
 								if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
 							} else if(event.getFrom().getY() < event.getTo().getY() && plugin.quicksand.quicksand.containsKey(player)) {
@@ -80,12 +80,12 @@ public class Quicksand {
 								else if(curTime>timer) {
 									Util.toLog("Get back", true);
 									player.teleport(pUnder);
-									timer = (int) curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+									timer = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 								}
 							} else if(curTime>timer && plugin.quicksand.quicksand.containsKey(player)) {
 								player.teleport(pUnder);
 								Util.toLog("Get back", true);
-								timer = (int) curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
+								timer = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 							}
 							
 						} 
