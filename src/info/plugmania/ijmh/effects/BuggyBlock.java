@@ -65,16 +65,8 @@ public class BuggyBlock {
 				
 				// BLOCK CHECK
 				if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("buggyblock",null).getList("skip_world").contains(player.getWorld().getName())) {
-					if(
-						Util.config("buggyblock",null).getList("blocks").contains(pUnder.getBlock().getType().name()) &&
-						(
-							to.getBlockX()!=from.getBlockX() ||
-							to.getBlockY()!=from.getBlockY() ||
-							to.getBlockZ()!=from.getBlockZ()
-						)) {
-			
+					if(Util.config("buggyblock",null).getList("blocks").contains(pUnder.getBlock().getType().name())) {
 						if(Util.pctChance(Util.config("buggyblock",null).getInt("chance"),Util.config("buggyblock",null).getInt("chancemod"))) {
-							
 							pUnder.getBlock().breakNaturally();
 							event.setCancelled(true);
 							if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_29"));

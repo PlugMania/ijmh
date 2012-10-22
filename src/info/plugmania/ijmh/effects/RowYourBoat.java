@@ -103,10 +103,8 @@ public class RowYourBoat {
 				
 				// PREVENT MOVING UP UNTIL BLOCK IS DESTROYED
 				if(plugin.rowyourboat.drowning.containsKey(player)) {
-					if(event.getTo().getBlockX()!=event.getFrom().getBlockX() || event.getTo().getBlockZ()!=event.getFrom().getBlockZ() || event.getTo().getBlockY()>event.getFrom().getBlockY()){
-						if(event.getTo().getBlockY()>event.getFrom().getBlockY()) event.setCancelled(true);
-						else player.teleport(event.getFrom());
-					}
+					if(event.getTo().getBlockY()>event.getFrom().getBlockY()) event.setCancelled(true);
+					else player.teleport(event.getFrom());
 				}
 			}
 			else if(e.getEventName().equalsIgnoreCase("AsyncPlayerChatEvent")) {

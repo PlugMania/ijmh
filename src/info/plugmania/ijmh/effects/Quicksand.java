@@ -68,12 +68,8 @@ public class Quicksand {
 						if(
 								(pUnder.getBlock().getType().equals(Material.SAND) || pUnder.getBlock().getType().equals(Material.SANDSTONE)) &&
 								!player.isInsideVehicle() &&
-								!event.getTo().getBlock().isLiquid() &&
-								(
-									to.getBlockX()!=from.getBlockX() ||
-									to.getBlockY()!=from.getBlockY() ||
-									to.getBlockZ()!=from.getBlockZ()
-								)) {
+								!event.getTo().getBlock().isLiquid()
+								) {
 							if(!plugin.quicksand.quicksand.containsKey(player) && Util.pctChance(Util.config("quicksand",null).getInt("chance"),Util.config("quicksand",null).getInt("chancemod"))) {
 								plugin.quicksand.quicksand.put(player, 0);
 								

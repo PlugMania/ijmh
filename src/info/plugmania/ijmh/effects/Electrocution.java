@@ -47,7 +47,6 @@ public class Electrocution {
 				PlayerMoveEvent event = (PlayerMoveEvent) e;
 				Player player = event.getPlayer();
 				Location to = event.getTo();
-				Location from = event.getFrom();
 				
 				if(!player.hasPermission("ijmh.immunity.electro")) {
 					if(!Util.config("electro",null).getList("skip_world").contains(player.getWorld().getName())) {
@@ -55,12 +54,7 @@ public class Electrocution {
 								!player.getGameMode().equals(GameMode.CREATIVE) &&
 								!player.isInsideVehicle() &&
 								to.getBlock().isBlockPowered() &&
-								!(to.getBlock().getType().equals(Material.WOOD_PLATE) || to.getBlock().getType().equals(Material.STONE_PLATE)) &&
-								(
-								to.getBlockX()!=from.getBlockX() ||
-								to.getBlockY()!=from.getBlockY() ||
-								to.getBlockZ()!=from.getBlockZ()
-								)
+								!(to.getBlock().getType().equals(Material.WOOD_PLATE) || to.getBlock().getType().equals(Material.STONE_PLATE))
 								){
 							if(Util.pctChance(Util.config("electro","high").getInt("chance"),Util.config("electro","high").getInt("chancemod"))) {
 								player.damage(Util.config("electro","high").getInt("damage"));

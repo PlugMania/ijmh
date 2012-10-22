@@ -1,7 +1,5 @@
 package info.plugmania.ijmh.listeners;
 
-import org.bukkit.GameMode;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -9,7 +7,6 @@ import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleMoveEvent;
 
-import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
 public class EntityListener implements Listener {

@@ -63,9 +63,6 @@ public class DizzyInTheDesert {
 						}
 					}
 				}
-				//plugin.dizzyinthedesert.desert.remove(player);
-				//player.removePotionEffect(PotionEffectType.SLOW);
-				//player.removePotionEffect(PotionEffectType.CONFUSION);
 			}
 			else if(e.getEventName().equalsIgnoreCase("PlayerDeathEvent")) {
 				PlayerDeathEvent event = (PlayerDeathEvent) e;
@@ -79,8 +76,6 @@ public class DizzyInTheDesert {
 				PlayerMoveEvent event = (PlayerMoveEvent) e;
 				Player player = event.getPlayer();
 				Location pUnder = player.getLocation().add(0, -1, 0);
-				Location to = event.getTo();
-				Location from = event.getFrom();
 			
 				if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("desert",null).getList("skip_world").contains(player.getWorld().getName())) {
 					if(
@@ -93,12 +88,8 @@ public class DizzyInTheDesert {
 							if(
 									pUnder.getBlock().getType().equals(Material.SAND) &&
 									!player.isInsideVehicle() &&
-									!event.getTo().getBlock().isLiquid() &&
-									(
-										to.getBlockX()!=from.getBlockX() ||
-										to.getBlockY()!=from.getBlockY() ||
-										to.getBlockZ()!=from.getBlockZ()
-									)) {
+									!event.getTo().getBlock().isLiquid()
+									) {
 								if(Util.pctChance(Util.config("desert",null).getInt("chance"),Util.config("desert",null).getInt("chancemod"))) {
 									Util.toLog("was here " + player.getWorld().getTime(), true);
 									plugin.dizzyinthedesert.desert.add(player);
@@ -110,13 +101,7 @@ public class DizzyInTheDesert {
 						}
 					}	
 				}
-				if(
-						plugin.dizzyinthedesert.desert.contains(player) &&
-						(
-								to.getBlockX()!=from.getBlockX() ||
-								to.getBlockY()!=from.getBlockY() ||
-								to.getBlockZ()!=from.getBlockZ()
-							)) {
+				if(plugin.dizzyinthedesert.desert.contains(player)) {
 					if(player.getWorld().isThundering() || !pUnder.getBlock().getType().equals(Material.SAND)) {
 						Util.toLog("was here too " + player.getWorld().getTime(), true);
 						plugin.dizzyinthedesert.desert.remove(player);

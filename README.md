@@ -11,7 +11,7 @@ version: 1.4.0<br /><br />
 v1.3.7 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.3.7b Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.4.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
 
@@ -20,6 +20,7 @@ Preperation started towards building v2.0.0<br />
 All features now merged into their own classes<br />
 All features tested and merge was a success<br />
 All feature commands moved to their class and translated to use same function for setup<br />
+Changes to PlayerMoveEvent towards optimization<br />
 Fixed bug in "Row your boat" where block was created higher than player<br />
 Fixed commands to change Zombie Nation "whenzombie" and Brew Explosion "signs"<br /> 
 v1.3.7<br />

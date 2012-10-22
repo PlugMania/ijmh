@@ -5,7 +5,6 @@ import java.util.HashMap;
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

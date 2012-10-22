@@ -56,11 +56,8 @@ public class RosesHaveThorns {
 					if(!Util.config("roses",null).getList("skip_world").contains(player.getWorld().getName())){
 						if(
 								!player.getGameMode().equals(GameMode.CREATIVE) &&
-								to.getBlock().getType().equals(Material.RED_ROSE) &&
-								(to.getBlockX()!=from.getBlockX() ||
-								 to.getBlockY()!=from.getBlockY() ||
-								 to.getBlockZ()!=from.getBlockZ()
-							)){
+								to.getBlock().getType().equals(Material.RED_ROSE)
+								){
 							player.damage(Util.config("roses",null).getInt("damage"));
 							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("roses",null).getInt("duration")), Util.config("roses",null).getInt("multiplier")));
 							if(

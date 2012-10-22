@@ -48,7 +48,6 @@ public class StruckByLightning {
 				PlayerMoveEvent event = (PlayerMoveEvent) e;
 				Player player = event.getPlayer();
 				Location to = event.getTo();
-				Location from = event.getFrom();
 				Date curDate = new Date();
 				long curTime = curDate.getTime();
 				

@@ -3,6 +3,7 @@ package info.plugmania.ijmh.listeners;
 import info.plugmania.ijmh.ijmh;
 
 
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -64,16 +65,21 @@ public class PlayerListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
-		plugin.dizzyinthedesert.main(event); // DIZZY IN THE DESERT
-		plugin.rowyourboat.main(event); // ROW YOUR BOAT
-		plugin.concussion.main(event); // 
-		plugin.struckbylightning.main(event); // STRUCK BY LIGHTNING
-		plugin.roseshavethorns.main(event); // ROSES HAVE THORNS
-		plugin.stickytar.main(event); // STICKY TAR
-		plugin.electrocution.main(event); // ELECTROCUTION
-		plugin.onfire.main(event); // ON FIRE
-		plugin.quicksand.main(event); // QUICKSAND
-		plugin.buggyblock.main(event); // BUGGY BLOCK
+		Location to = event.getTo();
+		Location from = event.getFrom();
+		
+		if(to.getBlockX()!=from.getBlockX() || to.getBlockY()!=from.getBlockY() || to.getBlockZ()!=from.getBlockZ()) {
+			plugin.dizzyinthedesert.main(event); // DIZZY IN THE DESERT
+			plugin.rowyourboat.main(event); // ROW YOUR BOAT
+			plugin.concussion.main(event); // CONCUSSION
+			plugin.struckbylightning.main(event); // STRUCK BY LIGHTNING
+			plugin.roseshavethorns.main(event); // ROSES HAVE THORNS
+			plugin.stickytar.main(event); // STICKY TAR
+			plugin.electrocution.main(event); // ELECTROCUTION
+			plugin.onfire.main(event); // ON FIRE
+			plugin.quicksand.main(event); // QUICKSAND
+			plugin.buggyblock.main(event); // BUGGY BLOCK
+		}
 	}
 
 	@EventHandler

@@ -50,21 +50,14 @@ public class StickyTar {
 				PlayerMoveEvent event = (PlayerMoveEvent) e;
 				Player player = event.getPlayer();
 				Location pUnder = player.getLocation().add(0, -1, 0);
-				Location to = event.getTo();
-				Location from = event.getFrom();
 				Date curDate = new Date();
 				long curTime = curDate.getTime();
 				
 				if(!Util.config("tar",null).getList("skip_world").contains(player.getWorld().getName())) {
 					if(
 						!player.getGameMode().equals(GameMode.CREATIVE) &&
-						pUnder.getBlock().getType().equals(Material.WOOL) &&
-						(
-							to.getBlockX()!=from.getBlockX() ||
-							to.getBlockY()!=from.getBlockY() ||
-							to.getBlockZ()!=from.getBlockZ()
-						)) {
-
+						pUnder.getBlock().getType().equals(Material.WOOL)
+						) {
 						Block block = pUnder.getBlock();
 						Wool wool = new Wool(block.getType(), block.getData());
 						if(wool.getColor().equals(DyeColor.BLACK)) {
