@@ -8,6 +8,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,6 +48,7 @@ import info.plugmania.ijmh.effects.StruckByLightning;
 import info.plugmania.ijmh.effects.TheHappyMiner;
 import info.plugmania.ijmh.effects.UnstableTNT;
 import info.plugmania.ijmh.effects.UntamedRide;
+import info.plugmania.ijmh.effects.WorldDrop;
 import info.plugmania.ijmh.effects.ZombieNation;
 
 import info.plugmania.mazemania.MazeMania;
@@ -86,6 +88,7 @@ public class ijmh extends JavaPlugin {
 	public RowYourBoat rowyourboat;
 	public UntamedRide untamedride;
 	public DizzyInTheDesert dizzyinthedesert;
+	public WorldDrop worlddrop;
 	
 	// PLUGIN SUPPORT
 	public MazeMania mazeMania;
@@ -120,6 +123,7 @@ public class ijmh extends JavaPlugin {
 		this.rowyourboat = new RowYourBoat(this);
 		this.untamedride = new UntamedRide(this);
 		this.dizzyinthedesert = new DizzyInTheDesert(this);
+		this.worlddrop = new WorldDrop(this);
 	}
 	
 	public void onDisable(){
@@ -179,7 +183,7 @@ public class ijmh extends JavaPlugin {
 	        getLogger().info("WorldGuard hooked");
 	    }
 	    
-	    this.scheduler.worldevents();
+	    this.worlddrop.main();
 	    
 	    // ARMORVALUES TO HASHMAP
 	    util.armorval2type();
@@ -254,6 +258,7 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.RED + "[ijhm] This feature is disabled for now");
 				}
 				else if(effects.contains(args[0].toLowerCase()) && args.length==1){
+					
 					String state;
 					if(Util.config(args[0], null).getBoolean("active")) state = ChatColor.GREEN + "enabled";
 					else state = ChatColor.RED + "disabled";
@@ -263,221 +268,31 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.GOLD + "section" + ChatColor.AQUA + " | " + ChatColor.GOLD + "name" + ChatColor.AQUA + " (default): current value");
 					sender.sendMessage(ChatColor.AQUA + "| toggle");
 					
-					if(args[0].equalsIgnoreCase("fire")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("fire",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("fire",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + Util.config("fire",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("fire",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| duration (300): " + ChatColor.GOLD + Util.config("fire",null).getInt("duration"));
-					}
-					else if(args[0].equalsIgnoreCase("fall")) {
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("fall",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("fall",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| duration (5): " + ChatColor.GOLD + Util.config("fall",null).getInt("duration"));		
-						sender.sendMessage(ChatColor.GREEN + "The duration for "  + args[0] + " is for the shortest effect, rest will sync to this value.");
-					}
-					else if(args[0].equalsIgnoreCase("foodpoison")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("foodpoison",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("foodpoison",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + Util.config("foodpoison",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("foodpoison",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + Util.config("foodpoison",null).getInt("multiplier"));
-						sender.sendMessage(ChatColor.AQUA + "| duration (5): " + ChatColor.GOLD + Util.config("foodpoison",null).getInt("duration"));
-					} 
-					else if(args[0].equalsIgnoreCase("lightning")) {
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("lightning",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("lightning",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| skipbiome: " + ChatColor.GOLD + Util.config("lightning",null).getList("skip_biome"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (5): " + ChatColor.GOLD + Util.config("lightning",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + Util.config("lightning",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| damage (10): " + ChatColor.GOLD + Util.config("lightning",null).getInt("damage"));
-						sender.sendMessage(ChatColor.AQUA + "| cooldown (10): " + ChatColor.GOLD + Util.config("lightning",null).getInt("cooldown"));
-					} 
-					else if(args[0].equalsIgnoreCase("electro")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("electro",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "high | message (true): " + ChatColor.GOLD + Util.config("electro","high").getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "high | chance (5): " + ChatColor.GOLD + Util.config("electro","high").getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "high | chancemod (1): " + ChatColor.GOLD + Util.config("electro","high").getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "high | damage (8): " + ChatColor.GOLD + Util.config("electro","high").getInt("damage"));
-						sender.sendMessage(ChatColor.AQUA + "low | message (true): " + ChatColor.GOLD + Util.config("electro","low").getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "low | damage (2): " + ChatColor.GOLD + Util.config("electro","low").getInt("damage"));						
-					} 
-					else if(args[0].equalsIgnoreCase("craftthumb")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("craftthumb",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("craftthumb",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + Util.config("craftthumb",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("craftthumb",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| damage (2): " + ChatColor.GOLD + Util.config("craftthumb",null).getInt("damage"));
-					} 
-					else if(args[0].equalsIgnoreCase("cows")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("cows",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("cows",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "kick | message (true): " + ChatColor.GOLD + Util.config("cows","kick").getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "kick | damage (4): " + ChatColor.GOLD + Util.config("cows","kick").getInt("damage"));
-						sender.sendMessage(ChatColor.AQUA + "kick | duration (5): " + ChatColor.GOLD + Util.config("cows","kick").getInt("duration"));
-						sender.sendMessage(ChatColor.AQUA + "kick | backwards (2): " + ChatColor.GOLD + Util.config("cows","kick").getInt("backwards"));
-						sender.sendMessage(ChatColor.AQUA + "kick | upwards (1): " + ChatColor.GOLD + Util.config("cows","kick").getInt("upwards"));
-					} 
-					else if(args[0].equalsIgnoreCase("happyminer")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("happyminer",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "tired | message (true): " + ChatColor.GOLD + Util.config("happyminer","tired").getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "tired | multiplier (1): " + ChatColor.GOLD + Util.config("happyminer","tired").getInt("multiplier"));
-						sender.sendMessage(ChatColor.AQUA + "tired | chance (5): " + ChatColor.GOLD + Util.config("happyminer","tired").getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "tired | chancemod (1): " + ChatColor.GOLD + Util.config("happyminer","tired").getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "tired | duration (10): " + ChatColor.GOLD + Util.config("happyminer","tired").getInt("duration"));
-						sender.sendMessage(ChatColor.AQUA + "hunger | multiplier (1): " + ChatColor.GOLD + Util.config("happyminer","hunger").getInt("multiplier"));
-						sender.sendMessage(ChatColor.AQUA + "hunger | duration (10): " + ChatColor.GOLD + Util.config("happyminer","hunger").getInt("duration"));
-						sender.sendMessage(ChatColor.AQUA + "energized | message (true): " + ChatColor.GOLD + Util.config("happyminer","energized").getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "energized | chance (5): " + ChatColor.GOLD + Util.config("happyminer","energized").getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "energized | chancemod (1): " + ChatColor.GOLD + Util.config("happyminer","energized").getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "energized | multiplier (1): " + ChatColor.GOLD + Util.config("happyminer","energized").getInt("multiplier"));
-						sender.sendMessage(ChatColor.AQUA + "energized | duration (10): " + ChatColor.GOLD + Util.config("happyminer","energized").getInt("duration"));   
-					}
-					else if(args[0].equalsIgnoreCase("roses")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("roses",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("roses",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| damage (1): " + ChatColor.GOLD + Util.config("roses",null).getInt("damage"));
-						sender.sendMessage(ChatColor.AQUA + "| multiplier (3): " + ChatColor.GOLD + Util.config("roses",null).getInt("multiplier"));
-						sender.sendMessage(ChatColor.AQUA + "| duration (2): " + ChatColor.GOLD + Util.config("roses",null).getInt("duration"));
-					}
-					else if(args[0].equalsIgnoreCase("brew")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("brew",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| signs (false): " + ChatColor.GOLD + Util.config("brew",null).getBoolean("signs"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + Util.config("brew",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + Util.config("brew",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + Util.config("brew",null).getInt("multiplier"));
-					}
-					else if(args[0].equalsIgnoreCase("squid")) {
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("squid",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("squid",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (25): " + ChatColor.GOLD + Util.config("squid",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("squid",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| multiplier (1): " + ChatColor.GOLD + Util.config("squid",null).getInt("multiplier"));
-						sender.sendMessage(ChatColor.AQUA + "| duration (5): " + ChatColor.GOLD + Util.config("squid",null).getInt("duraton"));
-					}
-					else if(args[0].equalsIgnoreCase("tar")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("tar",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("tar",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| multiplier (5): " + ChatColor.GOLD + Util.config("tar",null).getInt("multiplier"));
-						sender.sendMessage(ChatColor.AQUA + "| duration (1): " + ChatColor.GOLD + Util.config("tar",null).getInt("duration"));
-					}
-					else if(args[0].equalsIgnoreCase("bow")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("bow",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("bow",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + Util.config("bow",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("bow",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| damage (4): " + ChatColor.GOLD + Util.config("bow",null).getInt("damage"));
-					}
-					else if(args[0].equalsIgnoreCase("rail")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("rail",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("rail",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + Util.config("rail",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("rail",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| distance (1): " + ChatColor.GOLD + Util.config("rail",null).getInt("distance"));
-						sender.sendMessage(ChatColor.AQUA + "| angle (1): " + ChatColor.GOLD + Util.config("rail",null).getInt("angle"));
-					}
-					else if(args[0].equalsIgnoreCase("quicksand")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("quicksand",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("quicksand",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + Util.config("quicksand",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("quicksand",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| cooldown (5): " + ChatColor.GOLD + Util.config("quicksand",null).getInt("cooldown"));
-						sender.sendMessage(ChatColor.AQUA + "| jumps (5): " + ChatColor.GOLD + Util.config("quicksand",null).getInt("jumps"));
-						sender.sendMessage(ChatColor.GOLD + "* Cooldown is the duration before sinking 1 block deeper");
-					}
-					else if(args[0].equalsIgnoreCase("desert")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("desert",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| whendesert (true): " + ChatColor.GOLD + Util.config("desert",null).getBoolean("whendesert"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("desert",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + Util.config("desert",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("desert",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| multiplier (2): " + ChatColor.GOLD + Util.config("desert",null).getInt("multiplier"));
-
-					}
-					else if(args[0].equalsIgnoreCase("boat")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("boat",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("boat",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + Util.config("boat",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("boat",null).getInt("chancemod"));
-					}
-					else if(args[0].equalsIgnoreCase("buggyblock")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("buggyblock",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("buggyblock",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (100): " + ChatColor.GOLD + Util.config("buggyblock",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("buggyblock",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| blocks: " + ChatColor.GOLD + Util.config("buggyblock",null).getList("blocks"));
-					}
-					else if(args[0].equalsIgnoreCase("tnt")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("tnt",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + Util.config("tnt",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (10): " + ChatColor.GOLD + Util.config("tnt",null).getInt("chancemod"));
-					}
-					else if(args[0].equalsIgnoreCase("ride")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("ride",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("ride",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| entitytype: " + ChatColor.GOLD + Util.config("ride",null).getList("entitytype"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (1): " + ChatColor.GOLD + Util.config("ride",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("ride",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| distance (1): " + ChatColor.GOLD + Util.config("ride",null).getInt("distance"));
-						sender.sendMessage(ChatColor.AQUA + "| angle (1): " + ChatColor.GOLD + Util.config("ride",null).getInt("angle"));
-					}
-					else if(args[0].equalsIgnoreCase("worlddrop")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("worlddrop",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + Util.config("worlddrop",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("worlddrop",null).getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "| radius (30): " + ChatColor.GOLD + Util.config("worlddrop",null).getInt("radius"));
-						sender.sendMessage(ChatColor.AQUA + "| abovesealvl (20): " + ChatColor.GOLD + Util.config("worlddrop",null).getInt("abovesealvl"));
-						sender.sendMessage(ChatColor.AQUA + "| maxlocs (1): " + ChatColor.GOLD + Util.config("worlddrop",null).getInt("maxlocs"));
-						sender.sendMessage(ChatColor.AQUA + "| cooldown (900): " + ChatColor.GOLD + Util.config("worlddrop",null).getInt("cooldown"));
-						sender.sendMessage(ChatColor.AQUA + "| amount (10): " + ChatColor.GOLD + Util.config("worlddrop",null).getInt("maxlocs"));
-						sender.sendMessage(ChatColor.AQUA + "| items: " + ChatColor.GOLD + Util.config("worlddrop",null).getList("items"));
-					}
-					else if(args[0].equalsIgnoreCase("sneaky")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("sneaky",null).getList("skip_world"));
-					}
-					else if(args[0].equalsIgnoreCase("zombie")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("zombie",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| message (true): " + ChatColor.GOLD + Util.config("zombie",null).getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "| whenzombie (true): " + ChatColor.GOLD + Util.config("zombie",null).getBoolean("whenzombie"));
-						sender.sendMessage(ChatColor.AQUA + "| chance (10): " + ChatColor.GOLD + Util.config("zombie",null).getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "| chancemod (1): " + ChatColor.GOLD + Util.config("zombie",null).getInt("chancemod"));	
-					}
-					else if(args[0].equalsIgnoreCase("heavy")) {
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("heavy",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "| walkspeed (0.1): " + ChatColor.GOLD + Util.config("heavy",null).getDouble("walkspeed"));
-						sender.sendMessage(ChatColor.AQUA + "| flyspeed (0.2): " + ChatColor.GOLD + Util.config("heavy",null).getDouble("flyspeed"));
-						sender.sendMessage(ChatColor.AQUA + "| modifier (1.0): " + ChatColor.GOLD + Util.config("heavy",null).getInt("modifier"));
-						sender.sendMessage(ChatColor.GOLD + "* There are limits to speed, for both client and server performance:");
-						sender.sendMessage(ChatColor.GOLD + "** 1 is moving very fast");
-						sender.sendMessage(ChatColor.GOLD + "** 0 is not moving at all");
-						sender.sendMessage(ChatColor.GOLD + "** negative values make you move backwards");
-						sender.sendMessage(ChatColor.GOLD + "* modifier must be larger than 0 and lesser or eaqual to 1.0 where max armor means no movement.");
-						sender.sendMessage(ChatColor.RED + "! Walkspeed effect is broken atm due to the client itself not changing the value.");
-					}					
-					else if(args[0].equalsIgnoreCase("fishing")) {
-						String state1;
-						String state2;
-						
-						if(Util.config("fishing", "lucky").getBoolean("active")) state1 = ChatColor.GREEN + "enabled";
-						else state1 = ChatColor.RED + "disabled";
-						if(Util.config("fishing", "spawn").getBoolean("active")) state2 = ChatColor.GREEN + "enabled";
-						else state2 = ChatColor.RED + "disabled";
-						
-						sender.sendMessage(ChatColor.AQUA + "| skipworld: " + ChatColor.GOLD + Util.config("fishing",null).getList("skip_world"));
-						sender.sendMessage(ChatColor.AQUA + "lucky | toggle: " + state1);
-						sender.sendMessage(ChatColor.AQUA + "lucky | message (true): " + ChatColor.GOLD + Util.config("fishing","lucky").getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "lucky | chance (5): " + ChatColor.GOLD + Util.config("fishing","lucky").getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "lucky | chancemod (1): " + ChatColor.GOLD + Util.config("fishing","lucky").getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "lucky | items: " + ChatColor.GOLD + Util.config("fishing","lucky").getList("items"));
-						sender.sendMessage(ChatColor.AQUA + "spawn | toggle: " + state2);
-						sender.sendMessage(ChatColor.AQUA + "spawn | message (true): " + ChatColor.GOLD + Util.config("fishing","spawn").getBoolean("message"));
-						sender.sendMessage(ChatColor.AQUA + "spawn | chance (1): " + ChatColor.GOLD + Util.config("fishing","spawn").getInt("chance"));
-						sender.sendMessage(ChatColor.AQUA + "spawn | chancemod (1): " + ChatColor.GOLD + Util.config("fishing","spawn").getInt("chancemod"));
-						sender.sendMessage(ChatColor.AQUA + "spawn | mobs: " + ChatColor.GOLD + Util.config("fishing","spawn").getList("mobs"));
-					} 
-					
-					sender.sendMessage(ChatColor.GOLD + "message" + ChatColor.AQUA + " (true/false), " + ChatColor.GOLD + "chance" + ChatColor.AQUA + " (1-100), " + ChatColor.GOLD + "duration" + ChatColor.AQUA + " (seconds),");
-					sender.sendMessage(ChatColor.GOLD + "damage" + ChatColor.AQUA + " (1=½hearth), " + ChatColor.GOLD + "multiplier" + ChatColor.AQUA + " (1-5), " + ChatColor.GOLD + "cooldown" + ChatColor.AQUA + " (seconds)");
+					if(args[0].equalsIgnoreCase("fire")) 			this.onfire.command(sender, args);
+					else if(args[0].equalsIgnoreCase("fall")) 		this.concussion.command(sender, args);
+					else if(args[0].equalsIgnoreCase("foodpoison")) this.foodpoisoning.command(sender, args);
+					else if(args[0].equalsIgnoreCase("lightning")) 	this.struckbylightning.command(sender, args); 
+					else if(args[0].equalsIgnoreCase("electro")) 	this.electrocution.command(sender, args);					
+					else if(args[0].equalsIgnoreCase("craftthumb")) this.craftthumb.command(sender, args);
+					else if(args[0].equalsIgnoreCase("cows")) 		this.cowsdokick.command(sender, args);
+					else if(args[0].equalsIgnoreCase("happyminer")) this.thehappyminer.command(sender, args);
+					else if(args[0].equalsIgnoreCase("roses")) 		this.roseshavethorns.command(sender, args);
+					else if(args[0].equalsIgnoreCase("brew")) 		this.brewexplosion.command(sender, args);
+					else if(args[0].equalsIgnoreCase("squid")) 		this.squiddefense.command(sender, args);
+					else if(args[0].equalsIgnoreCase("tar")) 		this.stickytar.command(sender, args);
+					else if(args[0].equalsIgnoreCase("bow")) 		this.bowbreaker.command(sender, args);
+					else if(args[0].equalsIgnoreCase("rail")) 		this.bumpintherail.command(sender, args);
+					else if(args[0].equalsIgnoreCase("quicksand")) 	this.quicksand.command(sender, args);
+					else if(args[0].equalsIgnoreCase("desert")) 	this.dizzyinthedesert.command(sender, args);
+					else if(args[0].equalsIgnoreCase("boat")) 		this.rowyourboat.command(sender, args);
+					else if(args[0].equalsIgnoreCase("buggyblock")) this.buggyblock.command(sender, args);
+					else if(args[0].equalsIgnoreCase("tnt")) 		this.unstabletnt.command(sender, args);
+					else if(args[0].equalsIgnoreCase("ride")) 		this.untamedride.command(sender, args);
+					else if(args[0].equalsIgnoreCase("worlddrop")) 	this.worlddrop.command(sender, args);
+					else if(args[0].equalsIgnoreCase("sneaky")) 	this.sneakypickup.command(sender, args);
+					else if(args[0].equalsIgnoreCase("zombie")) 	this.zombienation.command(sender, args);
+					else if(args[0].equalsIgnoreCase("heavy")) 		this.heavyduty.command(sender, args);					
+					else if(args[0].equalsIgnoreCase("fishing")) 	this.fishermanonhook.command(sender, args);
 				}
 				else if(effects.contains(args[0].toLowerCase()) && args[1].equalsIgnoreCase("toggle")){
 					if(Util.config(args[0],null).isBoolean("active")) {

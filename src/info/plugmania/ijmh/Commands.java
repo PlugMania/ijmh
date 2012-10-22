@@ -1,10 +1,11 @@
 package info.plugmania.ijmh;
 
-public class Scheduler {
-	
+public class Commands {
+
 	ijmh plugin;
 
-	public Scheduler(ijmh instance) {
+	public Commands(ijmh instance) {
 		plugin = instance;
 	}
+	
 }

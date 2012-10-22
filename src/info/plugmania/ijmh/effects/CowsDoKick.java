@@ -1,5 +1,7 @@
 package info.plugmania.ijmh.effects;
 
+import java.util.HashMap;
+
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
@@ -7,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -20,11 +23,29 @@ public class CowsDoKick {
 
 	ijmh plugin;
 	
+	public long timer = 0;
+	
 	public CowsDoKick(ijmh instance){
 		plugin = instance;
 	}
 	
-	public long timer = 0;
+	public void command(CommandSender sender, String[] args) {
+		try {
+			if(args.length==1) {
+				HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
+				c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+				c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
+				c.put(2, plugin.util.cRow("message", "kick", "boolean", "true", null));
+				c.put(3, plugin.util.cRow("damage", "kick", "integer", "4", "1=½hearth"));
+				c.put(4, plugin.util.cRow("duration", "kick", "integer", "5", "1-? seconds"));
+				c.put(5, plugin.util.cRow("backwards", "kick", "integer", "2", "1-?"));
+				c.put(6, plugin.util.cRow("upwards", "kick", "integer", "1", "1-?"));
+				plugin.util.cSend(c, args, sender);
+			}
+		} catch (Exception e) {
+			sender.sendMessage(ChatColor.RED + "An error occured.");
+		}
+	}
 	
 	public void main(Event e) {
 		

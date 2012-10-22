@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -37,6 +38,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import static com.sk89q.worldguard.bukkit.BukkitUtil.*;
 
+@SuppressWarnings("unused")
 public class Util{
 	
 	static ijmh plugin;
@@ -86,6 +88,7 @@ public class Util{
 
 	}
 	
+	// SHORTCUT TO CONFIG SECTIONS
 	static public ConfigurationSection config(String s1, String s2){
 		
 		ConfigurationSection config = plugin.getConfig().getConfigurationSection(s1);
@@ -94,6 +97,54 @@ public class Util{
 		return config; 
 	}
 	
+	// CREATE CONFIG MESSAGE ROW
+	public HashMap<String, String> cRow(String name, String sub, String type, String defaultvalue, String range) {
+		
+		HashMap<String, String> v = new HashMap<String, String>();
+		v.put("name", name);
+		v.put("sub", sub);
+		v.put("type", type);
+		v.put("defaultvalue", defaultvalue);
+		v.put("range", range);
+		
+		return v;
+	}
+	
+	// HASHMAP BREAKDOWN AND SEND TO COMMANDSENDER
+	public void cSend(HashMap<Integer,HashMap<String,String>> c, String[] args, CommandSender sender) {
+		
+		String details = "";
+		
+		for (Iterator<Integer> i = c.keySet().iterator(); i.hasNext();) {
+			Integer key = i.next();
+			String message = "" + ChatColor.AQUA;
+			if(c.get(key).get("sub") != null) message += c.get(key).get("sub") + " "; 
+			if(c.get(key).get("name").contains("text")) {
+				message += c.get(key).get("defaultvalue");
+			}
+			else if(c.get(key).get("name").contains("toggle")) {
+				String state = ChatColor.RED + "disabled";
+				if(Util.config(args[0], c.get(key).get("sub")).getBoolean("active")) state = ChatColor.GREEN + "enabled";
+				message += "| " + c.get(key).get("name") + ": " + state;
+			}
+			else {
+				message += "| " + c.get(key).get("name");
+				if(c.get(key).get("defaultvalue") != null) message += " (" + c.get(key).get("defaultvalue") + ")";
+				message += ": ";
+				if(c.get(key).get("type").contains("list")) {
+					if(Util.config(args[0],c.get(key).get("sub")).getList(c.get(key).get("name"))==null) message += "[]";
+					else message += Util.config(args[0],c.get(key).get("sub")).getList(c.get(key).get("name"));
+				}
+				else if(c.get(key).get("type").contains("boolean")) message += Util.config(args[0],c.get(key).get("sub")).getBoolean(c.get(key).get("name"));
+				else if(c.get(key).get("type").contains("integer")) message += Util.config(args[0],c.get(key).get("sub")).getInt(c.get(key).get("name"));
+			}
+			sender.sendMessage(message);
+			if(c.get(key).get("range") != null) details += ChatColor.GOLD + c.get(key).get("name") + ChatColor.AQUA + " (" + c.get(key).get("range") + ") ";
+		}
+		sender.sendMessage(details);
+	}
+	
+	// EASY SAVE TO CONFIG
 	public void SavetoConfig(String s1, String s2, String key, String value) {
 			Util.config(s1,s2).set(key, value);
 	}

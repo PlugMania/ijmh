@@ -19,7 +19,8 @@ v1.4.0<br />
 Preperation started towards building v2.0.0<br />
 All features now merged into their own classes<br />
 All features tested and merge was a success<br />
-Found bug in "Row your boat" where block was created higher than player<br />
+All feature commands moved to their class and translated to use same function for setup<br />
+Fixed bug in "Row your boat" where block was created higher than player<br />
 Fixed commands to change Zombie Nation "whenzombie" and Brew Explosion "signs"<br /> 
 v1.3.7<br />
 #5 Fixed error on suicide command<br />

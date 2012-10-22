@@ -1,6 +1,7 @@
 package info.plugmania.ijmh.effects;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
@@ -9,6 +10,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.block.Action;
@@ -19,11 +22,24 @@ public class OnFire {
 
 	ijmh plugin;
 	
+	public long timer = 0;
+	
 	public OnFire(ijmh instance){
 		plugin = instance;
 	}
 	
-	public long timer = 0;
+	public void command(CommandSender sender, String[] args) {
+		
+		if(args.length==1) {
+			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
+			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+			c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
+			c.put(2, plugin.util.cRow("chance", null, "integer", "10", "1-100"));
+			c.put(3, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
+			c.put(4, plugin.util.cRow("duration", null, "integer", "300", "1-? seconds"));
+			plugin.util.cSend(c, args, sender);
+		}				
+	}
 	
 	public void main(Event e) {
 		

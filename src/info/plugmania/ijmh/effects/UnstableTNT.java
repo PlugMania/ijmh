@@ -1,14 +1,17 @@
 package info.plugmania.ijmh.effects;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
@@ -20,12 +23,23 @@ public class UnstableTNT {
 
 	ijmh plugin;
 	
+	// STORED PLAYERS
+	public List<Player> tnt = new ArrayList<Player>();
+	
 	public UnstableTNT(ijmh instance){
 		plugin = instance;
 	}
 	
-	// STORED PLAYERS
-	public List<Player> tnt = new ArrayList<Player>();
+	public void command(CommandSender sender, String[] args) {
+		
+		if(args.length==1) {
+			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
+			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+			c.put(1, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
+			c.put(2, plugin.util.cRow("chancemod", null, "integer", "10", "1-?"));
+			plugin.util.cSend(c, args, sender);
+		}		
+	}
 	
 	public void main(Event e) {
 		

@@ -8,6 +8,7 @@ import info.plugmania.ijmh.ijmh;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -24,11 +25,23 @@ public class RowYourBoat {
 
 	ijmh plugin;
 	
+	public HashMap<Player, Block> drowning = new HashMap<Player, Block>();
+	
 	public RowYourBoat(ijmh instance){
 		plugin = instance;
 	}
 	
-	public HashMap<Player, Block> drowning = new HashMap<Player, Block>();
+	public void command(CommandSender sender, String[] args) {
+		
+		if(args.length==1) {
+			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
+			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+			c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
+			c.put(2, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
+			c.put(3, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
+			plugin.util.cSend(c, args, sender);
+		}
+	}
 	
 	public void main(Event e) {
 		
@@ -64,6 +77,7 @@ public class RowYourBoat {
 										if(y<5) {
 											Block block = player.getLocation().add(new Vector(0,-2,0)).getBlock();
 											block.setType(Material.WOOD);
+											player.teleport(block.getLocation());
 											
 											player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(60), 1));
 											plugin.rowyourboat.drowning.put(player, block);
@@ -71,6 +85,7 @@ public class RowYourBoat {
 										else {
 											Block block = player.getLocation().add(new Vector(0,-4,0)).getBlock();
 											block.setType(Material.WOOD);
+											player.teleport(block.getLocation());
 											
 											player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(60), 1));
 											plugin.rowyourboat.drowning.put(player, block);
@@ -109,8 +124,8 @@ public class RowYourBoat {
 				Player player = event.getEntity();
 				
 				if(plugin.rowyourboat.drowning.containsKey(player)) {
-					plugin.rowyourboat.drowning.remove(player);
 					plugin.rowyourboat.drowning.get(player).breakNaturally();
+					plugin.rowyourboat.drowning.remove(player);
 				}
 			}
 			else if(e.getEventName().equalsIgnoreCase("BlockBreakEvent")) {

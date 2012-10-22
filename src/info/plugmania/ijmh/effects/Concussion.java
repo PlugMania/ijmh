@@ -1,11 +1,14 @@
 package info.plugmania.ijmh.effects;
 
+import java.util.HashMap;
+
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -21,11 +24,26 @@ public class Concussion {
 
 	ijmh plugin;
 	
+	public long timer = 0;
+	
 	public Concussion(ijmh instance){
 		plugin = instance;
 	}
 	
-	public long timer = 0;
+	public void command(CommandSender sender, String[] args) {
+		try {
+			if(args.length==1) {
+				HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
+				c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+				c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
+				c.put(2, plugin.util.cRow("duration", null, "integer", "5", "1-? seconds"));
+				c.put(3, plugin.util.cRow("text", null, null, ChatColor.GREEN + "The duration for Concussion is for the shortest effect, rest will sync to this value.", null));
+				plugin.util.cSend(c, args, sender);
+			}
+		} catch (Exception e) {
+			sender.sendMessage(ChatColor.RED + "An error occured.");
+		}
+	}
 	
 	public void main(Event e) {
 		

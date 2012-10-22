@@ -2,12 +2,14 @@ package info.plugmania.ijmh.effects;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -21,16 +23,31 @@ public class UntamedRide {
 
 	ijmh plugin;
 	
+	public List<Player> riding = new ArrayList<Player>();
+	public long timer = 0;
+	
 	public UntamedRide(ijmh instance){
 		plugin = instance;
 	}
 	
-	public List<Player> riding = new ArrayList<Player>();
-	public long timer = 0;
+	public void command(CommandSender sender, String[] args) {
+		
+		if(args.length==1) {
+			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
+			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+			c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
+			c.put(2, plugin.util.cRow("entitytype", null, "list", null, null));
+			c.put(3, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
+			c.put(4, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
+			c.put(5, plugin.util.cRow("distance", null, "integer", "1", "1-?"));
+			c.put(6, plugin.util.cRow("angle", null, "integer", "1", "1-?"));
+			plugin.util.cSend(c, args, sender);
+		}		
+	}
 	
 	public void main(Event e) {
 		
-		if(!plugin.disabled.contains("ride") && Util.config("ride",null).getBoolean("active")){
+		if(false==true && Util.config("ride",null).getBoolean("active")){
 
 			if(e.getEventName().equalsIgnoreCase("VehicleMoveEvent")) {
 				VehicleMoveEvent event = (VehicleMoveEvent) e;

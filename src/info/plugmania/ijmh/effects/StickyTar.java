@@ -1,6 +1,7 @@
 package info.plugmania.ijmh.effects;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
@@ -11,6 +12,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -22,11 +24,23 @@ public class StickyTar {
 	
 	ijmh plugin;
 	
+	public long timer = 0;
+	
 	public StickyTar(ijmh instance){
 		plugin = instance;
 	}
 	
-	public long timer = 0;
+	public void command(CommandSender sender, String[] args) {
+		
+		if(args.length==1) {
+			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
+			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+			c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
+			c.put(2, plugin.util.cRow("multiplier", null, "integer", "5", "1-5"));
+			c.put(3, plugin.util.cRow("duration", null, "integer", "1", "1-? seconds"));
+			plugin.util.cSend(c, args, sender);
+		}	
+	}
 	
 	public void main(Event e) {
 		
