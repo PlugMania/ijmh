@@ -5,16 +5,18 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 1.4.0<br /><br />
+version: 1.4.1<br /><br />
 
 <b>Latest Release</b><br />
-v1.3.7 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v1.4.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v1.4.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v1.4.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
 
+v1.4.1<br />
+Updated to Minecraft v1.4.2 for testing<br />
 v1.4.0<br />
 Preperation started towards building v2.0.0<br />
 All features now merged into their own classes<br />
