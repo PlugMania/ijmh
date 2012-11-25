@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -283,7 +284,6 @@ public class ijmh extends JavaPlugin {
 			
 			if(sender.hasPermission("ijmh.admin")){
 				String features = "";
-
 				for (Entry<String, String> e : this.feature.entrySet()) {
 				    String eKey = e.getKey();
 				    String eValue = e.getValue();
@@ -300,7 +300,7 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.GREEN + "/ijmh <feature or part of featurename> toggle" + ChatColor.AQUA + " - turn feature on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh update" + ChatColor.AQUA + " - Toggle the update messages on/off");
-					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates"); 
+					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates");
 				}
 				else if(args[0].equalsIgnoreCase("version")){
 					util.checkVersion(true,null,sender);

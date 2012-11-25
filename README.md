@@ -5,7 +5,7 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 2.0.0<br /><br />
+version: 2.0.1<br /><br />
 
 <b>Latest Release</b><br />
 v1.4.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
@@ -14,6 +14,8 @@ v1.4.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v2.0.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v2.0.1<br />
+Added reset option to walk- & flyspeeds<br />
 v2.0.0<br />
 Updated to CraftBukkit v1.4.5 R0.2<br />
 Brand new way to manage/setup features<br />
@@ -30,7 +32,7 @@ Fixed bug in "Row your boat" where block was created higher than player<br />
 Fixed commands to change Zombie Nation "whenzombie" and Brew Explosion "signs"<br /> 
 v1.3.7<br />
 #5 Fixed error on suicide command<br />
-#5 Fixed error om inventoryCloseEvent with instanceof Player<br />
+#5 Fixed error on inventoryCloseEvent with instanceof Player<br />
 Fixed Creative mode movement being limited by protection points<br />
 v1.3.6<br />
 Added "Heavy Duty", Armor now reduce walk- and flyspeed based on protection points<br />

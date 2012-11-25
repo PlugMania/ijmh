@@ -129,6 +129,12 @@ public class Util{
 		sender.sendMessage(ChatColor.GREEN + "/ijmh " + args[0] + " <option1>:<value> <section>@<option2>:<value> ...");
 		sender.sendMessage(ChatColor.GOLD + "command" + ChatColor.AQUA + " | " + ChatColor.GOLD + "section" + ChatColor.AQUA + " | " + ChatColor.GOLD + "name" + ChatColor.AQUA + " (default): current value");
 		sender.sendMessage(ChatColor.AQUA + "| toggle");
+		if(args[0].equalsIgnoreCase("heavyduty")) {
+			String resetStatus;
+			if(Util.config(args[0], null).getBoolean("reset")) resetStatus = ChatColor.GREEN + "is on and speeds will be reset upon login";
+			else resetStatus = ChatColor.RED + "is off";
+			sender.sendMessage(ChatColor.AQUA + "| reset " + resetStatus);
+		}
 		
 		for (Iterator<Integer> i = c.keySet().iterator(); i.hasNext();) {
 			Integer key = i.next();
@@ -215,7 +221,7 @@ public class Util{
 						}
 					} else filecontents += "[]";
 				}
-				else if(c.get(key).get("type").contains("boolean")) {
+				else if(c.get(key).get("type").contains("boolean") || c.get(key).get("type").contains("toggle")) {
 					if(!Util.config.isConfigurationSection(s1) || !Util.config(s1,c.get(key).get("sub")).isBoolean(c.get(key).get("name"))) filecontents += c.get(key).get("defaultvalue");
 					else filecontents += Util.config(s1,c.get(key).get("sub")).getBoolean(c.get(key).get("name"));
 				}
@@ -238,12 +244,20 @@ public class Util{
 		String UsrCmd;
 		String subkey = null;
 		String subfeature = null;
-		String onoff = "on";
+		String onoff = "off";
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			Util.config(args[0],null).set("active", (Boolean) !Util.config(args[0],null).getBoolean("active"));
 			if(Util.config(args[0],null).getBoolean("active")==false) onoff = "off";
 			sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[0] + " has been switched " + onoff);
+		} else if(args[0].equalsIgnoreCase("heavyduty") && args[1].equalsIgnoreCase("reset")) {
+				Util.config(args[0],null).set("reset", (Boolean) !Util.config(args[0],null).getBoolean("reset"));
+				if(Util.config(args[0],null).getBoolean("reset")==true) onoff = "on. Onlineplayers have been reset. Upon login players will be reset as long as feature is disabled.";
+				for(Player p : plugin.getServer().getOnlinePlayers()) {
+					p.getPlayer().setWalkSpeed((float) 0.1);
+					p.getPlayer().setFlySpeed((float) 0.2);
+				}
+				sender.sendMessage(ChatColor.AQUA + "[ijhm] reset has been switched " + onoff);
 		} else {
 			for(String cmd : args) {
 				if(args[0]!=cmd) {
@@ -735,7 +749,12 @@ public class Util{
     	filecontents += "\n" + s2 + ": ";
     	filecontents += "\n  active: "; 
     	if(Util.config.isConfigurationSection(s2) && Util.config(s2, null).isBoolean("active")) filecontents += Util.config(s2, null).getBoolean("active"); 
-    	else filecontents += "true";	
+    	else filecontents += "true";
+    	if(s2.equals("heavyduty")) {
+        	filecontents += "\n  reset: "; 
+        	if(Util.config.isConfigurationSection(s2) && Util.config(s2, null).isBoolean("reset")) filecontents += Util.config(s2, null).getBoolean("reset"); 
+        	else filecontents += "true";    		
+    	}
 	
     	return filecontents;
 	}

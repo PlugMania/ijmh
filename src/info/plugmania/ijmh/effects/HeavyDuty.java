@@ -34,7 +34,7 @@ public class HeavyDuty {
 		c.put(6, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** 0 is not moving at all", null));
 		c.put(7, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** negative values make you move backwards", null));
 		c.put(8, plugin.util.cRow("text", null, null, ChatColor.GREEN + "* modifier must be larger than 0 and lesser or eaqual to 1.0 where max armor means no movement.", null));
-		c.put(9, plugin.util.cRow("text", null, null, ChatColor.RED + "! Walkspeed effect is broken atm due to the client itself not changing the value.", null));
+		c.put(9, plugin.util.cRow("text", null, null, ChatColor.RED + "* You can reset speeds by turning the feature off and turning on reset in this feature", null));
 	}	
 	
 	public boolean command(CommandSender sender, String[] args) {
@@ -66,6 +66,15 @@ public class HeavyDuty {
 					Player player = (Player) event.getPlayer();
 						
 					this.extend(player);
+			}
+		} else if(Util.config("heavyduty",null).getBoolean("reset")==true) {
+			if(e.getEventName().equalsIgnoreCase("PlayerJoinEvent")) {
+				PlayerJoinEvent event = (PlayerJoinEvent) e;
+				Player player = (Player) event.getPlayer();
+				
+				player.setWalkSpeed((float) 0.1);
+				player.setFlySpeed((float) 0.2);
+				Util.toLog("Speeds have been reset for " + player.getName(), true);
 			}
 		}
 	}

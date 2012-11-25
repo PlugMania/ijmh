@@ -202,6 +202,7 @@ zombie:
   chancemod: 1
 heavy:
   active: true
+  reset: false
   skip_world: []
   walkspeed: 0.1
   flyspeed: 0.2
