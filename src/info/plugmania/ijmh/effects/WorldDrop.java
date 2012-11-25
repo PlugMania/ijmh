@@ -5,8 +5,6 @@ import java.util.List;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
-
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,39 +15,43 @@ import org.bukkit.inventory.ItemStack;
 public class WorldDrop {
 
 	ijmh plugin;
-	
+	public HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
 	public Player player;
 	public int falldelay = 0;
-	public List items;
+	public List<?> items;
 	
 	public WorldDrop(ijmh instance){
 		plugin = instance;
 	}
 	
-	public void command(CommandSender sender, String[] args) {
-		
+	public void init() {
+		plugin.feature.put("WorldDrop", "worlddrop");
+		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+		c.put(1, plugin.util.cRow("chance", null, "integer", "10", "1-100"));
+		c.put(2, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
+		c.put(3, plugin.util.cRow("radius", null, "integer", "30", "1-?"));
+		c.put(4, plugin.util.cRow("abovesealvl", null, "integer", "20", "1-?"));
+		c.put(5, plugin.util.cRow("maxlocs", null, "integer", "20", "1-?"));
+		c.put(6, plugin.util.cRow("cooldown", null, "integer", "900", "1-? seconds"));
+		c.put(7, plugin.util.cRow("amount", null, "integer", "10", "1-?"));
+		c.put(8, plugin.util.cRow("items", null, "list", null, null));
+	}	
+	
+	public boolean command(CommandSender sender, String[] args) {
 		if(args.length==1) {
-			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
-			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
-			c.put(2, plugin.util.cRow("chance", null, "integer", "10", "1-100"));
-			c.put(3, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
-			c.put(4, plugin.util.cRow("radius", null, "integer", "30", "1-?"));
-			c.put(4, plugin.util.cRow("abovesealvl", null, "integer", "20", "1-?"));
-			c.put(4, plugin.util.cRow("maxlocs", null, "integer", "20", "1-?"));
-			c.put(4, plugin.util.cRow("cooldown", null, "integer", "900", "1-? seconds"));
-			c.put(4, plugin.util.cRow("amount", null, "integer", "10", "1-?"));
-			c.put(0, plugin.util.cRow("items", null, "list", null, null));
 			plugin.util.cSend(c, args, sender);
-		}	
+		} else {
+			Util.cmdExecute(sender, args);
+		} 
+		return true;
 	}
 	
 	public void main() {
 		
 		if(Util.config("worlddrop",null).getBoolean("active")) {
 			for (final World world : plugin.getServer().getWorlds()) {
-				// WORLDDROP
-				if(!Util.config("worlddrop",null).getList("skip_world").contains(world.getName())) {
-					items = Util.config("worlddrop",null).getList("items");
+				if(!Util.config("worlddrop",null).getList("skipworld").contains(world.getName())) {
+					items = (List<?>) Util.config("worlddrop",null).getList("items");
 					if(items.size()>0) {
 						plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
 							@Override

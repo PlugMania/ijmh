@@ -18,31 +18,36 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class StruckByLightning {
 
 	ijmh plugin;
-	
+	public HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
 	public long timer = 0;
 	
 	public StruckByLightning(ijmh instance){
 		plugin = instance;
 	}
 	
-	public void command(CommandSender sender, String[] args) {
-		
+	public void init() {
+		plugin.feature.put("StruckByLightning", "struckbylightning");
+		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+		c.put(1, plugin.util.cRow("skipbiome", null, "list", null, null));
+		c.put(2, plugin.util.cRow("message", null, "boolean", "true", "true/false/*"));
+		c.put(3, plugin.util.cRow("chance", null, "integer", "5", "1-100"));
+		c.put(4, plugin.util.cRow("chancemod", null, "integer", "10", "1-?"));
+		c.put(5, plugin.util.cRow("damage", null, "integer", "10", "1-?"));
+		c.put(6, plugin.util.cRow("cooldown", null, "integer", "10", "1-? seconds"));
+	}	
+	
+	public boolean command(CommandSender sender, String[] args) {
 		if(args.length==1) {
-			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
-			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
-			c.put(1, plugin.util.cRow("skipbiome", null, "list", null, null));
-			c.put(2, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
-			c.put(3, plugin.util.cRow("chance", null, "integer", "5", "1-100"));
-			c.put(4, plugin.util.cRow("chancemod", null, "integer", "10", "1-?"));
-			c.put(5, plugin.util.cRow("damage", null, "integer", "10", "1-?"));
-			c.put(6, plugin.util.cRow("cooldown", null, "integer", "10", "1-? seconds"));
 			plugin.util.cSend(c, args, sender);
-		}	
+		} else {
+			Util.cmdExecute(sender, args);
+		} 
+		return true;
 	}
 	
 	public void main(Event e) {
 		
-		if(Util.config("lightning",null).getBoolean("active")){
+		if(Util.config("struckbylightning",null).getBoolean("active")){
 			
 			if(e.getEventName().equalsIgnoreCase("PlayerMoveEvent")) {
 				PlayerMoveEvent event = (PlayerMoveEvent) e;
@@ -53,9 +58,9 @@ public class StruckByLightning {
 				
 				if(player.getWorld().hasStorm()){
 					if(!player.hasPermission("ijmh.immunity.lightning")) {
-						if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("fall",null).getList("skip_world").contains(player.getWorld().getName())) {
+						if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("struckbylightning",null).getList("skipworld").contains(player.getWorld().getName())) {
 							if(
-									!Util.config("lightning",null).getList("skip_biome").contains(player.getLocation().getBlock().getBiome().name()) &&
+									!Util.config("struckbylightning",null).getList("skipbiome").contains(player.getLocation().getBlock().getBiome().name()) &&
 									(plugin.mazeMania==null || (plugin.mazeMania!=null && !plugin.mazeMania.arena.playing.contains(player))) &&
 									curTime>timer
 									) {
@@ -72,11 +77,11 @@ public class StruckByLightning {
 									}
 								}
 							
-								if(isHit==true && Util.pctChance(Util.config("lightning",null).getInt("chance"),Util.config("lightning",null).getInt("chancemod"))) {
-									timer = curTime + (Util.config("lightning",null).getInt("cooldown") * 1000);
+								if(isHit==true && Util.pctChance(Util.config("struckbylightning",null).getInt("chance"),Util.config("struckbylightning",null).getInt("chancemod"))) {
+									timer = curTime + (Util.config("struckbylightning",null).getInt("cooldown") * 1000);
 									player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
-									player.damage(Util.config("lightning",null).getInt("damage"));
-									if(Util.config("lightning",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_05"));
+									player.damage(Util.config("struckbylightning",null).getInt("damage"));
+									if(Util.config("struckbylightning",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_05"));
 								}
 							}
 						}

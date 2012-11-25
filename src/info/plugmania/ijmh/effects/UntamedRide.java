@@ -22,7 +22,7 @@ import org.bukkit.util.Vector;
 public class UntamedRide {
 
 	ijmh plugin;
-	
+	public HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
 	public List<Player> riding = new ArrayList<Player>();
 	public long timer = 0;
 	
@@ -30,24 +30,29 @@ public class UntamedRide {
 		plugin = instance;
 	}
 	
-	public void command(CommandSender sender, String[] args) {
-		
+	public void init() {
+		plugin.feature.put("UntamedRide", "untamedride");
+		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+		c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false/*"));
+		c.put(2, plugin.util.cRow("entitytype", null, "list", null, null));
+		c.put(3, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
+		c.put(4, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
+		c.put(5, plugin.util.cRow("distance", null, "integer", "1", "1-?"));
+		c.put(6, plugin.util.cRow("angle", null, "integer", "1", "1-?"));
+	}	
+	
+	public boolean command(CommandSender sender, String[] args) {
 		if(args.length==1) {
-			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
-			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
-			c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
-			c.put(2, plugin.util.cRow("entitytype", null, "list", null, null));
-			c.put(3, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
-			c.put(4, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
-			c.put(5, plugin.util.cRow("distance", null, "integer", "1", "1-?"));
-			c.put(6, plugin.util.cRow("angle", null, "integer", "1", "1-?"));
 			plugin.util.cSend(c, args, sender);
-		}		
+		} else {
+			Util.cmdExecute(sender, args);
+		} 
+		return true;
 	}
 	
 	public void main(Event e) {
 		
-		if(false==true && Util.config("ride",null).getBoolean("active")){
+		if(false==true && Util.config("untamedride",null).getBoolean("active")){
 
 			if(e.getEventName().equalsIgnoreCase("VehicleMoveEvent")) {
 				VehicleMoveEvent event = (VehicleMoveEvent) e;
@@ -56,19 +61,19 @@ public class UntamedRide {
 				Player player = (Player) event.getVehicle().getPassenger();
 
 				if(plugin.untamedride.riding.contains(player)) {
-					if(Util.config("ride",null).getList("entitytype").contains(event.getVehicle().getType())) {
+					if(Util.config("untamedride",null).getList("entitytype").contains(event.getVehicle().getType())) {
 						if(timer>0) {
 							if(curTime>timer) {
 								event.getVehicle().eject();
 								Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
-								player.setVelocity(new Vector(vector.getX()+Util.config("ride",null).getInt("distance"),Util.config("ride",null).getInt("angle"),vector.getZ()+Util.config("ride",null).getInt("distance")));
-								if(Util.config("ride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_34"));
+								player.setVelocity(new Vector(vector.getX()+Util.config("untamedride",null).getInt("distance"),Util.config("untamedride",null).getInt("angle"),vector.getZ()+Util.config("untamedride",null).getInt("distance")));
+								if(Util.config("untamedride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_34"));
 								timer = 0;
 							}
 						}
-						else if(Util.pctChance(Util.config("ride",null).getInt("chance"),Util.config("ride",null).getInt("chancemod"))) {
-							timer = curTime + Util.config("ride",null).getInt("limit");
-							if(Util.config("ride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_31"));
+						else if(Util.pctChance(Util.config("untamedride",null).getInt("chance"),Util.config("untamedride",null).getInt("chancemod"))) {
+							timer = curTime + Util.config("untamedride",null).getInt("limit");
+							if(Util.config("untamedride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_31"));
 						}
 					}
 				}
@@ -83,7 +88,7 @@ public class UntamedRide {
 					if(event.getMessage().toLowerCase().contains(Util.language.getString("lan_32").toLowerCase())) {
 						event.setCancelled(true);
 						plugin.untamedride.timer = 0;
-						if(Util.config("ride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_33"));
+						if(Util.config("untamedride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_33"));
 					}
 				}
 			}
@@ -100,9 +105,9 @@ public class UntamedRide {
 				if(event.getEntered() instanceof Player) {
 					Player player = (Player) event.getEntered();
 			
-					if(!plugin.disabled.contains("ride") && Util.config("ride",null).getBoolean("active") && !Util.config("ride",null).getList("skip_world").contains(player.getWorld().getName())) {
+					if(!plugin.disabled.contains("ride") && Util.config("ride",null).getBoolean("active") && !Util.config("untamedride",null).getList("skipworld").contains(player.getWorld().getName())) {
 					if(!player.hasPermission("ijmh.immunity.ride")) {
-							if(Util.config("ride",null).getList("entitytype").contains(event.getVehicle().getType())) {
+							if(Util.config("untamedride",null).getList("entitytype").contains(event.getVehicle().getType())) {
 								plugin.untamedride.riding.add(player);
 								Util.toLog(player.getName() + " mounted " + event.getVehicle().getType(), true);
 							}

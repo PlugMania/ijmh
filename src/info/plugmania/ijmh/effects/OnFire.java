@@ -20,29 +20,34 @@ import org.bukkit.event.player.PlayerMoveEvent;
 public class OnFire {
 
 	ijmh plugin;
-	
+	public HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
 	public long timer = 0;
 	
 	public OnFire(ijmh instance){
 		plugin = instance;
 	}
 	
-	public void command(CommandSender sender, String[] args) {
-		
+	public void init() {
+		plugin.feature.put("OnFire", "onfire");
+		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+		c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false/*"));
+		c.put(2, plugin.util.cRow("chance", null, "integer", "10", "1-100"));
+		c.put(3, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
+		c.put(4, plugin.util.cRow("duration", null, "integer", "300", "1-? seconds"));
+	}	
+	
+	public boolean command(CommandSender sender, String[] args) {
 		if(args.length==1) {
-			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
-			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
-			c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
-			c.put(2, plugin.util.cRow("chance", null, "integer", "10", "1-100"));
-			c.put(3, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
-			c.put(4, plugin.util.cRow("duration", null, "integer", "300", "1-? seconds"));
 			plugin.util.cSend(c, args, sender);
-		}				
+		} else {
+			Util.cmdExecute(sender, args);
+		} 
+		return true;
 	}
 	
 	public void main(Event e) {
 		
-		if(Util.config("fire",null).getBoolean("active")){
+		if(Util.config("onfire",null).getBoolean("active")){
 			
 			if(e.getEventName().equalsIgnoreCase("PlayerInteractEvent")) {
 				PlayerInteractEvent event = (PlayerInteractEvent) e;
@@ -51,16 +56,16 @@ public class OnFire {
 				long curTime = curDate.getTime();
 				
 				if(!player.hasPermission("ijmh.immunity.fire")) {
-					if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("fire",null).getList("skip_world").contains(player.getWorld().getName())) {
+					if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("onfire",null).getList("skipworld").contains(player.getWorld().getName())) {
 						if(player.getItemInHand().getType().equals(Material.FLINT_AND_STEEL) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
 							Util.toLog("Fire: Active passed", true);
 							if(
 								!player.getWorld().getBlockAt(player.getLocation()).isLiquid() && 
 								!player.getWorld().hasStorm()
 								) {
-								if(Util.pctChance(Util.config("fire",null).getInt("chance"),Util.config("fire",null).getInt("chancemod"))) {
+								if(Util.pctChance(Util.config("onfire",null).getInt("chance"),Util.config("onfire",null).getInt("chancemod"))) {
 									player.setFireTicks(Util.sec2tic(Util.config("fire",null).getInt("duration")));
-									if(Util.config("fire",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_01"));
+									if(Util.config("onfire",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_01"));
 								}
 							}
 						}
@@ -71,7 +76,7 @@ public class OnFire {
 					if(!player.getGameMode().equals(GameMode.CREATIVE) && event.getItem().getType().equals(Material.WATER_BUCKET)) {
 						player.setFireTicks(0);
 						event.setCancelled(true);
-						if(Util.config("fire",null).getBoolean("message")) {
+						if(Util.config("onfire",null).getBoolean("message")) {
 							if(curTime>timer) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_02"));
 							timer = (int) (curTime + 2000);
 						}

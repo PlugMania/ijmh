@@ -24,30 +24,35 @@ import info.plugmania.ijmh.ijmh;
 public class DizzyInTheDesert {
 
 	ijmh plugin;
-	
+	public HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
 	public List<Player> desert = new ArrayList<Player>();
 	
 	public DizzyInTheDesert(ijmh instance){
 		plugin = instance;
 	}
 
-	public void command(CommandSender sender, String[] args) {
-		
+	public void init() {
+		plugin.feature.put("DizzyInTheDesert", "dizzyinthedesert");
+		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+		c.put(1, plugin.util.cRow("whendesert", null, "boolean", "true", "true/false/*"));
+		c.put(2, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
+		c.put(3, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
+		c.put(4, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
+		c.put(5, plugin.util.cRow("multiplier", null, "integer", "2", "1-5"));
+	}	
+	
+	public boolean command(CommandSender sender, String[] args) {
 		if(args.length==1) {
-			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
-			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
-			c.put(1, plugin.util.cRow("whendesert", null, "boolean", "true", "true/false"));
-			c.put(2, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
-			c.put(3, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
-			c.put(4, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
-			c.put(5, plugin.util.cRow("multiplier", null, "integer", "2", "1-5"));
 			plugin.util.cSend(c, args, sender);
-		}
+		} else {
+			Util.cmdExecute(sender, args);
+		} 
+		return true;
 	}
 	
 	public void main(Event e) {
 		
-		if(Util.config("desert",null).getBoolean("active")){
+		if(Util.config("dizzyinthedesert",null).getBoolean("active")){
 			
 			if(e.getEventName().equalsIgnoreCase("PlayerInteractEvent")) {
 				PlayerInteractEvent event = (PlayerInteractEvent) e;	
@@ -59,7 +64,7 @@ public class DizzyInTheDesert {
 							plugin.dizzyinthedesert.desert.remove(player);
 							player.removePotionEffect(PotionEffectType.SLOW);
 							player.removePotionEffect(PotionEffectType.CONFUSION);
-							if(Util.config("desert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_27"));
+							if(Util.config("dizzyinthedesert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_27"));
 						}
 					}
 				}
@@ -77,12 +82,12 @@ public class DizzyInTheDesert {
 				Player player = event.getPlayer();
 				Location pUnder = player.getLocation().add(0, -1, 0);
 			
-				if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("desert",null).getList("skip_world").contains(player.getWorld().getName())) {
+				if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("dizzyinthedesert",null).getList("skipworld").contains(player.getWorld().getName())) {
 					if(
 							!player.hasPermission("ijmh.immunity.desert") && 
 							!player.getWorld().isThundering() && 
 							player.getWorld().getTime()<Util.sec2tic(600) &&
-							(Util.config("desert",null).getBoolean("whendesert") && player.getLocation().getBlock().getBiome().equals(Biome.DESERT))
+							(Util.config("dizzyinthedesert",null).getBoolean("whendesert") && player.getLocation().getBlock().getBiome().equals(Biome.DESERT))
 							) {
 						if(!plugin.dizzyinthedesert.desert.contains(player)) {
 							if(
@@ -90,12 +95,12 @@ public class DizzyInTheDesert {
 									!player.isInsideVehicle() &&
 									!event.getTo().getBlock().isLiquid()
 									) {
-								if(Util.pctChance(Util.config("desert",null).getInt("chance"),Util.config("desert",null).getInt("chancemod"))) {
+								if(Util.pctChance(Util.config("dizzyinthedesert",null).getInt("chance"),Util.config("dizzyinthedesert",null).getInt("chancemod"))) {
 									Util.toLog("was here " + player.getWorld().getTime(), true);
 									plugin.dizzyinthedesert.desert.add(player);
-									player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(60), Util.config("desert",null).getInt("multiplier")));
-									player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(60), Util.config("desert",null).getInt("multiplier")));
-									if(Util.config("desert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_26"));
+									player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(60), Util.config("dizzyinthedesert",null).getInt("multiplier")));
+									player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(60), Util.config("dizzyinthedesert",null).getInt("multiplier")));
+									if(Util.config("dizzyinthedesert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_26"));
 								}
 							}
 						}
@@ -110,8 +115,8 @@ public class DizzyInTheDesert {
 					}
 				} 
 				else if(plugin.dizzyinthedesert.desert.contains(player) && !player.hasPotionEffect(PotionEffectType.CONFUSION)) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(60), Util.config("desert",null).getInt("multiplier")));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(60), Util.config("desert",null).getInt("multiplier")));	
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(60), Util.config("dizzyinthedesert",null).getInt("multiplier")));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(60), Util.config("dizzyinthedesert",null).getInt("multiplier")));	
 				}
 			}
 		}

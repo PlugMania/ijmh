@@ -24,35 +24,40 @@ import org.bukkit.util.Vector;
 public class RowYourBoat {
 
 	ijmh plugin;
-	
+	public HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
 	public HashMap<Player, Block> drowning = new HashMap<Player, Block>();
 	
 	public RowYourBoat(ijmh instance){
 		plugin = instance;
 	}
 	
-	public void command(CommandSender sender, String[] args) {
-		
+	public void init() {
+		plugin.feature.put("RowYourBoat", "rowyourboat");
+		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+		c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
+		c.put(2, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
+		c.put(3, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
+	}	
+	
+	public boolean command(CommandSender sender, String[] args) {
 		if(args.length==1) {
-			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
-			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
-			c.put(1, plugin.util.cRow("message", null, "boolean", "true", "true/false"));
-			c.put(2, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
-			c.put(3, plugin.util.cRow("chancemod", null, "integer", "1", "1-?"));
 			plugin.util.cSend(c, args, sender);
-		}
+		} else {
+			Util.cmdExecute(sender, args);
+		} 
+		return true;
 	}
 	
 	public void main(Event e) {
 		
-		if(Util.config("boat",null).getBoolean("active")){
+		if(Util.config("rowyourboat",null).getBoolean("active")){
 			
 			if(e.getEventName().equalsIgnoreCase("VehicleMoveEvent")) {
 				VehicleMoveEvent event = (VehicleMoveEvent) e;
 				if(event.getVehicle().getPassenger() instanceof Player) {
 					Player player = (Player) event.getVehicle().getPassenger();
 					
-					if(!Util.config("boat",null).getList("skip_world").contains(player.getWorld().getName())) {
+					if(!Util.config("rowyourboat",null).getList("skip_world").contains(player.getWorld().getName())) {
 						if(!player.hasPermission("ijmh.immunity.boat")) {	
 							if(
 									event.getVehicle().getType().equals(EntityType.BOAT) &&
@@ -68,11 +73,11 @@ public class RowYourBoat {
 								}
 								
 								if(y>2-1) {
-									if(Util.pctChance(Util.config("boat",null).getInt("chance"),Util.config("boat",null).getInt("chancemod"))) {
+									if(Util.pctChance(Util.config("rowyourboat",null).getInt("chance"),Util.config("rowyourboat",null).getInt("chancemod"))) {
 										player.eject();
 										event.getVehicle().remove();
 										
-										if(Util.config("boat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_24"));
+										if(Util.config("rowyourboat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_24"));
 										
 										if(y<5) {
 											Block block = player.getLocation().add(new Vector(0,-2,0)).getBlock();
@@ -133,7 +138,7 @@ public class RowYourBoat {
 				if(plugin.rowyourboat.drowning.containsKey(player) && event.getBlock().getType().equals(Material.WOOD)) {
 					plugin.rowyourboat.drowning.remove(player);
 					player.removePotionEffect(PotionEffectType.BLINDNESS);
-					if(Util.config("boat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_25"));
+					if(Util.config("rowyourboat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_25"));
 				}
 			}
 		}

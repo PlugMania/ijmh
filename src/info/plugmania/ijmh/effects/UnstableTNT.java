@@ -7,7 +7,6 @@ import java.util.List;
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -22,38 +21,42 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class UnstableTNT {
 
 	ijmh plugin;
-	
-	// STORED PLAYERS
+	public HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
 	public List<Player> tnt = new ArrayList<Player>();
 	
 	public UnstableTNT(ijmh instance){
 		plugin = instance;
 	}
 	
-	public void command(CommandSender sender, String[] args) {
-		
+	public void init() {
+		plugin.feature.put("UnstableTNT", "unstabletnt");
+		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+		c.put(1, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
+		c.put(2, plugin.util.cRow("chancemod", null, "integer", "10", "1-?"));
+	}	
+	
+	public boolean command(CommandSender sender, String[] args) {
 		if(args.length==1) {
-			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
-			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
-			c.put(1, plugin.util.cRow("chance", null, "integer", "1", "1-100"));
-			c.put(2, plugin.util.cRow("chancemod", null, "integer", "10", "1-?"));
 			plugin.util.cSend(c, args, sender);
-		}		
+		} else {
+			Util.cmdExecute(sender, args);
+		} 
+		return true;
 	}
 	
 	public void main(Event e) {
 		
-		if(Util.config("tnt",null).getBoolean("active")){
+		if(Util.config("unstabletnt",null).getBoolean("active")){
 
 			if(e.getEventName().equalsIgnoreCase("BlockPlaceEvent")) {
 				BlockPlaceEvent event = (BlockPlaceEvent) e;
 				Player player = (Player) event.getPlayer();
 				Block block = event.getBlock();
 				
-				if(!Util.config("tnt",null).getList("skip_world").contains(event.getBlock().getLocation().getWorld().getName())) {
+				if(!Util.config("unstabletnt",null).getList("skipworld").contains(event.getBlock().getLocation().getWorld().getName())) {
 					if(block.getType().equals(Material.TNT)) {
 						if(!player.hasPermission("ijmh.immunity.tnt")) {
-							if(Util.pctChance(Util.config("tnt",null).getInt("chance"),Util.config("tnt",null).getInt("chancemod"))) {
+							if(Util.pctChance(Util.config("unstabletnt",null).getInt("chance"),Util.config("unstabletnt",null).getInt("chancemod"))) {
 								block.setType(Material.AIR);
 								TNTPrimed tnt = (TNTPrimed) block.getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT);
 								tnt.setFuseTicks(0);

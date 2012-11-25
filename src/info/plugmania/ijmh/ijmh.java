@@ -2,16 +2,18 @@ package info.plugmania.ijmh;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -52,7 +54,6 @@ import info.plugmania.ijmh.effects.ZombieNation;
 
 import info.plugmania.mazemania.MazeMania;
 
-import com.sk89q.worldedit.blocks.BlockType;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 
 public class ijmh extends JavaPlugin {
@@ -61,6 +62,9 @@ public class ijmh extends JavaPlugin {
 	public final Util util;
 	public boolean debug;
 	public List<String> disabled = new LinkedList<String>();
+	public HashMap<String, String> feature = new HashMap<String, String>();
+	public HashMap<String, String> subfeature = new HashMap<String, String>();
+	public HashMap<String, String> cmdRef = new HashMap<String, String>();
 	
 	// EFFECTS
 	public CraftThumb craftthumb;
@@ -136,7 +140,6 @@ public class ijmh extends JavaPlugin {
 			player.removePotionEffect(PotionEffectType.CONFUSION);
 		}		
 		this.rowyourboat.drowning.clear();
-		util.saveYamls();
 	}
 	
 	public void onEnable(){
@@ -146,13 +149,70 @@ public class ijmh extends JavaPlugin {
 		} catch (IOException e) {
 		}
 		
+		this.bowbreaker.init();
+		this.brewexplosion.init();
+		this.buggyblock.init();
+		this.bumpintherail.init();
+		this.concussion.init();
+		this.cowsdokick.init();
+		this.craftthumb.init();
+		this.dizzyinthedesert.init();
+		this.electrocution.init();
+		this.fishermanonhook.init();
+		this.foodpoisoning.init();
+		this.heavyduty.init();
+		this.onfire.init();
+		this.quicksand.init();
+		this.roseshavethorns.init();
+		this.rowyourboat.init();
+		this.sneakypickup.init();
+		this.squiddefense.init();
+		this.stickytar.init();
+		this.struckbylightning.init();
+		this.thehappyminer.init();
+		this.unstabletnt.init();
+		this.untamedride.init();
+		this.worlddrop.init();
+		this.zombienation.init();
+		
+		// COMMANDS
+		this.cmdRef.put("a", 	"angle");
+		this.cmdRef.put("abs", 	"abovesealvl");
+		this.cmdRef.put("am", 	"amount");
+		this.cmdRef.put("ba", 	"backwards");
+		this.cmdRef.put("bl", 	"blocks");
+		this.cmdRef.put("c", 	"chance");
+		this.cmdRef.put("cd", 	"cooldown");
+		this.cmdRef.put("cm", 	"chancemod");
+		this.cmdRef.put("d", 	"damage");
+		this.cmdRef.put("di", 	"distance");
+		this.cmdRef.put("du", 	"duration");
+		this.cmdRef.put("fs", 	"flyspeed");
+		this.cmdRef.put("i", 	"items");
+		this.cmdRef.put("ju", 	"jumps");
+		this.cmdRef.put("ml", 	"maxlocs");
+		this.cmdRef.put("m", 	"message");
+		this.cmdRef.put("mo", 	"modifier");
+		this.cmdRef.put("mob", 	"mobs");
+		this.cmdRef.put("mu", 	"multiplier");
+		this.cmdRef.put("r", 	"radius");
+		this.cmdRef.put("sig", 	"signs");
+		this.cmdRef.put("skb", 	"skipbiome");
+		this.cmdRef.put("skw", 	"skipworld");
+		this.cmdRef.put("up", 	"upwards");
+		this.cmdRef.put("wd", 	"whendesert");
+		this.cmdRef.put("ws", 	"walkspeed");
+		this.cmdRef.put("wz", 	"whenzombie");
+		
 		Util.languageFile = new File(getDataFolder(), "language.yml");
+		Util.configFile = new File(getDataFolder(), "config.yml");
 		try {
             util.firstRun();
         } catch (Exception e) {
             e.printStackTrace();
         }
 		Util.language = new YamlConfiguration();
+		Util.config = new YamlConfiguration();
 		Util.loadYamls();
 		
 		PluginManager pm = getServer().getPluginManager();
@@ -161,9 +221,6 @@ public class ijmh extends JavaPlugin {
 		pm.registerEvents(new EntityListener(this), this);
 		pm.registerEvents(new InventoryListener(this), this);
 		pm.registerEvents(new CraftListener(this), this);
-		
-		this.getConfig().options().copyDefaults(true);
-        this.saveConfig();
 		
         if(this.getConfig().getBoolean("update_message")) util.checkVersion(false, null, null);
 		if(this.getConfig().getBoolean("debug")) this.debug = true;
@@ -225,11 +282,22 @@ public class ijmh extends JavaPlugin {
 			this.disabled.add("ride");
 			
 			if(sender.hasPermission("ijmh.admin")){
+				String features = "";
+
+				for (Entry<String, String> e : this.feature.entrySet()) {
+				    String eKey = e.getKey();
+				    String eValue = e.getValue();
+				    
+					ConfigurationSection config = this.getConfig().getConfigurationSection(eValue);
+					if(config.getBoolean("active")) features += ChatColor.GREEN;
+					else features += ChatColor.RED;
+					features += eValue + ChatColor.WHITE + ", ";
+				}
 				if (args[0].equalsIgnoreCase("help")) {
 					sender.sendMessage(ChatColor.AQUA + "- [ijhm] It Just Might Happen v" + this.getDescription().getVersion() + " ------------------"); 
-					sender.sendMessage(ChatColor.AQUA + "Effects: " + ChatColor.GOLD + effects); 
-					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect>" + ChatColor.AQUA + " - HowTo change values for an effect");
-					sender.sendMessage(ChatColor.GREEN + "/ijmh <effect> toggle" + ChatColor.AQUA + " - turn effect on/off");
+					sender.sendMessage(ChatColor.AQUA + "Features: " + ChatColor.GOLD + features.substring(0, features.length() - 2)); 
+					sender.sendMessage(ChatColor.GREEN + "/ijmh <feature or part of featurename>" + ChatColor.AQUA + " - HowTo change values for a feature");
+					sender.sendMessage(ChatColor.GREEN + "/ijmh <feature or part of featurename> toggle" + ChatColor.AQUA + " - turn feature on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh load" + ChatColor.AQUA + " - Load config.yml");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh update" + ChatColor.AQUA + " - Toggle the update messages on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates"); 
@@ -241,141 +309,51 @@ public class ijmh extends JavaPlugin {
 					if(this.getConfig().getBoolean("update_message")) {
 							this.getConfig().set("update_message", false);
 							sender.sendMessage(ChatColor.AQUA + "[ijhm] update messages has been switched off");
-							this.saveConfig();
+							Util.saveYamls();
 					}
 					else {
 							this.getConfig().set("update_message", true);
 							sender.sendMessage(ChatColor.AQUA + "[ijhm] update messages has been switched on");
-							this.saveConfig();
+							Util.saveYamls();
 					} 
 				}
 				else if(args[0].equalsIgnoreCase("load")) {
+					Util.loadYamls();
 					this.reloadConfig();
 					sender.sendMessage(ChatColor.AQUA + "[ijhm] Configuration loaded");
 				}
 				else if(this.disabled.contains(args[0])) {
 					sender.sendMessage(ChatColor.RED + "[ijhm] This feature is disabled for now");
 				}
-				else if(effects.contains(args[0].toLowerCase()) && args.length==1){
-					
-					String state;
-					if(Util.config(args[0], null).getBoolean("active")) state = ChatColor.GREEN + "enabled";
-					else state = ChatColor.RED + "disabled";
-					
-					sender.sendMessage(ChatColor.AQUA + "- HOWTO change: " + args[0] + " effect " + state + ChatColor.AQUA + " ----------------");
-					sender.sendMessage(ChatColor.GREEN + "/ijmh " + args[0] + " <name> <value> or <section> <name> <value>");
-					sender.sendMessage(ChatColor.GOLD + "section" + ChatColor.AQUA + " | " + ChatColor.GOLD + "name" + ChatColor.AQUA + " (default): current value");
-					sender.sendMessage(ChatColor.AQUA + "| toggle");
-					
-					if(args[0].equalsIgnoreCase("fire")) 			this.onfire.command(sender, args);
-					else if(args[0].equalsIgnoreCase("fall")) 		this.concussion.command(sender, args);
-					else if(args[0].equalsIgnoreCase("foodpoison")) this.foodpoisoning.command(sender, args);
-					else if(args[0].equalsIgnoreCase("lightning")) 	this.struckbylightning.command(sender, args); 
-					else if(args[0].equalsIgnoreCase("electro")) 	this.electrocution.command(sender, args);					
-					else if(args[0].equalsIgnoreCase("craftthumb")) this.craftthumb.command(sender, args);
-					else if(args[0].equalsIgnoreCase("cows")) 		this.cowsdokick.command(sender, args);
-					else if(args[0].equalsIgnoreCase("happyminer")) this.thehappyminer.command(sender, args);
-					else if(args[0].equalsIgnoreCase("roses")) 		this.roseshavethorns.command(sender, args);
-					else if(args[0].equalsIgnoreCase("brew")) 		this.brewexplosion.command(sender, args);
-					else if(args[0].equalsIgnoreCase("squid")) 		this.squiddefense.command(sender, args);
-					else if(args[0].equalsIgnoreCase("tar")) 		this.stickytar.command(sender, args);
-					else if(args[0].equalsIgnoreCase("bow")) 		this.bowbreaker.command(sender, args);
-					else if(args[0].equalsIgnoreCase("rail")) 		this.bumpintherail.command(sender, args);
-					else if(args[0].equalsIgnoreCase("quicksand")) 	this.quicksand.command(sender, args);
-					else if(args[0].equalsIgnoreCase("desert")) 	this.dizzyinthedesert.command(sender, args);
-					else if(args[0].equalsIgnoreCase("boat")) 		this.rowyourboat.command(sender, args);
-					else if(args[0].equalsIgnoreCase("buggyblock")) this.buggyblock.command(sender, args);
-					else if(args[0].equalsIgnoreCase("tnt")) 		this.unstabletnt.command(sender, args);
-					else if(args[0].equalsIgnoreCase("ride")) 		this.untamedride.command(sender, args);
-					else if(args[0].equalsIgnoreCase("worlddrop")) 	this.worlddrop.command(sender, args);
-					else if(args[0].equalsIgnoreCase("sneaky")) 	this.sneakypickup.command(sender, args);
-					else if(args[0].equalsIgnoreCase("zombie")) 	this.zombienation.command(sender, args);
-					else if(args[0].equalsIgnoreCase("heavy")) 		this.heavyduty.command(sender, args);					
-					else if(args[0].equalsIgnoreCase("fishing")) 	this.fishermanonhook.command(sender, args);
+				else {
+					if("bowbreaker".contains(args[0].toLowerCase())) 				{	args[0] = "bowbreaker"; 		this.bowbreaker.command(sender, args); }
+					else if("onfire".contains(args[0].toLowerCase())) 				{	args[0] = "onfire"; 			this.onfire.command(sender, args); }
+					else if("concussion".contains(args[0].toLowerCase())) 			{	args[0] = "concussion"; 		this.concussion.command(sender, args); }
+					else if("foodpoisoning".contains(args[0].toLowerCase()))		{	args[0] = "foodpoisoning"; 		this.foodpoisoning.command(sender, args); }
+					else if("struckbylightning".contains(args[0].toLowerCase())) 	{	args[0] = "struckbylightning"; 	this.struckbylightning.command(sender, args); } 
+					else if("electrocution".contains(args[0].toLowerCase())) 		{	args[0] = "electrocution"; 		this.electrocution.command(sender, args); }					
+					else if("craftthumb".contains(args[0].toLowerCase())) 			{	args[0] = "craftthumb"; 		this.craftthumb.command(sender, args); }
+					else if("cowsdokick".contains(args[0].toLowerCase())) 			{	args[0] = "cowsdokick"; 		this.cowsdokick.command(sender, args); }
+					else if("thehappyminer".contains(args[0].toLowerCase())) 		{	args[0] = "thehappyminer"; 		this.thehappyminer.command(sender, args); }
+					else if("roseshavethorns".contains(args[0].toLowerCase())) 		{	args[0] = "roseshavethorns"; 	this.roseshavethorns.command(sender, args); }
+					else if("brewexplosion".contains(args[0].toLowerCase())) 		{	args[0] = "brewexplosion"; 		this.brewexplosion.command(sender, args); }
+					else if("squiddefense".contains(args[0].toLowerCase())) 		{	args[0] = "squiddefense"; 		this.squiddefense.command(sender, args); }
+					else if("stickytar".contains(args[0].toLowerCase()))			{	args[0] = "stickytar"; 			this.stickytar.command(sender, args); }
+					else if("bumpintherail".contains(args[0].toLowerCase())) 		{	args[0] = "bumpintherail"; 		this.bumpintherail.command(sender, args); }
+					else if("quicksand".contains(args[0].toLowerCase())) 			{	args[0] = "quicksand"; 			this.quicksand.command(sender, args); }
+					else if("dizzyinthedesert".contains(args[0].toLowerCase())) 	{	args[0] = "dizzyinthedesert"; 	this.dizzyinthedesert.command(sender, args); }
+					else if("rowyourboat".contains(args[0].toLowerCase()))			{	args[0] = "rowyourboat"; 		this.rowyourboat.command(sender, args); }
+					else if("buggyblock".contains(args[0].toLowerCase()))			{	args[0] = "buggyblock"; 		this.buggyblock.command(sender, args); }
+					else if("unstabletnt".contains(args[0].toLowerCase())) 			{	args[0] = "unstabletnt"; 		this.unstabletnt.command(sender, args); }
+					else if("untamedride".contains(args[0].toLowerCase())) 			{	args[0] = "untamedride"; 		this.untamedride.command(sender, args); }
+					else if("worlddrop".contains(args[0].toLowerCase()))			{	args[0] = "worlddrop"; 			this.worlddrop.command(sender, args); }
+					else if("sneakypickup".contains(args[0].toLowerCase())) 		{	args[0] = "sneakypickup"; 		this.sneakypickup.command(sender, args); }
+					else if("zombienation".contains(args[0].toLowerCase())) 		{	args[0] = "zombienation"; 		this.zombienation.command(sender, args); }
+					else if("heavyduty".contains(args[0].toLowerCase())) 			{	args[0] = "heavyduty"; 			this.heavyduty.command(sender, args); }			
+					else if("fishermanonhook".contains(args[0].toLowerCase())) 		{	args[0] = "fishermanonhook"; 	this.fishermanonhook.command(sender, args); }
+					else sender.sendMessage(ChatColor.RED + "No feature was recognized with that namesearch!");
 				}
-				else if(effects.contains(args[0].toLowerCase()) && args[1].equalsIgnoreCase("toggle")){
-					if(Util.config(args[0],null).isBoolean("active")) {
-						if(this.getConfig().getConfigurationSection(args[0]).getBoolean("active")) {
-							this.getConfig().getConfigurationSection(args[0]).set("active", false);
-							sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[0] + " has been switched off");
-							this.saveConfig();
-						}
-						else {
-							this.getConfig().getConfigurationSection(args[0]).set("active", true);
-							sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[0] + " has been switched on");
-							this.saveConfig();
-						}
-					} 
-					else {
-						err = true;
-					}
-				}
-				else if(effects.contains(args[0].toLowerCase()) && args[2].equalsIgnoreCase("toggle")){
-					if(Util.config(args[0],args[1]).isBoolean("active")) {
-						if(this.getConfig().getConfigurationSection(args[0]).getConfigurationSection(args[1]).getBoolean("active")) {
-							this.getConfig().getConfigurationSection(args[0]).getConfigurationSection(args[1]).set("active", false);
-							sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " has been switched off");
-							this.saveConfig();
-						}
-						else {
-							this.getConfig().getConfigurationSection(args[0]).getConfigurationSection(args[1]).set("active", true);
-							sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " has been switched on");
-							this.saveConfig();
-						}
-					} 
-					else {
-						err = true;
-					}
-				} 
-				else if(effects.contains(args[0].toLowerCase()) && args.length==3){
-					if(Util.config(args[0],null).isSet(args[1]) || args[1].equalsIgnoreCase("skipbiome") || args[1].equalsIgnoreCase("skipworld")) {
-						if(args[1].equalsIgnoreCase("message") || args[1].equalsIgnoreCase("signs") || args[1].equalsIgnoreCase("whenzombie") || args[1].equalsIgnoreCase("whendesert")) {
-							boolean valueB = Boolean.parseBoolean(args[2]);
-							Util.config(args[0],null).set(args[1], valueB);
-						}
-						else if(args[1].equalsIgnoreCase("skipbiome")) {
-							if(Util.isBiome(args[2])) {
-								if(Util.config("lightning",null).getList("skip_biome").contains(args[2].toUpperCase())) {
-									Util.config("lightning",null).getList("skip_biome").remove(args[2].toUpperCase());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] Biome:" + args[2] + " was removed from the list");
-								} else {
-									List skip_biome = Util.config("lightning",null).getList("skip_biome");
-									skip_biome.add(args[2].toUpperCase());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] Biome:" + args[2] + " was added to the list");
-								}
-							} else {
-								sender.sendMessage(ChatColor.RED + "[ijhm] Biome not recognized!");
-							}
-						}
-						else if(args[1].equalsIgnoreCase("skipworld")) {
-							World world = this.getServer().getWorld(args[2].toString());
-							if(this.getServer().getWorlds().contains(world)) {
-								if(Util.config(args[0],null).getList("skip_world").contains(args[2])) {
-									Util.config(args[0],null).getList("skip_world").remove(args[2]);
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] World:" + args[2] + " was removed from the list");
-								} else {
-									List skip_world = Util.config(args[0],null).getList("skip_world");
-									skip_world.add(args[2]);
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] World:" + args[2] + " was added to the list");
-								}
-							} else {
-								sender.sendMessage(ChatColor.RED + "[ijhm] World not recognized!");
-							}
-						}
-						else if(args[1].equalsIgnoreCase("blocks")) {
-							if(Material.matchMaterial(args[2])!=null) {
-								if(Util.config(args[0],null).getList("blocks").contains(args[2].toUpperCase())) {
-									Util.config(args[0],null).getList("blocks").remove(args[2].toUpperCase());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] Blocktype:" + args[2].toUpperCase() + " was removed from the list");
-								} else {
-									List blocks = Util.config(args[0],null).getList("blocks");
-									blocks.add(args[2].toUpperCase());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] Blocktype:" + args[2].toUpperCase() + " was added to the list");
-								}
-							} else {
-								sender.sendMessage(ChatColor.RED + "[ijhm] Blocktype not recognized!");
-							}
-						}
+/*				
 						else if(args[1].equalsIgnoreCase("entitytype")) {
 							if(EntityType.fromName(args[2])!=null) {
 								if(Util.config(args[0],null).getList("entitytype").contains(args[2].toUpperCase())) {
@@ -390,88 +368,7 @@ public class ijmh extends JavaPlugin {
 								sender.sendMessage(ChatColor.RED + "[ijhm] Entitytype not recognized!");
 							}
 						}
-						else if(args[1].equalsIgnoreCase("items")) {
-							if(util.isItem(args[2])!=null) {
-								if(Util.config(args[0],null).getList("items").contains(util.isItem(args[2]).toString())) {
-									Util.config(args[0],null).getList("items").remove(util.isItem(args[2]).toString());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] " + util.isItem(args[2]) + " was removed from the list");
-								} else {
-									List items = Util.config(args[0],null).getList("items");
-									items.add(util.isItem(args[2]).toString());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] " + util.isItem(args[2]) + " was added to the list");
-								}
-							} else {
-								sender.sendMessage(ChatColor.RED + "[ijhm] Item (" + args[2] + ") not recognized!");
-							}
-						}
-						else if(args[0].equalsIgnoreCase("heavy") && args[1].equalsIgnoreCase("modifier")) {
-							double valueD = 1.0;
-							if(Double.parseDouble(args[2])<=1 && Double.parseDouble(args[2])>0) {
-								valueD = Double.parseDouble(args[2]);
-							} else {
-								sender.sendMessage(ChatColor.RED + "[ijhm] modifier larger than 0 and lesser or equal to 1.0! Value set to default,");
-							}
-							Util.config(args[0],null).set(args[1], valueD);
-						}
-						else if(args[1].equalsIgnoreCase("walkspeed") || args[1].equalsIgnoreCase("flyspeed")) {
-							double valueD = Double.parseDouble(args[2]);
-							Util.config(args[0],null).set(args[1], valueD);
-						}
-						else {
-							int valueI = Integer.parseInt(args[2]);
-							Util.config(args[0],null).set(args[1], valueI);
-						}
-						
-						if(!args[1].equalsIgnoreCase("skipbiome") && !args[1].equalsIgnoreCase("skipworld") && !args[1].equalsIgnoreCase("blocks") && !args[1].equalsIgnoreCase("items") && !args[1].equalsIgnoreCase("entitytype")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[1] + " was changed to " + args[2]);
-						this.saveConfig();
-					}
-					else err = true;
-				}
-				else if(effects.contains(args[0].toLowerCase()) && args.length==4){
-					if(Util.config(args[0],args[1]).isSet(args[2])) {
-
-						if(args[2].equalsIgnoreCase("message")) {
-							boolean valueB = Boolean.parseBoolean(args[3]);
-							Util.config(args[0],args[1]).set(args[2], valueB);
-						}
-						else if(args[0].equalsIgnoreCase("fishing") && args[2].equalsIgnoreCase("items")) {
-							if(util.isItem(args[3])!=null) {
-								if(Util.config("fishing","lucky").getList("items").contains(util.isItem(args[3]).toString())) {
-									Util.config("fishing","lucky").getList("items").remove(util.isItem(args[3]).toString());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] " + util.isItem(args[3]) + " was removed from the list");
-								} else {
-									List items = Util.config("fishing","lucky").getList("items");
-									items.add(util.isItem(args[3]).toString());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] " + util.isItem(args[3]) + " was added to the list");
-								}
-							} else {
-								sender.sendMessage(ChatColor.RED + "[ijhm] Item (" + args[3] + ") not recognized!");
-							}
-						}
-						else if(args[0].equalsIgnoreCase("fishing") && args[2].equalsIgnoreCase("mobs")) {
-							if(util.isEntity(args[3])!=null) {
-								if(Util.config("fishing","spawn").getList("mobs").contains(util.isEntity(args[3]).toString())) {
-									Util.config("fishing","spawn").getList("mobs").remove(util.isEntity(args[3]).toString());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] " + util.isEntity(args[3]) + " was removed from the list");
-								} else {
-									List mobs = Util.config("fishing","spawn").getList("mobs");
-									mobs.add(util.isEntity(args[3]).toString());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] " + util.isEntity(args[3]) + " was added to the list");
-								}
-							} else {
-								sender.sendMessage(ChatColor.RED + "[ijhm] Mob (" + args[3] + ") not recognized!");
-							}
-						}
-						else {
-							int valueI = Integer.parseInt(args[3]);
-							Util.config(args[0],args[1]).set(args[2], valueI);
-						}
-						
-						if(!args[2].equalsIgnoreCase("items") && !args[2].equalsIgnoreCase("mobs")) sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[2] + " was changed to " + args[3]);
-						this.saveConfig();	
-					}
-					else err = true;					
-				}
+*/						
 				if(err) sender.sendMessage(ChatColor.RED + "[ijhm] Either you had an error in your command or your config.yml is broken.");
 			}
 			else {

@@ -13,29 +13,35 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 public class SneakyPickup {
 
 	ijmh plugin;
+	public HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
 	
 	public SneakyPickup(ijmh instance){
 		plugin = instance;
 	}
 	
-	public void command(CommandSender sender, String[] args) {
-		
+	public void init() {
+		plugin.feature.put("SneakyPickup", "sneakypickup");
+		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
+	}	
+	
+	public boolean command(CommandSender sender, String[] args) {
 		if(args.length==1) {
-			HashMap<Integer, HashMap<String, String>> c = new HashMap<Integer, HashMap<String, String>>();
-			c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
 			plugin.util.cSend(c, args, sender);
-		}			
+		} else {
+			Util.cmdExecute(sender, args);
+		} 
+		return true;
 	}
 	
 	public void main(Event e) {
 		
-		if(Util.config("sneaky",null).getBoolean("active")){
+		if(Util.config("sneakypickup",null).getBoolean("active")){
 			
 			if(e.getEventName().equalsIgnoreCase("PlayerPickupItemEvent")) {
 				PlayerPickupItemEvent event = (PlayerPickupItemEvent) e;
 				Player player = event.getPlayer();
 				
-				if(!Util.config("sneaky",null).getList("skip_world").contains(player.getWorld().getName())) {
+				if(!Util.config("sneakypickup",null).getList("skipworld").contains(player.getWorld().getName())) {
 					if(!player.hasPermission("ijmh.immunity.sneaky")) {
 						if(!player.isSneaking()) event.setCancelled(true);
 					}
