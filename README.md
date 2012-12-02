@@ -8,10 +8,10 @@ main: info.plugmania.ijmh.ijmh<br />
 version: 2.0.1<br /><br />
 
 <b>Latest Release</b><br />
-v1.4.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v2.0.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v2.0.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v2.0.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
 v2.0.1<br />

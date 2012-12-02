@@ -280,7 +280,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("zombie");
 			effects.add("heavy");
 			
-			this.disabled.add("ride");
+			//this.disabled.add("ride");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				String features = "";
@@ -353,22 +353,7 @@ public class ijmh extends JavaPlugin {
 					else if("fishermanonhook".contains(args[0].toLowerCase())) 		{	args[0] = "fishermanonhook"; 	this.fishermanonhook.command(sender, args); }
 					else sender.sendMessage(ChatColor.RED + "No feature was recognized with that namesearch!");
 				}
-/*				
-						else if(args[1].equalsIgnoreCase("entitytype")) {
-							if(EntityType.fromName(args[2])!=null) {
-								if(Util.config(args[0],null).getList("entitytype").contains(args[2].toUpperCase())) {
-									Util.config(args[0],null).getList("entitytype").remove(args[2].toUpperCase());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] Entitytype:" + args[2].toUpperCase() + " was removed from the list");
-								} else {
-									List entitytype = Util.config(args[0],null).getList("entitytype");
-									entitytype.add(args[2].toUpperCase());
-									sender.sendMessage(ChatColor.AQUA + "[ijhm] Entitytype:" + args[2].toUpperCase() + " was added to the list");
-								}
-							} else {
-								sender.sendMessage(ChatColor.RED + "[ijhm] Entitytype not recognized!");
-							}
-						}
-*/						
+					
 				if(err) sender.sendMessage(ChatColor.RED + "[ijhm] Either you had an error in your command or your config.yml is broken.");
 			}
 			else {
