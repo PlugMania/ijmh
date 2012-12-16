@@ -5,15 +5,19 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 2.0.1<br /><br />
+version: 2.0.2<br /><br />
 
 <b>Latest Release</b><br />
-v2.0.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v2.0.2 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v2.0.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v2.0.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v2.0.2<br />
+Rework of the Heavy Duty update system, default values changed to: walkspeed 0.2, flyspeed 0.1, modifier 0.4<br />
+Players in water will not be affected by Sneaky Pickup<br />
+Fixed errorspam in console when attacked by entity<br />
 v2.0.1<br />
 Added reset option to walk- & flyspeeds<br />
 v2.0.0<br />

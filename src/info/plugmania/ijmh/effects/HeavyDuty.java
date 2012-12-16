@@ -26,9 +26,9 @@ public class HeavyDuty {
 	public void init() {
 		plugin.feature.put("HeavyDuty", "heavyduty");
 		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
-		c.put(1, plugin.util.cRow("walkspeed", null, "double", "0.1", null));
-		c.put(2, plugin.util.cRow("flyspeed", null, "double", "0.2", null));
-		c.put(3, plugin.util.cRow("modifier", null, "double", "1", "1-5"));
+		c.put(1, plugin.util.cRow("walkspeed", null, "double", "0.2", null));
+		c.put(2, plugin.util.cRow("flyspeed", null, "double", "0.1", null));
+		c.put(3, plugin.util.cRow("modifier", null, "double", "0.4", "0<=1"));
 		c.put(4, plugin.util.cRow("text", null, null, ChatColor.GREEN + "* There are limits to speed, for both client and server performance:", null));
 		c.put(5, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** 1 is moving very fast", null));
 		c.put(6, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** 0 is not moving at all", null));
@@ -42,55 +42,69 @@ public class HeavyDuty {
 			plugin.util.cSend(c, args, sender);
 		} else {
 			Util.cmdExecute(sender, args);
+			if(!args[1].equalsIgnoreCase("reset") || (Util.config("heavyduty", null).getBoolean("reset") && !Util.config("heavyduty", null).getBoolean("active"))) {
+				for(Player player : plugin.getServer().getOnlinePlayers()) {
+					if(Util.config("heavyduty", null).getBoolean("reset") && !Util.config("heavyduty", null).getBoolean("active")) {
+						player.setWalkSpeed((float) 0.2);
+						player.setFlySpeed((float) 0.1);
+						Util.toLog("Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
+					} else {
+						this.extend(player, player.getGameMode().name());
+					}
+				}
+				sender.sendMessage(ChatColor.AQUA + "All online players movement have been updated. Offline players will be updated when joining server.");
+			}
 		} 
 		return true;
 	}
 	
 	public void main(Event e) {
-		
 		if(Util.config("heavyduty",null).getBoolean("active")){
 			if(e.getEventName().equalsIgnoreCase("PlayerJoinEvent")) {
 				PlayerJoinEvent event = (PlayerJoinEvent) e;
 				Player player = (Player) event.getPlayer();
 					
-				this.extend(player);
+				this.extend(player, null);
 			}
 			else if(e.getEventName().equalsIgnoreCase("InventoryCloseEvent")) {
 				InventoryCloseEvent event = (InventoryCloseEvent) e;
 				Player player = (Player) event.getPlayer();
 					
-				this.extend(player);
+				this.extend(player, null);
 			}
 			else if(e.getEventName().equalsIgnoreCase("PlayerGameModeChangeEvent")) {
 				PlayerGameModeChangeEvent event = (PlayerGameModeChangeEvent) e;
 					Player player = (Player) event.getPlayer();
-						
-					this.extend(player);
+					this.extend(player, event.getNewGameMode().name());
 			}
 		} else if(Util.config("heavyduty",null).getBoolean("reset")==true) {
 			if(e.getEventName().equalsIgnoreCase("PlayerJoinEvent")) {
 				PlayerJoinEvent event = (PlayerJoinEvent) e;
 				Player player = (Player) event.getPlayer();
 				
-				player.setWalkSpeed((float) 0.1);
-				player.setFlySpeed((float) 0.2);
+				player.setWalkSpeed((float) 0.2);
+				player.setFlySpeed((float) 0.1);
 				Util.toLog("Speeds have been reset for " + player.getName(), true);
 			}
 		}
 	}
 	
-	public void extend(Player player) {
+	public void extend(Player player, String newgamemode) {
 		
-		if(!player.getGameMode().equals(GameMode.CREATIVE)) {
+		double WalkSpeed =  Util.config("heavyduty",null).getDouble("walkspeed");
+		double FlySpeed = Util.config("heavyduty",null).getDouble("flyspeed");
+		
+		if(newgamemode=="CREATIVE" || (player.getGameMode().equals(GameMode.CREATIVE) && newgamemode==null)) {
+			player.setWalkSpeed((float) WalkSpeed);
+			player.setFlySpeed((float) FlySpeed);
+			Util.toLog("Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
+		} else { 	
 			if(!Util.config("heavyduty",null).getList("skipworld").contains(player.getWorld().getName())) {
 				if(!player.hasPermission("ijmh.immunity.heavy")) {
-											
-					double WalkSpeed =  Util.config("heavyduty",null).getDouble("walkspeed");
-					double FlySpeed = Util.config("heavyduty",null).getDouble("flyspeed");
 			
 					double curProt = Util.getPlayerArmorValue(player)*Util.config("heavyduty",null).getDouble("modifier");
-			
-					if(curProt>0 && !player.getGameMode().equals(GameMode.CREATIVE)) {
+
+					if(curProt>0) {
 						player.setWalkSpeed((float) (WalkSpeed-((WalkSpeed*curProt)/20)));					
 						player.setFlySpeed((float) (FlySpeed-((FlySpeed*curProt)/20)));
 						Util.toLog("Current Protection is: " + curProt + " Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
@@ -98,9 +112,10 @@ public class HeavyDuty {
 					else {
 						player.setWalkSpeed((float) WalkSpeed);
 						player.setFlySpeed((float) FlySpeed);
+						Util.toLog("Current Protection is: " + curProt + " Walkspeed is " + player.getWalkSpeed() + ", Flyspeed is " + player.getFlySpeed(), true);
 					}
 				}
 			}
 		}
-	}
+	} 
 }

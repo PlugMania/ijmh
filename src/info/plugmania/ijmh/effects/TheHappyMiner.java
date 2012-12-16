@@ -60,7 +60,7 @@ public class TheHappyMiner {
 				BlockBreakEvent event = (BlockBreakEvent) e;
 				Player player = (Player) event.getPlayer();
 				
-				if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("thehappyminer",null).getList("skip_world").contains(player.getWorld().getName())) {
+				if(!player.getGameMode().equals(GameMode.CREATIVE) && !Util.config("thehappyminer",null).getList("skipworld").contains(player.getWorld().getName())) {
 					if(
 						!player.hasPotionEffect(PotionEffectType.FAST_DIGGING) &&
 						!player.hasPotionEffect(PotionEffectType.SLOW_DIGGING)

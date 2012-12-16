@@ -59,7 +59,7 @@ public class SquidDefense {
 					LivingEntity entity = (LivingEntity) event.getEntity();
 					
 					// SQUID SELFDEFENSE
-					if(!Util.config("squiddefense",null).getList("skip_world").contains(damager.getWorld().getName())) {
+					if(!Util.config("squiddefense",null).getList("skipworld").contains(damager.getWorld().getName())) {
 						if(entity.getType().equals(EntityType.SQUID) && damager.getGameMode().equals(GameMode.SURVIVAL)) {
 							if(Util.pctChance(Util.config("squiddefense",null).getInt("chance"),Util.config("squiddefense",null).getInt("chancemod"))) {
 								damager.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("squiddefense",null).getInt("duration")), Util.config("squiddefense",null).getInt("multiplier")));

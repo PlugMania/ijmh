@@ -203,6 +203,6 @@ heavy:
   active: true
   reset: false
   skip_world: []
-  walkspeed: 0.1
-  flyspeed: 0.2
-  modifier: 1.0
+  walkspeed: 0.2
+  flyspeed: 0.1
+  modifier: 0.4

@@ -1,5 +1,6 @@
 package info.plugmania.ijmh.listeners;
 
+import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
 
@@ -84,6 +85,7 @@ public class PlayerListener implements Listener {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		Util.toLog(event.getPlayer().getFlySpeed() + "", true);
 		plugin.heavyduty.main(event); // HEAVY DUTY
 	}
 	

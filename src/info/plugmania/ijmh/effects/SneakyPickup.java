@@ -5,6 +5,8 @@ import java.util.HashMap;
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -36,14 +38,22 @@ public class SneakyPickup {
 	public void main(Event e) {
 		
 		if(Util.config("sneakypickup",null).getBoolean("active")){
-			
 			if(e.getEventName().equalsIgnoreCase("PlayerPickupItemEvent")) {
 				PlayerPickupItemEvent event = (PlayerPickupItemEvent) e;
 				Player player = event.getPlayer();
+				Location location = player.getLocation();
 				
 				if(!Util.config("sneakypickup",null).getList("skipworld").contains(player.getWorld().getName())) {
 					if(!player.hasPermission("ijmh.immunity.sneaky")) {
-						if(!player.isSneaking()) event.setCancelled(true);
+						if(!player.isSneaking() && 
+								!(
+										location.add(1, 0, 0).getBlock().getType().equals(Material.STATIONARY_WATER) || location.add(1, 0, 0).getBlock().getType().equals(Material.WATER) ||
+										location.add(-1, 0, 0).getBlock().getType().equals(Material.STATIONARY_WATER) || location.add(-1, 0, 0).getBlock().getType().equals(Material.WATER) ||
+										location.add(0, 0, 1).getBlock().getType().equals(Material.STATIONARY_WATER) || location.add(0, 0, 1).getBlock().getType().equals(Material.WATER) ||
+										location.add(0, 0, -1).getBlock().getType().equals(Material.STATIONARY_WATER) || location.add(0, 0, -1).getBlock().getType().equals(Material.WATER) ||
+										location.add(0, -1, 0).getBlock().getType().equals(Material.STATIONARY_WATER) || location.add(0, -1, 0).getBlock().getType().equals(Material.WATER)
+										
+								 )) event.setCancelled(true);
 					}
 				}
 			}
