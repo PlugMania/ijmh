@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # -----------| LANGUAGE FILE FOR ijmh |------------
 # -------------------------------------------------
-file-version: 2.0.1
+file-version: 2.0.3
 # -------------------------------------------------
 
 # ON FIRE
@@ -80,3 +80,7 @@ lan_34: -whisperer is NOT in your near future !
 
 # ZOMBIE NATION
 lan_35: a zombie took his place in the world!
+
+# CRAZY COMBAT
+lan_36: A spark arised from your weapons and set you on fire!
+lan_37: Your attack backfired!

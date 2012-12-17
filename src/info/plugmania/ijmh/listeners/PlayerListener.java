@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -117,6 +118,11 @@ public class PlayerListener implements Listener {
 	public void onPlayerFish(PlayerFishEvent event) {
 		plugin.fishermanonhook.main(event); // FISHERMAN ON HOOK
 	}
+	
+	@EventHandler
+    public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {				
+		plugin.crazycombat.main(event); // CRAZY COMBAT
+    }
 	
 	@EventHandler
     public void onEntityDamage(EntityDamageEvent event) {				

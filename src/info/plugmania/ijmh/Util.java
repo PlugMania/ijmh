@@ -662,6 +662,8 @@ public class Util{
         	filecontents += plugin.util.VerifyConfig(plugin.bumpintherail.c, "rail");
         	filecontents += configFileContentsGen ("Concussion", "concussion");
         	filecontents += plugin.util.VerifyConfig(plugin.concussion.c, "fall");
+        	filecontents += configFileContentsGen ("CrazyCombat", "crazycombat");
+        	filecontents += plugin.util.VerifyConfig(plugin.crazycombat.c, "crazycombat");
         	filecontents += configFileContentsGen ("Crafting Thumb", "craftthumb");
         	filecontents += plugin.util.VerifyConfig(plugin.craftthumb.c, "craftthumb");
         	filecontents += configFileContentsGen ("Cows Do Kick", "cowsdokick");

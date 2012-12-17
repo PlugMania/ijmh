@@ -34,6 +34,7 @@ import info.plugmania.ijmh.effects.BumpInTheRail;
 import info.plugmania.ijmh.effects.Concussion;
 import info.plugmania.ijmh.effects.CowsDoKick;
 import info.plugmania.ijmh.effects.CraftThumb;
+import info.plugmania.ijmh.effects.CrazyCombat;
 import info.plugmania.ijmh.effects.DizzyInTheDesert;
 import info.plugmania.ijmh.effects.Electrocution;
 import info.plugmania.ijmh.effects.FishermanOnHook;
@@ -93,6 +94,7 @@ public class ijmh extends JavaPlugin {
 	public UntamedRide untamedride;
 	public DizzyInTheDesert dizzyinthedesert;
 	public WorldDrop worlddrop;
+	public CrazyCombat crazycombat;
 	
 	// PLUGIN SUPPORT
 	public MazeMania mazeMania;
@@ -128,6 +130,7 @@ public class ijmh extends JavaPlugin {
 		this.untamedride = new UntamedRide(this);
 		this.dizzyinthedesert = new DizzyInTheDesert(this);
 		this.worlddrop = new WorldDrop(this);
+		this.crazycombat = new CrazyCombat(this);
 	}
 	
 	public void onDisable(){
@@ -175,6 +178,7 @@ public class ijmh extends JavaPlugin {
 		this.untamedride.init();
 		this.worlddrop.init();
 		this.zombienation.init();
+		this.crazycombat.init();
 		
 		// COMMANDS
 		this.cmdRef.put("a", 	"angle");
@@ -329,6 +333,7 @@ public class ijmh extends JavaPlugin {
 					if("bowbreaker".contains(args[0].toLowerCase())) 				{	args[0] = "bowbreaker"; 		this.bowbreaker.command(sender, args); }
 					else if("onfire".contains(args[0].toLowerCase())) 				{	args[0] = "onfire"; 			this.onfire.command(sender, args); }
 					else if("concussion".contains(args[0].toLowerCase())) 			{	args[0] = "concussion"; 		this.concussion.command(sender, args); }
+					else if("crazycombat".contains(args[0].toLowerCase())) 			{	args[0] = "crazycombat"; 		this.crazycombat.command(sender, args); }
 					else if("foodpoisoning".contains(args[0].toLowerCase()))		{	args[0] = "foodpoisoning"; 		this.foodpoisoning.command(sender, args); }
 					else if("struckbylightning".contains(args[0].toLowerCase())) 	{	args[0] = "struckbylightning"; 	this.struckbylightning.command(sender, args); } 
 					else if("electrocution".contains(args[0].toLowerCase())) 		{	args[0] = "electrocution"; 		this.electrocution.command(sender, args); }					

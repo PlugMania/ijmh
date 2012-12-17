@@ -206,3 +206,18 @@ heavy:
   walkspeed: 0.2
   flyspeed: 0.1
   modifier: 0.4
+crazycombat:
+  active: true
+  skipworld: true
+  sparkle:
+    active: true
+    message: true
+    chance: 5
+    chancemod: 1
+    duration: 5
+  backfire:
+    active: true
+    message: true  
+    chance: 5
+    chancemod: 1
+    damage: 2 
