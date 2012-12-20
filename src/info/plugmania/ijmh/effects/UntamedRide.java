@@ -89,7 +89,7 @@ public class UntamedRide {
 					}
 					else if(Util.pctChance(Util.config("untamedride",null).getInt("chance"),Util.config("untamedride",null).getInt("chancemod"))) {
 						timer = curTime + Util.config("untamedride",null).getInt("limit");
-						if(Util.config("untamedride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_31"));
+						if(Util.config("untamedride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_31")));
 					}
 				}
 			} 
@@ -103,7 +103,7 @@ public class UntamedRide {
 					if(event.getMessage().toLowerCase().contains(Util.language.getString("lan_32").toLowerCase())) {
 						event.setCancelled(true);
 						plugin.untamedride.timer = 0;
-						if(Util.config("untamedride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_33"));
+						if(Util.config("untamedride",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_33")));
 					}
 				}
 			}

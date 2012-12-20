@@ -64,7 +64,7 @@ public class Foodpoisoning {
 								Material[] material = {Material.RAW_BEEF, Material.RAW_CHICKEN, Material.RAW_FISH, Material.ROTTEN_FLESH, Material.PORK};
 								if(Arrays.asList(material).contains(event.getMaterial())) {
 									player.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("foodpoisoning",null).getInt("duration")), Util.config("foodpoisoning",null).getInt("multiplier")));
-									if(Util.config("foodpoisoning",null).getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_03"));
+									if(Util.config("foodpoisoning",null).getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.chatColorText(Util.language.getString("lan_03")));
 						
 								}
 							}
@@ -73,7 +73,7 @@ public class Foodpoisoning {
 				}
 				// CURE FOODPOISON
 				if(player.hasPotionEffect(PotionEffectType.POISON) && event.getMaterial().equals(Material.MILK_BUCKET) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-					if(Util.config("foodpoisoning",null).getBoolean("message")) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_04"));
+					if(Util.config("foodpoisoning",null).getBoolean("message")) player.sendMessage(ChatColor.AQUA + Util.chatColorText(Util.language.getString("lan_04")));
 				} 
 			}
 		}

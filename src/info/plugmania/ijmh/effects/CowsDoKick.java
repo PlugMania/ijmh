@@ -74,13 +74,13 @@ public class CowsDoKick {
 							float diff = Math.abs(playerYaw - entityYaw);
 							int threshhold = 40;
 							if(diff > 180 - threshhold && diff < 180 + threshhold){
-								if(Util.config("cowsdokick",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_10"));
+								if(Util.config("cowsdokick",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_10")));
 								if(plugin.debug) plugin.getLogger().info("DEBUG: Front " + diff);
 							}	
 							else if((diff < threshhold - 10  || diff > 360 - threshhold + 10) && (!player.hasPermission("ijmh.immunity.cowskick"))) {
 								player.damage(Util.config("cowsdokick","kick").getInt("damage"));
 								player.setVelocity(new Vector(-entity.getLocation().getDirection().getX()-Util.config("cowsdokick","kick").getInt("backwards"),Util.config("cowsdokick","kick").getInt("upwards"),-entity.getLocation().getDirection().getZ()-Util.config("cowsdokick","kick").getInt("backwards")));
-								if(Util.config("cowsdokick","kick").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_11"));
+								if(Util.config("cowsdokick","kick").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_11")));
 								player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("cowsdokick","kick").getInt("time")), 1));
 								if(plugin.debug) plugin.getLogger().info("DEBUG: Back " + diff);
 							} 

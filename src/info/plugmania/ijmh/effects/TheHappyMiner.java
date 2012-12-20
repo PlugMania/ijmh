@@ -68,11 +68,11 @@ public class TheHappyMiner {
 						
 						if(Util.pctChance(Util.config("thehappyminer","energized").getInt("chance"),Util.config("thehappyminer","energized").getInt("chancemod"))) {
 							player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Util.sec2tic(Util.config("thehappyminer","energized").getInt("duration")), Util.config("thehappyminer","energized").getInt("multiplier")));
-							if(Util.config("thehappyminer","energized").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_12"));
+							if(Util.config("thehappyminer","energized").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_12")));
 						} 
 						else if(Util.pctChance(Util.config("thehappyminer","tired").getInt("chance"),Util.config("thehappyminer","tired").getInt("chancemod")) && !player.hasPermission("ijmh.immunity.tiredminer")) {
 							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, Util.sec2tic(Util.config("thehappyminer","tired").getInt("duration")), Util.config("thehappyminer","tired").getInt("multiplier")));
-							if(Util.config("thehappyminer","tired").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_13"));
+							if(Util.config("thehappyminer","tired").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_13")));
 						}
 						
 					} 

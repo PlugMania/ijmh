@@ -53,7 +53,7 @@ public class CraftThumb {
 						if(event.getCursor().getAmount()>0) moreCraft = (event.getCursor().getAmount() / 100)^(event.getCursor().getAmount() / 2);
 						if(Util.pctChance(Util.config("craftthumb",null).getInt("chance") / (1 + moreCraft),Util.config("craftthumb",null).getInt("chancemod"))) {
 							player.damage(Util.config("craftthumb",null).getInt("damage"));
-							if(Util.config("craftthumb",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_09"));
+							if(Util.config("craftthumb",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_09")));
 						}
 					}
 				}

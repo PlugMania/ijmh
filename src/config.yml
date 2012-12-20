@@ -208,7 +208,9 @@ heavy:
   modifier: 0.4
 crazycombat:
   active: true
-  skipworld: true
+  skipworld: []
+  fairplay:
+    active: true  
   sparkle:
     active: true
     message: true
@@ -220,4 +222,31 @@ crazycombat:
     message: true  
     chance: 5
     chancemod: 1
-    damage: 2 
+    damage: 2
+  splinter:
+    active: true
+    message: true  
+    chance: 5
+    chancemod: 1
+    damage: 2
+  broken:
+    active: true
+    message: true  
+    chance: 1
+    chancemod: 10
+  killrush:
+    active: true
+    message: true  
+    chance: 10
+    chancemod: 1
+    modifier: 3
+    duration: 20
+  bowsnaps:
+    active: true
+    message: true  
+    chance: 5
+    chancemod: 1
+    damage: 2    
+neardeath:
+  active: true
+  skipworld: []

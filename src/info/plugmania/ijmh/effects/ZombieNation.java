@@ -60,7 +60,7 @@ public class ZombieNation {
 								) {
 								if(Util.pctChance(Util.config("zombienation",null).getInt("chance"),Util.config("zombie",null).getInt("chancemod"))) {
 									player.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation(), EntityType.ZOMBIE);
-									if(Util.config("zombienation",null).getBoolean("message")) event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_35"));
+									if(Util.config("zombienation",null).getBoolean("message")) event.setDeathMessage(player.getName() + " " + Util.chatColorText(Util.language.getString("lan_35")));
 								}
 							}
 				        }

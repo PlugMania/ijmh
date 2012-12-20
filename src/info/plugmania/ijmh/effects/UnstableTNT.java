@@ -74,7 +74,7 @@ public class UnstableTNT {
 				
 				if(plugin.unstabletnt.tnt.contains(player)) {
 					plugin.unstabletnt.tnt.remove(player);
-					event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_30"));
+					event.setDeathMessage(player.getName() + " " + Util.chatColorText(Util.language.getString("lan_30")));
 				}
 				
 			}

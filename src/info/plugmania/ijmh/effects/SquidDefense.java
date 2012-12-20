@@ -64,7 +64,7 @@ public class SquidDefense {
 							if(Util.pctChance(Util.config("squiddefense",null).getInt("chance"),Util.config("squiddefense",null).getInt("chancemod"))) {
 								damager.addPotionEffect(new PotionEffect(PotionEffectType.POISON, Util.sec2tic(Util.config("squiddefense",null).getInt("duration")), Util.config("squiddefense",null).getInt("multiplier")));
 								damager.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, Util.sec2tic(Util.config("squiddefense",null).getInt("duration")), 1));
-								if(Util.config("squiddefense",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD+ "" + ChatColor.ITALIC + Util.language.getString("lan_15"));
+								if(Util.config("squiddefense",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD + "" + Util.chatColorText(Util.language.getString("lan_15")));
 							}
 						}
 					}

@@ -70,8 +70,8 @@ public class FishermanOnHook {
 								int amount = 1;
 								player.getInventory().addItem(new ItemStack(material, amount, data));
 								player.updateInventory();
-								if(Util.config("fishermanonhook","lucky").getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.language.getString("lan_19") + " " + material.name());
-								Util.toLog(ChatColor.GOLD + Util.language.getString("lan_19") + " " + material.name(), true);
+								if(Util.config("fishermanonhook","lucky").getBoolean("message")) player.sendMessage(ChatColor.GREEN + Util.chatColorText(Util.language.getString("lan_19")) + " " + material.name());
+								Util.toLog(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_19")) + " " + material.name(), true);
 							}
 						}
 						else if(Util.pctChance(Util.config("fishermanonhook","spawn").getInt("chance"),Util.config("fishermanonhook","spawn").getInt("chancemod"))) {
@@ -79,7 +79,7 @@ public class FishermanOnHook {
 								if(!Util.config("fishermanonhook","spawn").getList("mobs").isEmpty()) {
 									EntityType mob = EntityType.fromName((String) Util.config("fishermanonhook","spawn").getList("mobs").get((int) (Util.config("fishermanonhook","spawn").getList("mobs").size()*Math.random())));
 									plugin.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation().add(new Vector(2,0,0)), mob);
-									if(Util.config("fishermanonhook","spawn").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_20") + " " + mob.getName());
+									if(Util.config("fishermanonhook","spawn").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_20")) + " " + mob.getName());
 								}
 						
 							}

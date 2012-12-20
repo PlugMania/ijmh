@@ -8,6 +8,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -40,6 +42,7 @@ import info.plugmania.ijmh.effects.Electrocution;
 import info.plugmania.ijmh.effects.FishermanOnHook;
 import info.plugmania.ijmh.effects.Foodpoisoning;
 import info.plugmania.ijmh.effects.HeavyDuty;
+import info.plugmania.ijmh.effects.NearDeath;
 import info.plugmania.ijmh.effects.OnFire;
 import info.plugmania.ijmh.effects.Quicksand;
 import info.plugmania.ijmh.effects.RosesHaveThorns;
@@ -95,6 +98,7 @@ public class ijmh extends JavaPlugin {
 	public DizzyInTheDesert dizzyinthedesert;
 	public WorldDrop worlddrop;
 	public CrazyCombat crazycombat;
+	public NearDeath neardeath;
 	
 	// PLUGIN SUPPORT
 	public MazeMania mazeMania;
@@ -131,6 +135,7 @@ public class ijmh extends JavaPlugin {
 		this.dizzyinthedesert = new DizzyInTheDesert(this);
 		this.worlddrop = new WorldDrop(this);
 		this.crazycombat = new CrazyCombat(this);
+		this.neardeath = new NearDeath(this);
 	}
 	
 	public void onDisable(){
@@ -179,10 +184,12 @@ public class ijmh extends JavaPlugin {
 		this.worlddrop.init();
 		this.zombienation.init();
 		this.crazycombat.init();
+		this.neardeath.init();
 		
 		// COMMANDS
 		this.cmdRef.put("a", 	"angle");
 		this.cmdRef.put("abs", 	"abovesealvl");
+		this.cmdRef.put("ac", 	"active");
 		this.cmdRef.put("am", 	"amount");
 		this.cmdRef.put("ba", 	"backwards");
 		this.cmdRef.put("bl", 	"blocks");
@@ -288,10 +295,11 @@ public class ijmh extends JavaPlugin {
 			
 			if(sender.hasPermission("ijmh.admin")){
 				String features = "";
-				for (Entry<String, String> e : this.feature.entrySet()) {
-				    String eKey = e.getKey();
-				    String eValue = e.getValue();
-				    
+				
+				SortedSet<String> keys = new TreeSet<String>(this.feature.keySet());
+				for (String eKey : keys) { 
+					String eValue = this.feature.get(eKey);
+				
 					ConfigurationSection config = this.getConfig().getConfigurationSection(eValue);
 					if(config.getBoolean("active")) features += ChatColor.GREEN;
 					else features += ChatColor.RED;
@@ -333,6 +341,7 @@ public class ijmh extends JavaPlugin {
 					if("bowbreaker".contains(args[0].toLowerCase())) 				{	args[0] = "bowbreaker"; 		this.bowbreaker.command(sender, args); }
 					else if("onfire".contains(args[0].toLowerCase())) 				{	args[0] = "onfire"; 			this.onfire.command(sender, args); }
 					else if("concussion".contains(args[0].toLowerCase())) 			{	args[0] = "concussion"; 		this.concussion.command(sender, args); }
+					else if("neardeath".contains(args[0].toLowerCase())) 			{	args[0] = "neardeath"; 			this.neardeath.command(sender, args); }
 					else if("crazycombat".contains(args[0].toLowerCase())) 			{	args[0] = "crazycombat"; 		this.crazycombat.command(sender, args); }
 					else if("foodpoisoning".contains(args[0].toLowerCase()))		{	args[0] = "foodpoisoning"; 		this.foodpoisoning.command(sender, args); }
 					else if("struckbylightning".contains(args[0].toLowerCase())) 	{	args[0] = "struckbylightning"; 	this.struckbylightning.command(sender, args); } 

@@ -77,7 +77,7 @@ public class Quicksand {
 								player.teleport(pUnder);
 								timer = curTime + (Util.config("quicksand",null).getInt("cooldown") * 1000);
 								
-								if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_21"));
+								if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_21")));
 							} else if(event.getFrom().getY() < event.getTo().getY() && plugin.quicksand.quicksand.containsKey(player)) {
 								plugin.quicksand.quicksand.put(player, plugin.quicksand.quicksand.get(player)+1);
 								Util.toLog("Jumps: " + plugin.quicksand.quicksand.get(player), true);
@@ -87,7 +87,7 @@ public class Quicksand {
 									if(player.getLocation().getBlock().getType().equals(Material.AIR)) {
 										Util.toLog("Removed by AIR", true);
 										plugin.quicksand.quicksand.remove(player);
-										if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_22"));
+										if(Util.config("quicksand",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_22")));
 									}
 								} 
 								else if(curTime>timer) {
@@ -166,7 +166,7 @@ public class Quicksand {
 				// REMOVE FROM LIST WHEN DEAD
 				if(plugin.quicksand.quicksand.containsKey(player)) {
 					plugin.quicksand.quicksand.remove(player);
-					event.setDeathMessage(player.getName() + " " + Util.language.getString("lan_23"));
+					event.setDeathMessage(player.getName() + " " + Util.chatColorText(Util.language.getString("lan_23")));
 				}
 			}
 		}

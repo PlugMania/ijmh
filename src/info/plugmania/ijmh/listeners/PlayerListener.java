@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityRegainHealthEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -63,6 +64,8 @@ public class PlayerListener implements Listener {
 		plugin.dizzyinthedesert.main(event); // DIZZY IN THE DESERT
 		plugin.onfire.main(event); // ON FIRE
 		plugin.foodpoisoning.main(event); // FOODPOISONING
+		plugin.crazycombat.main(event); // CRAZY COMBAT
+		plugin.neardeath.main(event); // NEAR DEATH
     }	
 	
 	@EventHandler
@@ -88,6 +91,7 @@ public class PlayerListener implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Util.toLog(event.getPlayer().getFlySpeed() + "", true);
 		plugin.heavyduty.main(event); // HEAVY DUTY
+		plugin.neardeath.main(event); // NEAR DEATH
 	}
 	
 	@EventHandler
@@ -128,6 +132,12 @@ public class PlayerListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {				
 		plugin.concussion.main(event); // CONCUSSION
 		plugin.quicksand.main(event); // QUICKSAND
+		plugin.neardeath.main(event); // NEAR DEATH
+    }
+
+	@EventHandler
+    public void onEntityRegainHealth(EntityRegainHealthEvent event) {				
+		plugin.neardeath.main(event); // NEAR DEATH
     }
 	
 }

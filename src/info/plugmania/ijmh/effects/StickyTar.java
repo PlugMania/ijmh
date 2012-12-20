@@ -68,7 +68,7 @@ public class StickyTar {
 						if(wool.getColor().equals(DyeColor.BLACK)) {
 							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("stickytar",null).getInt("duration")), Util.config("stickytar",null).getInt("multiplier")));
 							if(Util.config("stickytar",null).getBoolean("message")) {
-								if(curTime>timer) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_16"));
+								if(curTime>timer) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_16")));
 								timer = curTime + 10000;
 							}
 						}

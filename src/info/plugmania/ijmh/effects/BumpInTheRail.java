@@ -61,7 +61,7 @@ public class BumpInTheRail {
 									event.getVehicle().eject();
 									Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
 									player.setVelocity(new Vector(vector.getX()+Util.config("bumpintherail",null).getInt("distance"),Util.config("bumpintherail",null).getInt("angle"),vector.getZ()+Util.config("bumpintherail",null).getInt("distance")));
-									if(Util.config("bumpintherail",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_18"));
+									if(Util.config("bumpintherail",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_18")));
 								}
 							}
 						}

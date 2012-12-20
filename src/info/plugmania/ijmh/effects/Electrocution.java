@@ -65,11 +65,11 @@ public class Electrocution {
 								){
 							if(Util.pctChance(Util.config("electrocution","high").getInt("chance"),Util.config("electrocution","high").getInt("chancemod"))) {
 								player.damage(Util.config("electrocution","high").getInt("damage"));
-								if(Util.config("electrocution","high").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_08"));
+								if(Util.config("electrocution","high").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_08")));
 							}
 							else {
 								player.damage(Util.config("electrocution","low").getInt("chance"));
-								if(Util.config("electrocution","low").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_07"));
+								if(Util.config("electrocution","low").getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_07")));
 							}
 						}
 					}

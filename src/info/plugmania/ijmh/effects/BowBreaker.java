@@ -60,7 +60,7 @@ public class BowBreaker {
 									Inventory inv = damager.getInventory();
 									inv.remove(itemHand);
 									damager.damage(Util.config("bowbreaker",null).getInt("damage"));
-									if(Util.config("bowbreaker",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD + Util.language.getString("lan_17"));
+									if(Util.config("bowbreaker",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_17")));
 								}
 							}
 						}

@@ -65,7 +65,7 @@ public class OnFire {
 								) {
 								if(Util.pctChance(Util.config("onfire",null).getInt("chance"),Util.config("onfire",null).getInt("chancemod"))) {
 									player.setFireTicks(Util.sec2tic(Util.config("fire",null).getInt("duration")));
-									if(Util.config("onfire",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_01"));
+									if(Util.config("onfire",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_01")));
 								}
 							}
 						}
@@ -77,7 +77,7 @@ public class OnFire {
 						player.setFireTicks(0);
 						event.setCancelled(true);
 						if(Util.config("onfire",null).getBoolean("message")) {
-							if(curTime>timer) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_02"));
+							if(curTime>timer) player.sendMessage(ChatColor.AQUA + Util.chatColorText(Util.language.getString("lan_02")));
 							timer = (int) (curTime + 2000);
 						}
 					}
@@ -98,7 +98,7 @@ public class OnFire {
 						!from.getBlock().getType().equals(Material.STATIONARY_WATER) && 
 						player.getFireTicks()>0){
 						
-					if(curTime>timer) player.sendMessage(ChatColor.AQUA + Util.language.getString("lan_02"));
+					if(curTime>timer) player.sendMessage(ChatColor.AQUA + Util.chatColorText(Util.language.getString("lan_02")));
 					timer = (curTime + 2000);
 				}
 			}

@@ -83,7 +83,7 @@ public class Concussion {
 							} else if(event.getPlayer().getFallDistance()>6){
 								player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("concussion",null).getInt("duration")*2), 1));				
 							}
-							if(Util.config("concussion",null).getBoolean("message") && event.getPlayer().getFallDistance()>6) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.language.getString("lan_06"));
+							if(Util.config("concussion",null).getBoolean("message") && event.getPlayer().getFallDistance()>6) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.chatColorText(Util.language.getString("lan_06")));
 						}
 					}
 				}
@@ -112,7 +112,7 @@ public class Concussion {
 									} else if(event.getDamage()>=4){
 										player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(Util.config("concussion",null).getInt("duration")*2), 1));				
 									}
-									if(event.getDamage()>=4 && Util.config("concussion",null).getBoolean("message")) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.language.getString("lan_06"));
+									if(event.getDamage()>=4 && Util.config("concussion",null).getBoolean("message")) player.sendMessage(ChatColor.LIGHT_PURPLE + Util.chatColorText(Util.language.getString("lan_06")));
 								}
 							}
 						}

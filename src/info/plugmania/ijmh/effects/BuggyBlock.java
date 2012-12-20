@@ -54,7 +54,7 @@ public class BuggyBlock {
 				// PLACED
 				if(!Util.config("buggyblock",null).getList("skipworld").contains(player.getWorld().getName())) {
 					if(Util.config("buggyblock",null).getList("blocks").contains(block.getType().name())) {
-						if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_28"));
+						if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_28")));
 					}
 				}
 			
@@ -70,7 +70,7 @@ public class BuggyBlock {
 						if(Util.pctChance(Util.config("buggyblock",null).getInt("chance"),Util.config("buggyblock",null).getInt("chancemod"))) {
 							pUnder.getBlock().breakNaturally();
 							event.setCancelled(true);
-							if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_29"));
+							if(Util.config("buggyblock",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_29")));
 						}
 						
 					}

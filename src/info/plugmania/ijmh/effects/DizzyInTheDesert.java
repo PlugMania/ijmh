@@ -64,7 +64,7 @@ public class DizzyInTheDesert {
 							plugin.dizzyinthedesert.desert.remove(player);
 							player.removePotionEffect(PotionEffectType.SLOW);
 							player.removePotionEffect(PotionEffectType.CONFUSION);
-							if(Util.config("dizzyinthedesert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_27"));
+							if(Util.config("dizzyinthedesert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_27")));
 						}
 					}
 				}
@@ -100,7 +100,7 @@ public class DizzyInTheDesert {
 									plugin.dizzyinthedesert.desert.add(player);
 									player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(60), Util.config("dizzyinthedesert",null).getInt("multiplier")));
 									player.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Util.sec2tic(60), Util.config("dizzyinthedesert",null).getInt("multiplier")));
-									if(Util.config("dizzyinthedesert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_26"));
+									if(Util.config("dizzyinthedesert",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_26")));
 								}
 							}
 						}

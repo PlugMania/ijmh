@@ -77,7 +77,7 @@ public class RowYourBoat {
 										player.eject();
 										event.getVehicle().remove();
 										
-										if(Util.config("rowyourboat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_24"));
+										if(Util.config("rowyourboat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_24")));
 										
 										if(y<5) {
 											Block block = player.getLocation().add(new Vector(0,-2,0)).getBlock();
@@ -138,7 +138,7 @@ public class RowYourBoat {
 				if(plugin.rowyourboat.drowning.containsKey(player) && event.getBlock().getType().equals(Material.WOOD)) {
 					plugin.rowyourboat.drowning.remove(player);
 					player.removePotionEffect(PotionEffectType.BLINDNESS);
-					if(Util.config("rowyourboat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_25"));
+					if(Util.config("rowyourboat",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_25")));
 				}
 			}
 		}

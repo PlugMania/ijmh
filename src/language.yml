@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # -----------| LANGUAGE FILE FOR ijmh |------------
 # -------------------------------------------------
-file-version: 2.0.3
+file-version: 2.1.0
 # -------------------------------------------------
 
 # ON FIRE
@@ -84,3 +84,7 @@ lan_35: a zombie took his place in the world!
 # CRAZY COMBAT
 lan_36: A spark arised from your weapons and set you on fire!
 lan_37: Your attack backfired!
+lan_38: Auch! Your the wood in your hand just gave a splinter
+lan_39: Oh dear! Your weapon broke ...
+lan_40: You feel the rush from your kill!
+lan_41: Your fingers get in the way, man that hurt!

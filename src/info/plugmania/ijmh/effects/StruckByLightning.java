@@ -81,7 +81,7 @@ public class StruckByLightning {
 									timer = curTime + (Util.config("struckbylightning",null).getInt("cooldown") * 1000);
 									player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
 									player.damage(Util.config("struckbylightning",null).getInt("damage"));
-									if(Util.config("struckbylightning",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_05"));
+									if(Util.config("struckbylightning",null).getBoolean("message")) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_05")));
 								}
 							}
 						}

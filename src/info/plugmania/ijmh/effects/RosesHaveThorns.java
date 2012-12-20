@@ -69,7 +69,7 @@ public class RosesHaveThorns {
 									Util.config("roseshavethorns",null).getBoolean("message") && 
 									to.getBlock().getType()!=from.getBlock().getType()
 									) {
-								if(curTime>timer) player.sendMessage(ChatColor.GOLD + Util.language.getString("lan_14"));
+								if(curTime>timer) player.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_14")));
 								timer = curTime + 10000;
 							}		
 						}

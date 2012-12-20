@@ -409,6 +409,10 @@ public class Util{
 	}
 
 	public void armorval2type() {
+		
+		// SKULL ITEMS
+		protection.put(Material.SKULL_ITEM, 0);
+		protection.put(Material.BONE, 0);
 		// LEATHER
 		protection.put(Material.LEATHER_HELMET, 1);
 		protection.put(Material.LEATHER_BOOTS, 1);
@@ -490,6 +494,33 @@ public class Util{
 		    i = i + 1;
 		}
 		return null;
+	}
+	
+	public static String chatColorText(String str) {
+		
+		str = str.replaceAll("&0", "" + ChatColor.BLACK);
+		str = str.replaceAll("&1", "" + ChatColor.DARK_BLUE);
+		str = str.replaceAll("&2", "" + ChatColor.DARK_GREEN);
+		str = str.replaceAll("&3", "" + ChatColor.DARK_AQUA);
+		str = str.replaceAll("&4", "" + ChatColor.DARK_RED);
+		str = str.replaceAll("&5", "" + ChatColor.DARK_PURPLE);
+		str = str.replaceAll("&6", "" + ChatColor.GOLD);
+		str = str.replaceAll("&7", "" + ChatColor.GRAY);
+		str = str.replaceAll("&8", "" + ChatColor.DARK_GRAY);
+		str = str.replaceAll("&9", "" + ChatColor.BLUE);
+		str = str.replaceAll("&a", "" + ChatColor.GREEN);
+		str = str.replaceAll("&b", "" + ChatColor.AQUA);
+		str = str.replaceAll("&c", "" + ChatColor.RED);
+		str = str.replaceAll("&d", "" + ChatColor.LIGHT_PURPLE);
+		str = str.replaceAll("&e", "" + ChatColor.YELLOW);
+		str = str.replaceAll("&f", "" + ChatColor.WHITE);
+		str = str.replaceAll("&I", "" + ChatColor.ITALIC);
+		str = str.replaceAll("&B", "" + ChatColor.BOLD);
+		str = str.replaceAll("&M", "" + ChatColor.MAGIC);
+		str = str.replaceAll("&S", "" + ChatColor.STRIKETHROUGH);
+		str = str.replaceAll("&U", "" + ChatColor.UNDERLINE);
+		
+		return str;
 	}
 
 	// YAML ------------------------------------------------------------------------------
@@ -623,6 +654,13 @@ public class Util{
 			key = "lan_34";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "-whisperer is NOT in your near future !";
 			filecontents += "\n\n# ZOMBIE NATION";
 			key = "lan_35";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "a zombie took his place in the world!";
+			filecontents += "\n\n# CRAZY COMBAT";
+			key = "lan_36";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "A spark arised from your weapons and set you on fire!";
+			key = "lan_37";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Your attack backfired!";
+			key = "lan_38";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Auch! Your the wood in your hand just gave a splinter";
+			key = "lan_39";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Oh dear! Your weapon broke ...";
+			key = "lan_40";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "You feel the rush from your kill!";
+			key = "lan_41";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Your fingers get in the way, man that hurt!";
 			
 	    	try
 	    	{
@@ -662,7 +700,7 @@ public class Util{
         	filecontents += plugin.util.VerifyConfig(plugin.bumpintherail.c, "rail");
         	filecontents += configFileContentsGen ("Concussion", "concussion");
         	filecontents += plugin.util.VerifyConfig(plugin.concussion.c, "fall");
-        	filecontents += configFileContentsGen ("CrazyCombat", "crazycombat");
+        	filecontents += configFileContentsGen ("Crazy Combat", "crazycombat");
         	filecontents += plugin.util.VerifyConfig(plugin.crazycombat.c, "crazycombat");
         	filecontents += configFileContentsGen ("Crafting Thumb", "craftthumb");
         	filecontents += plugin.util.VerifyConfig(plugin.craftthumb.c, "craftthumb");
@@ -678,6 +716,8 @@ public class Util{
         	filecontents += plugin.util.VerifyConfig(plugin.foodpoisoning.c, "foodpoison");
         	filecontents += configFileContentsGen ("Heavy Duty", "heavyduty");
         	filecontents += plugin.util.VerifyConfig(plugin.heavyduty.c, "heavy");
+        	filecontents += configFileContentsGen ("Near Death", "neardeath");
+        	filecontents += plugin.util.VerifyConfig(plugin.neardeath.c, "neardeath");
         	filecontents += configFileContentsGen ("On Fire", "onfire");
         	filecontents += plugin.util.VerifyConfig(plugin.onfire.c, "fire");
         	filecontents += configFileContentsGen ("Quicksand", "quicksand");
@@ -785,6 +825,8 @@ public class Util{
     	filecontents += configFileContentsGen ("Crafting Thumb", "craftthumb");
     	filecontents += plugin.util.VerifyConfig(plugin.craftthumb.c, "craftthumb");
     	filecontents += configFileContentsGen ("Cows Do Kick", "cowsdokick");
+    	filecontents += configFileContentsGen ("Crazy Combat", "crazycombat");
+    	filecontents += plugin.util.VerifyConfig(plugin.crazycombat.c, "crazycombat");
     	filecontents += plugin.util.VerifyConfig(plugin.cowsdokick.c, "cows");
     	filecontents += configFileContentsGen ("Dizzy In The Desert", "dizzyinthedesert");
     	filecontents += plugin.util.VerifyConfig(plugin.dizzyinthedesert.c, "dizzyinthedesert");
@@ -796,6 +838,8 @@ public class Util{
     	filecontents += plugin.util.VerifyConfig(plugin.foodpoisoning.c, "foodpoisoning");
     	filecontents += configFileContentsGen ("Heavy Duty", "heavyduty");
     	filecontents += plugin.util.VerifyConfig(plugin.heavyduty.c, "heavyduty");
+    	filecontents += configFileContentsGen ("Near Death", "neardeath");
+    	filecontents += plugin.util.VerifyConfig(plugin.neardeath.c, "neardeath");
     	filecontents += configFileContentsGen ("On Fire", "onfire");
     	filecontents += plugin.util.VerifyConfig(plugin.onfire.c, "onfire");
     	filecontents += configFileContentsGen ("Quicksand", "quicksand");
