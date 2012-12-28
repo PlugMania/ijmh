@@ -16,6 +16,7 @@ v2.0.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.
 <b>Changelog</b><br />
 v2.1.0<br />
 Fixed console-error when using SKULL_ITEM as HEAD, and BONES as FEET<br />
+Changed Zombie Nation to spawn zombies on every deathcause or only zombies<br />
 Added color code compability to languagefile<br />
 Added Crazy Combat feature: Fair Play, Sparks, Backfire, Splinter, Bow Snaps, Weapon Breaks, Kill Rush<br />
 Added Near Death feature<br />

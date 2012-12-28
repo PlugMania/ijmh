@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
 import info.plugmania.ijmh.Util;
@@ -52,16 +53,15 @@ public class ZombieNation {
 				if(!Util.config("zombienation",null).getList("skipworld").contains(player.getWorld().getName())) {
 					EntityDamageEvent deathCause = player.getLastDamageCause();
 					if(deathCause != null) {
-				        if(deathCause.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK) {
-				            Entity entity = ((EntityDamageByEntityEvent)deathCause).getDamager(); 
-							if(
-									(entity.getType().equals(EntityType.ZOMBIE) && Util.config("zombienation",null).getBoolean("whenzombie")) || 
-									!Util.config("zombienation",null).getBoolean("whenzombie")
-								) {
-								if(Util.pctChance(Util.config("zombienation",null).getInt("chance"),Util.config("zombie",null).getInt("chancemod"))) {
-									player.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation(), EntityType.ZOMBIE);
-									if(Util.config("zombienation",null).getBoolean("message")) event.setDeathMessage(player.getName() + " " + Util.chatColorText(Util.language.getString("lan_35")));
-								}
+				        if(deathCause.getCause().equals(DamageCause.ENTITY_ATTACK) && Util.config("zombienation",null).getBoolean("whenzombie") && ((EntityDamageByEntityEvent)deathCause).getDamager().getType().equals(EntityType.ZOMBIE)) {							
+							if(Util.pctChance(Util.config("zombienation",null).getInt("chance"),Util.config("zombie",null).getInt("chancemod"))) {
+								player.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+								if(Util.config("zombienation",null).getBoolean("message")) event.setDeathMessage(player.getName() + " " + Util.chatColorText(Util.language.getString("lan_35")));
+							}
+				        } else if(!Util.config("zombienation",null).getBoolean("whenzombie")) {
+				        	if(Util.pctChance(Util.config("zombienation",null).getInt("chance"),Util.config("zombie",null).getInt("chancemod"))) {
+								player.getServer().getWorld(player.getWorld().getName()).spawnEntity(player.getLocation(), EntityType.ZOMBIE);
+								if(Util.config("zombienation",null).getBoolean("message")) event.setDeathMessage(player.getName() + " " + Util.chatColorText(Util.language.getString("lan_35")));
 							}
 				        }
 					}

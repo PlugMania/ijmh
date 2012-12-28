@@ -38,7 +38,6 @@ public class NearDeath {
 	
 	public void main(Event e) {
 		if(Util.config("neardeath",null).getBoolean("active")){
-			Util.toLog("active", true);
 			if(e.getEventName().equalsIgnoreCase("EntityDamageEvent")) {
 				EntityDamageEvent event = (EntityDamageEvent) e;
 				Util.toLog("Entity", true);

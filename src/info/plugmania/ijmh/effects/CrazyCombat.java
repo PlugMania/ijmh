@@ -31,6 +31,13 @@ public class CrazyCombat {
 
 	public void init() {
 		plugin.feature.put("CrazyCombat", "crazycombat");
+		plugin.subfeature.put("fa", "fairplay");
+		plugin.subfeature.put("spa", "sparkle");
+		plugin.subfeature.put("ba", "backfire");
+		plugin.subfeature.put("spl", "splinter");
+		plugin.subfeature.put("br", "broken");
+		plugin.subfeature.put("bs", "bowsnaps");
+		plugin.subfeature.put("ki", "killrush");
 		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
 		c.put(1, plugin.util.cRow("active", "fairplay", "boolean", "true", "true/false/*"));
 		c.put(2, plugin.util.cRow("active", "sparkle", "boolean", "true", null));
@@ -90,26 +97,35 @@ public class CrazyCombat {
 							if(Util.pctChance(Util.config("crazycombat","killrush").getInt("chance"),Util.config("crazycombat","killrush").getInt("chancemod"))) {
 								killrush(damager);	
 							}
+						} else if(
+							// ONLY WEAPONS DO DAMAGE
+							Util.config("crazycombat","isweapon").getBoolean("active") && 
+							!Util.config("crazycombat","isweapon").getList("weapons").contains(damager.getItemInHand().getType().toString())
+							) {
+							event.setCancelled(true);
+							if(Util.config("crazycombat","isweapon").getBoolean("message")) damager.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_42")));
 						} else if(event.getCause().equals(DamageCause.ENTITY_ATTACK)) {
+							Util.toLog("ENTITY_ATTACK " + damager.getItemInHand().getType().toString(), true);
 							// SPARKLE SET FIRE TO BOTH PLAYERS
-							if(Util.config("crazycombat","sparkle").getBoolean("active")) {
-								if(damager.getItemInHand().getType().toString().contains("SWORD") && damaged.getItemInHand().getType().toString().contains("SWORD")) {	
-									if(Util.pctChance(Util.config("crazycombat","sparkle").getInt("chance"),Util.config("crazycombat","sparkle").getInt("chancemod"))) {
-										sparkle(damager,damaged);
-									}
-								}
+							if(
+								(Util.config("crazycombat","sparkle").getBoolean("active")) && 
+								(damager.getItemInHand().getType().toString().contains("SWORD") && damaged.getItemInHand().getType().toString().contains("SWORD")) &&
+								(Util.pctChance(Util.config("crazycombat","sparkle").getInt("chance"),Util.config("crazycombat","sparkle").getInt("chancemod")))
+							) {
+								sparkle(damager,damaged);
 							// BACKFIRE TO DAMAGER	
-							} else if(Util.config("crazycombat","backfire").getBoolean("active") && !damager.getGameMode().equals(GameMode.CREATIVE))  {
-								if(Util.pctChance(Util.config("crazycombat","backfire").getInt("chance"),Util.config("crazycombat","backfire").getInt("chancemod"))) {
-									backfire(damager);
-								}
+							} else if(
+								(Util.config("crazycombat","backfire").getBoolean("active") && !damager.getGameMode().equals(GameMode.CREATIVE)) &&
+								(Util.pctChance(Util.config("crazycombat","backfire").getInt("chance"),Util.config("crazycombat","backfire").getInt("chancemod")))
+							) {
+								backfire(damager);
 								// WEAPON BREAKS	
-							} else if(Util.config("crazycombat","broken").getBoolean("active") && !damager.getGameMode().equals(GameMode.CREATIVE))  {
-								if(damager.getItemInHand().getType().toString().contains("SWORD")) {
-									if(Util.pctChance(Util.config("crazycombat","broken").getInt("chance"),Util.config("crazycombat","broken").getInt("chancemod"))) {
+							} else if(
+								(Util.config("crazycombat","broken").getBoolean("active") && !damager.getGameMode().equals(GameMode.CREATIVE)) &&
+								(damager.getItemInHand().getType().toString().contains("SWORD")) &&
+								(Util.pctChance(Util.config("crazycombat","broken").getInt("chance"),Util.config("crazycombat","broken").getInt("chancemod")))
+							) {
 										broken(damager);
-									}
-								}
 							}
 						} else if(event.getCause().equals(DamageCause.PROJECTILE)) {
 							// BOW SNAPS FINGERS

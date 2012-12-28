@@ -210,7 +210,14 @@ crazycombat:
   active: true
   skipworld: []
   fairplay:
-    active: true  
+    active: true
+  isweapon:
+    active: true
+    message: true
+    weapons:
+    - WOOD_SWORD
+    - IRON_SWORD
+    - DIAMOND_SWORD    
   sparkle:
     active: true
     message: true

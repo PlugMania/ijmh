@@ -661,7 +661,8 @@ public class Util{
 			key = "lan_39";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Oh dear! Your weapon broke ...";
 			key = "lan_40";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "You feel the rush from your kill!";
 			key = "lan_41";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Your fingers get in the way, man that hurt!";
-			
+			key = "lan_42";	filecontents += "\n" + key + ": "; if(Util.language.getString(key)!=null) filecontents += Util.language.getString(key); else filecontents += "Only real weapons can hurt other players!";
+
 	    	try
 	    	{
 	    		  // Create file 
