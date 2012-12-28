@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PlayerListener implements Listener {
 	
@@ -65,7 +66,6 @@ public class PlayerListener implements Listener {
 		plugin.onfire.main(event); // ON FIRE
 		plugin.foodpoisoning.main(event); // FOODPOISONING
 		plugin.crazycombat.main(event); // CRAZY COMBAT
-		plugin.neardeath.main(event); // NEAR DEATH
     }	
 	
 	@EventHandler
@@ -112,6 +112,12 @@ public class PlayerListener implements Listener {
 		plugin.unstabletnt.main(event); // UNSTABLE TNT
 		plugin.zombienation.main(event); // ZOMBIE NATION
 	}
+	 
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		Util.toLog(event.getPlayer().getFlySpeed() + "", true);
+		plugin.neardeath.main(event); // NEAR DEATH
+	}
 	
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {		
@@ -126,6 +132,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {				
 		plugin.crazycombat.main(event); // CRAZY COMBAT
+		plugin.neardeath.main(event); // NEAR DEATH
     }
 	
 	@EventHandler

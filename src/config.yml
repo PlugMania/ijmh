@@ -257,3 +257,6 @@ crazycombat:
 neardeath:
   active: true
   skipworld: []
+  min: 3
+  max: 6
+  modifier: 3

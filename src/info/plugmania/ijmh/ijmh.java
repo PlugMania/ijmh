@@ -204,6 +204,8 @@ public class ijmh extends JavaPlugin {
 		this.cmdRef.put("ju", 	"jumps");
 		this.cmdRef.put("ml", 	"maxlocs");
 		this.cmdRef.put("m", 	"message");
+		this.cmdRef.put("ma", 	"max");
+		this.cmdRef.put("mi", 	"min");
 		this.cmdRef.put("mo", 	"modifier");
 		this.cmdRef.put("mob", 	"mobs");
 		this.cmdRef.put("mu", 	"multiplier");

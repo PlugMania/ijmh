@@ -248,7 +248,7 @@ public class Util{
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			Util.config(args[0],null).set("active", (Boolean) !Util.config(args[0],null).getBoolean("active"));
-			if(Util.config(args[0],null).getBoolean("active")==false) onoff = "off";
+			if(Util.config(args[0],null).getBoolean("active")==true) onoff = "on";
 			sender.sendMessage(ChatColor.AQUA + "[ijhm] " + args[0] + " has been switched " + onoff);
 		} else if(args[0].equalsIgnoreCase("heavyduty") && args[1].equalsIgnoreCase("reset")) {
 				Util.config(args[0],null).set("reset", (Boolean) !Util.config(args[0],null).getBoolean("reset"));
