@@ -221,19 +221,19 @@ crazycombat:
   sparkle:
     active: true
     message: true
-    chance: 5
+    chance: 3
     chancemod: 1
     duration: 5
   backfire:
     active: true
     message: true  
-    chance: 5
+    chance: 3
     chancemod: 1
     damage: 2
   splinter:
     active: true
     message: true  
-    chance: 5
+    chance: 3
     chancemod: 1
     damage: 2
   broken:
