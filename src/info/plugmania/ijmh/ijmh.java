@@ -2,6 +2,7 @@ package info.plugmania.ijmh;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -64,6 +65,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 public class ijmh extends JavaPlugin {
 	
 	public Scheduler scheduler;
+	public MySQL mySQL;
 	public final Util util;
 	public boolean debug;
 	public List<String> disabled = new LinkedList<String>();
@@ -107,6 +109,7 @@ public class ijmh extends JavaPlugin {
 	public ijmh() {
 		this.util = new Util(this);
 		this.scheduler = new Scheduler(this);
+		this.mySQL = new MySQL(this);
 		
 		// EFFECTS
 		this.craftthumb = new CraftThumb(this);
@@ -241,6 +244,12 @@ public class ijmh extends JavaPlugin {
 		Util.toLog("Debug enabled", true);
 		
 		util.checkYamls();
+		
+		/* MySQL.test();
+		HashMap<Integer,List<String>> data = MySQL.select("SELECT * FROM faq;");
+		for (Iterator<Integer> i = data.keySet().iterator(); i.hasNext();) {
+			
+		} */
 		
 		Plugin p = this.getServer().getPluginManager().getPlugin("MazeMania");
 		if(p != null){

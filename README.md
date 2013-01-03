@@ -5,15 +5,17 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 2.1.0<br /><br />
+version: 2.1.1<br /><br />
 
 <b>Latest Release</b><br />
 v2.1.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v2.1.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v2.1.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v2.1.1<br />
+Fixed error from On Fire, where ItemInHand was null<br />
 v2.1.0<br />
 Fixed console-error when using SKULL_ITEM as HEAD, and BONES as FEET<br />
 Changed Zombie Nation to spawn zombies on every deathcause or only zombies<br />

@@ -72,7 +72,7 @@ public class OnFire {
 					}
 				}
 				// PUT OUT FIRE
-				if(player.getFireTicks()>0) {
+				if(player.getFireTicks()>0 && event.getItem()!=null) {
 					if(!player.getGameMode().equals(GameMode.CREATIVE) && event.getItem().getType().equals(Material.WATER_BUCKET)) {
 						player.setFireTicks(0);
 						event.setCancelled(true);
