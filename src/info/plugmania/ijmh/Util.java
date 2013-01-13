@@ -342,7 +342,7 @@ public class Util{
 								} else {
 									sender.sendMessage(ChatColor.RED + "[ijhm] Mob (" + cmdSplit[1] + ") not recognized!");
 								}
-							} else if(cmdSplit[0].equalsIgnoreCase("m") || cmdSplit[0].equalsIgnoreCase("sig") || cmdSplit[0].equalsIgnoreCase("wd") || cmdSplit[0].equalsIgnoreCase("wz")) {
+							} else if(cmdSplit[0].equalsIgnoreCase("m") || cmdSplit[0].equalsIgnoreCase("sig") || cmdSplit[0].equalsIgnoreCase("wd") || cmdSplit[0].equalsIgnoreCase("wz") || cmdSplit[0].equalsIgnoreCase("was")) {
 								Boolean tf = null;
 								if(cmdSplit[1].equalsIgnoreCase("t")) tf = true;
 								else if(cmdSplit[1].equalsIgnoreCase("f")) tf = false;

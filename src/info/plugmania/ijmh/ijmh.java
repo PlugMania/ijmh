@@ -217,6 +217,7 @@ public class ijmh extends JavaPlugin {
 		this.cmdRef.put("skb", 	"skipbiome");
 		this.cmdRef.put("skw", 	"skipworld");
 		this.cmdRef.put("up", 	"upwards");
+		this.cmdRef.put("was", 	"whenabovesealvl");
 		this.cmdRef.put("wd", 	"whendesert");
 		this.cmdRef.put("ws", 	"walkspeed");
 		this.cmdRef.put("wz", 	"whenzombie");

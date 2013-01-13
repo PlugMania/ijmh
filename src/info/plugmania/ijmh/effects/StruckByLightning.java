@@ -34,6 +34,7 @@ public class StruckByLightning {
 		c.put(4, plugin.util.cRow("chancemod", null, "integer", "10", "1-?"));
 		c.put(5, plugin.util.cRow("damage", null, "integer", "10", "1-?"));
 		c.put(6, plugin.util.cRow("cooldown", null, "integer", "10", "1-? seconds"));
+		c.put(7, plugin.util.cRow("whenabovesealvl", null, "boolean", "false", "true/false/*"));
 	}	
 	
 	public boolean command(CommandSender sender, String[] args) {
@@ -62,6 +63,7 @@ public class StruckByLightning {
 							if(
 									!Util.config("struckbylightning",null).getList("skipbiome").contains(player.getLocation().getBlock().getBiome().name()) &&
 									(plugin.mazeMania==null || (plugin.mazeMania!=null && !plugin.mazeMania.arena.playing.contains(player))) &&
+									((Util.config("struckbylightning",null).getBoolean("whenabovesealvl") && player.getLocation().getY()>player.getWorld().getSeaLevel()) || !Util.config("struckbylightning",null).getBoolean("whenabovesealvl")) &&
 									curTime>timer
 									) {
 								int i = 0;

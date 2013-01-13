@@ -27,6 +27,7 @@ lightning:
   chancemod: 10
   damage: 10
   cooldown: 10
+  whenabovesealvl: false
 fall:    
   active: true
   skip_world: []
