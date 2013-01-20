@@ -68,6 +68,9 @@ permissions:
   ijmh.immunity.heavy:
     description: Immunity from becoming slower with armor on.
     default: false 
+  ijmh.immunity.tar:
+    description: Immunity from being slowed by sticky tar.
+    default: false     
   ijmh.admin:
     description: Grant access to the toggle event.
     default: op

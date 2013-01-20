@@ -14,6 +14,8 @@ v2.1.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v2.1.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v2.1.3<br />
+Added permission (ijmh.immunity.tar) that prevents slow on player.
 v2.1.2<br />
 Added AboveSeaLevel as option in Struck By Lightning<br />
 v2.1.1<br />

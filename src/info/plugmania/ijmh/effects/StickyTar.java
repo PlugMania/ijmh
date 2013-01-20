@@ -58,7 +58,7 @@ public class StickyTar {
 				Date curDate = new Date();
 				long curTime = curDate.getTime();
 				
-				if(!Util.config("stickytar",null).getList("skipworld").contains(player.getWorld().getName())) {
+				if(!Util.config("stickytar",null).getList("skipworld").contains(player.getWorld().getName()) && (!player.hasPermission("ijmh.immunity.tar"))) {
 					if(
 						!player.getGameMode().equals(GameMode.CREATIVE) &&
 						pUnder.getBlock().getType().equals(Material.WOOL)
