@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -70,10 +71,12 @@ public class StruckByLightning {
 								boolean isHit = false;
 								boolean doBreak = false;
 								while(i++<=10 && !doBreak && !isHit){
-									Material testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i, to.getBlockZ()).getType();
-									if(testBlock.equals(Material.LEAVES)) {
+									Block testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i, to.getBlockZ());
+									Material testMaterial = testBlock.getType();
+									
+									if(testMaterial.equals(Material.LEAVES) && (testBlock.getData() & 0x4) == 0) {
 										isHit = true;
-									} else if(!testBlock.equals(Material.AIR)) {
+									} else if(!testMaterial.equals(Material.AIR)) {
 										doBreak = true;
 										isHit = false;
 									}
