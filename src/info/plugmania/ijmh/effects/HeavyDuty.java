@@ -7,6 +7,7 @@ import info.plugmania.ijmh.ijmh;
 
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -25,16 +26,49 @@ public class HeavyDuty {
 
 	public void init() {
 		plugin.feature.put("HeavyDuty", "heavyduty");
+		
+		// SKULL ITEMS
+		Util.protectionDef.put(Material.SKULL_ITEM, 0);
+		Util.protectionDef.put(Material.BONE, 0);
+		// LEATHER
+		Util.protectionDef.put(Material.LEATHER_HELMET, 5);
+		Util.protectionDef.put(Material.LEATHER_BOOTS, 5);
+		Util.protectionDef.put(Material.LEATHER_CHESTPLATE, 15);
+		Util.protectionDef.put(Material.LEATHER_LEGGINGS, 10);
+		// GOLD
+		Util.protectionDef.put(Material.GOLD_HELMET, 10);
+		Util.protectionDef.put(Material.GOLD_BOOTS, 5);
+		Util.protectionDef.put(Material.GOLD_CHESTPLATE, 25);
+		Util.protectionDef.put(Material.GOLD_LEGGINGS, 15);
+		// CHAINMAIL
+		Util.protectionDef.put(Material.CHAINMAIL_HELMET, 10);
+		Util.protectionDef.put(Material.CHAINMAIL_BOOTS, 5);
+		Util.protectionDef.put(Material.CHAINMAIL_CHESTPLATE, 25);
+		Util.protectionDef.put(Material.CHAINMAIL_LEGGINGS, 20);
+		// IRON
+		Util.protectionDef.put(Material.IRON_HELMET, 10);
+		Util.protectionDef.put(Material.IRON_BOOTS, 10);
+		Util.protectionDef.put(Material.IRON_CHESTPLATE, 30);
+		Util.protectionDef.put(Material.IRON_LEGGINGS, 25);
+		// DIAMOND
+		Util.protectionDef.put(Material.DIAMOND_HELMET, 15);
+		Util.protectionDef.put(Material.DIAMOND_BOOTS, 15);
+		Util.protectionDef.put(Material.DIAMOND_CHESTPLATE, 40);
+		Util.protectionDef.put(Material.DIAMOND_LEGGINGS, 30);
+		
 		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
 		c.put(1, plugin.util.cRow("walkspeed", null, "double", "0.2", null));
 		c.put(2, plugin.util.cRow("flyspeed", null, "double", "0.1", null));
 		c.put(3, plugin.util.cRow("modifier", null, "double", "0.4", "0<=1"));
-		c.put(4, plugin.util.cRow("text", null, null, ChatColor.GREEN + "* There are limits to speed, for both client and server performance:", null));
-		c.put(5, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** 1 is moving very fast", null));
-		c.put(6, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** 0 is not moving at all", null));
+		c.put(4, plugin.util.cRow("armor", null, "list", null, "Item,1-100"));
+		c.put(5, plugin.util.cRow("text", null, null, ChatColor.GREEN + "* There are limits to speed, for both client and server performance:", null));
+		c.put(6, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** 1 is moving very fast /  0 is not moving at all", null));
 		c.put(7, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** negative values make you move backwards", null));
-		c.put(8, plugin.util.cRow("text", null, null, ChatColor.GREEN + "* modifier must be larger than 0 and lesser or eaqual to 1.0 where max armor means no movement.", null));
-		c.put(9, plugin.util.cRow("text", null, null, ChatColor.RED + "* You can reset speeds by turning the feature off and turning on reset in this feature", null));
+		c.put(8, plugin.util.cRow("text", null, null, ChatColor.GREEN + "** negative values make you move backwards", null));
+		c.put(9, plugin.util.cRow("text", null, null, ChatColor.GREEN + "* modifier must be larger than 0 and lesser or eaqual to 1.0 where max armor means no movement.", null));
+		c.put(10, plugin.util.cRow("text", null, null, ChatColor.RED + "* You can reset speeds by turning the feature off and turning on reset in this feature", null));
+		c.put(10, plugin.util.cRow("text", null, null, ChatColor.RED + "* You can change each items weight by editing its value in armor option, an armorset summed by all items the give 100 will result in the maximum reduction you have set.", null));
+		
 	}	
 	
 	public boolean command(CommandSender sender, String[] args) {

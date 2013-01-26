@@ -12,13 +12,18 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -32,6 +37,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.json.simple.ItemList;
 
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldguard.LocalPlayer;
@@ -53,6 +59,7 @@ public class Util{
 	public static FileConfiguration config;
 	
 	public static HashMap<Material, Integer> protection = new HashMap<Material, Integer>();
+	public static HashMap<Material, Integer> protectionDef = new HashMap<Material, Integer>();
 	
 	public Util(ijmh instance) {
 		plugin = instance;
@@ -207,8 +214,20 @@ public class Util{
 					if(name=="skipworld" && !Util.config.isString("plugin-version")) name = "skip_world";
 					else if(name=="skipbiome" && !Util.config.isString("plugin-version")) name = "skip_biome";
 					// ----------------------------------------
-					
-					if(Util.config(s1,c.get(key).get("sub")).isSet(name)) {
+
+					if(s1.contains("heavyduty") && name.contains("armor") && (!Util.config(s1,c.get(key).get("sub")).isSet(name) || (Util.config(s1,c.get(key).get("sub")).isSet(name) && Util.config(s1,c.get(key).get("sub")).getList("armor").size()==0))) {
+						
+						Map<Material,Integer> armorlist = new TreeMap<Material,Integer>(plugin.util.protectionDef);
+					    
+						for (Iterator<Material> j = armorlist.keySet().iterator(); j.hasNext();) {
+							Material armor = j.next();
+							
+					        Util.toLog(armor + ":" + plugin.util.protectionDef.get(armor), true);
+							
+							filecontents += "\n";
+							filecontents += "  - " + armor + "," + plugin.util.protectionDef.get(armor);
+						}
+					} else if(Util.config(s1,c.get(key).get("sub")).isSet(name)) {
 						List<?> list = (List<?>) Util.config(s1,c.get(key).get("sub")).getList(name);
 						if(list.isEmpty()) filecontents += "[]";
 						else {
@@ -237,6 +256,22 @@ public class Util{
 		}
 		return filecontents;
 	}
+	class ValueComparator implements Comparator<String> {
+
+	    Map<Material, Integer> base;
+	    public ValueComparator(Map<Material, Integer> base) {
+	        this.base = base;
+	    }
+
+	    // Note: this comparator imposes orderings that are inconsistent with equals.    
+	    public int compare(String a, String b) {
+	        if (base.get(a) >= base.get(b)) {
+	            return -1;
+	        } else {
+	            return 1;
+	        } // returning 0 would merge keys
+	    }
+	}
 	
 	public static boolean cmdExecute(CommandSender sender, String[] args) {
 		
@@ -245,6 +280,7 @@ public class Util{
 		String subkey = null;
 		String subfeature = null;
 		String onoff = "off";
+		int armorUpdate = 0;
 		
 		if(args[1].equalsIgnoreCase("toggle")) {
 			Util.config(args[0],null).set("active", (Boolean) !Util.config(args[0],null).getBoolean("active"));
@@ -328,6 +364,41 @@ public class Util{
 								} else {
 									sender.sendMessage(ChatColor.RED + "[ijhm] Item: " + cmdSplit[1] + " was not recognized!");
 								}
+							} else if(cmdSplit[0].equalsIgnoreCase("arm")) {
+								if(Util.isItem(cmdSplit[1].split(",")[0])!=null) {
+									int isItem = 0;
+									
+									List<String> items = (List<String>) Util.config(args[0],subfeature).getList("armor");
+									List<String> ItemList = new ArrayList<String>(items);
+
+									for(String armor : items) {
+
+										if(cmdSplit[1].split(",")[0].equalsIgnoreCase(armor.split(",")[0])) {
+											isItem = 1;
+											
+											if(cmdSplit[1].split(",").length==1) {
+												ItemList.remove(armor.toString());
+												protection.remove(Util.isItem(armor.split(",")[0]));
+												sender.sendMessage(ChatColor.AQUA + "[ijhm] " + Util.isItem(cmdSplit[1].split(",")[0]) + " was removed from the list");
+											} else {
+												ItemList.remove(armor.toString());
+												ItemList.add(Util.isItem(cmdSplit[1].split(",")[0])+","+cmdSplit[1].split(",")[1]);
+												sender.sendMessage(ChatColor.AQUA + "[ijhm] " + Util.isItem(cmdSplit[1].split(",")[0]) + " was updated");
+											}
+										}
+									}
+									Collections.sort(ItemList);
+									items.clear();
+									items.addAll(ItemList);
+									
+									if(isItem==0){
+										items.add(Util.isItem(cmdSplit[1].split(",")[0])+","+cmdSplit[1].split(",")[1]);
+										sender.sendMessage(ChatColor.AQUA + "[ijhm] " + Util.isItem(cmdSplit[1].split(",")[0]) + " was added to the list");
+									}
+									armorUpdate = 1;
+								} else {
+									sender.sendMessage(ChatColor.RED + "[ijhm] Item: " + cmdSplit[1].split(",")[0] + " was not recognized!");
+								}
 							} else if(cmdSplit[0].equalsIgnoreCase("mob")) {
 								if(Util.isEntity(cmdSplit[1])!=null) {
 									if(Util.config(args[0],subfeature).getList("mobs").contains(Util.isEntity(cmdSplit[1]).toString())) {
@@ -365,6 +436,7 @@ public class Util{
 		}
 		
 		Util.saveYamls();
+		if(armorUpdate>0) armorval2type();
 		
 		return true;
 	}
@@ -407,37 +479,64 @@ public class Util{
 		
 		return material;
 	}
+	
+	static int armorFromConfig(Material armor) {
+		
+		int armorVal = 0;
+		
+		if(Util.config("heavyduty", null).isList("armor")) { 
+			
+			@SuppressWarnings("unchecked")
+			List<String> armorList = (List<String>) Util.config("heavyduty", null).getList("armor");
 
-	public void armorval2type() {
+			for(String armorListItem : armorList) {
+				String[] armorItem = armorListItem.split(",");
+				Material ArmorType = Material.matchMaterial(armorItem[0]);
+				int ArmorWeight = Integer.parseInt(armorItem[1]);
+				
+				if(armor.equals(ArmorType)) {
+					armorVal = ArmorWeight;
+				}
+			}
+		}
+		
+		if(armorVal == 0 && protectionDef.containsKey((Material) armor)) {
+			armorVal = protectionDef.get((Material) armor);
+		}
+		
+		return armorVal;
+	}
+	
+	public static void armorval2type() {
 		
 		// SKULL ITEMS
-		protection.put(Material.SKULL_ITEM, 0);
-		protection.put(Material.BONE, 0);
+		protection.put(Material.SKULL_ITEM, armorFromConfig(Material.SKULL_ITEM));
+		protection.put(Material.BONE, armorFromConfig(Material.BONE));
 		// LEATHER
-		protection.put(Material.LEATHER_HELMET, 1);
-		protection.put(Material.LEATHER_BOOTS, 1);
-		protection.put(Material.LEATHER_CHESTPLATE, 3);
-		protection.put(Material.LEATHER_LEGGINGS, 2);
+		protection.put(Material.LEATHER_HELMET, armorFromConfig(Material.LEATHER_HELMET));
+		protection.put(Material.LEATHER_BOOTS, armorFromConfig(Material.LEATHER_BOOTS));
+		protection.put(Material.LEATHER_CHESTPLATE, armorFromConfig(Material.LEATHER_CHESTPLATE));
+		protection.put(Material.LEATHER_LEGGINGS, armorFromConfig(Material.LEATHER_LEGGINGS));
 		// GOLD
-		protection.put(Material.GOLD_HELMET, 2);
-		protection.put(Material.GOLD_BOOTS, 1);
-		protection.put(Material.GOLD_CHESTPLATE, 5);
-		protection.put(Material.GOLD_LEGGINGS, 3);
+		protection.put(Material.GOLD_HELMET, armorFromConfig(Material.GOLD_HELMET));
+		protection.put(Material.GOLD_BOOTS, armorFromConfig(Material.GOLD_BOOTS));
+		protection.put(Material.GOLD_CHESTPLATE, armorFromConfig(Material.GOLD_CHESTPLATE));
+		protection.put(Material.GOLD_LEGGINGS, armorFromConfig(Material.GOLD_LEGGINGS));
 		// CHAINMAIL
-		protection.put(Material.CHAINMAIL_HELMET, 2);
-		protection.put(Material.CHAINMAIL_BOOTS, 1);
-		protection.put(Material.CHAINMAIL_CHESTPLATE, 5);
-		protection.put(Material.CHAINMAIL_LEGGINGS, 4);
+		protection.put(Material.CHAINMAIL_HELMET, armorFromConfig(Material.CHAINMAIL_HELMET));
+		protection.put(Material.CHAINMAIL_BOOTS, armorFromConfig(Material.CHAINMAIL_BOOTS));
+		protection.put(Material.CHAINMAIL_CHESTPLATE, armorFromConfig(Material.CHAINMAIL_CHESTPLATE));
+		protection.put(Material.CHAINMAIL_LEGGINGS, armorFromConfig(Material.CHAINMAIL_LEGGINGS));
 		// IRON
-		protection.put(Material.IRON_HELMET, 2);
-		protection.put(Material.IRON_BOOTS, 2);
-		protection.put(Material.IRON_CHESTPLATE, 6);
-		protection.put(Material.IRON_LEGGINGS, 5);
+		protection.put(Material.IRON_HELMET, armorFromConfig(Material.IRON_HELMET));
+		protection.put(Material.IRON_BOOTS, armorFromConfig(Material.IRON_BOOTS));
+		protection.put(Material.IRON_CHESTPLATE, armorFromConfig(Material.IRON_CHESTPLATE));
+		protection.put(Material.IRON_LEGGINGS, armorFromConfig(Material.IRON_LEGGINGS));
 		// DIAMOND
-		protection.put(Material.DIAMOND_HELMET, 3);
-		protection.put(Material.DIAMOND_BOOTS, 3);
-		protection.put(Material.DIAMOND_CHESTPLATE, 8);
-		protection.put(Material.DIAMOND_LEGGINGS, 6);	
+		protection.put(Material.DIAMOND_HELMET, armorFromConfig(Material.DIAMOND_HELMET));
+		protection.put(Material.DIAMOND_BOOTS, armorFromConfig(Material.DIAMOND_BOOTS));
+		protection.put(Material.DIAMOND_CHESTPLATE, armorFromConfig(Material.DIAMOND_CHESTPLATE));
+		protection.put(Material.DIAMOND_LEGGINGS, armorFromConfig(Material.DIAMOND_LEGGINGS));	
 	}
 	
 	public static int getPlayerArmorValue(Player player) {
@@ -458,7 +557,10 @@ public class Util{
 			ItemStack boots = player.getInventory().getBoots();
 			curProt += Util.protection.get(boots.getType());
 		}
-		return curProt;
+		
+		Util.toLog(player.getName() + " has " + curProt + " armorpoints", true);
+		
+		return (curProt/5);
 	}
 	
 	public static EntityType isEntity(String entity){
@@ -584,7 +686,7 @@ public class Util{
     	} 
     }
 	
-    public void checkYamls() {
+    public static void checkYamls() {
 
     	// language.yml
     	if(!Util.language.isString("file-version") || !Util.language.getString("file-version").equals(plugin.getDescription().getVersion())) {
@@ -823,12 +925,12 @@ public class Util{
     	filecontents += plugin.util.VerifyConfig(plugin.bumpintherail.c, "bumpintherail");
     	filecontents += configFileContentsGen ("Concussion", "concussion");
     	filecontents += plugin.util.VerifyConfig(plugin.concussion.c, "concussion");
+    	filecontents += configFileContentsGen ("Cows Do Kick", "cowsdokick");
+    	filecontents += plugin.util.VerifyConfig(plugin.cowsdokick.c, "cows");
     	filecontents += configFileContentsGen ("Crafting Thumb", "craftthumb");
     	filecontents += plugin.util.VerifyConfig(plugin.craftthumb.c, "craftthumb");
-    	filecontents += configFileContentsGen ("Cows Do Kick", "cowsdokick");
     	filecontents += configFileContentsGen ("Crazy Combat", "crazycombat");
     	filecontents += plugin.util.VerifyConfig(plugin.crazycombat.c, "crazycombat");
-    	filecontents += plugin.util.VerifyConfig(plugin.cowsdokick.c, "cows");
     	filecontents += configFileContentsGen ("Dizzy In The Desert", "dizzyinthedesert");
     	filecontents += plugin.util.VerifyConfig(plugin.dizzyinthedesert.c, "dizzyinthedesert");
     	filecontents += configFileContentsGen ("Electrocution", "electrocution");

@@ -13,6 +13,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -194,6 +195,7 @@ public class ijmh extends JavaPlugin {
 		this.cmdRef.put("abs", 	"abovesealvl");
 		this.cmdRef.put("ac", 	"active");
 		this.cmdRef.put("am", 	"amount");
+		this.cmdRef.put("arm", 	"armor");
 		this.cmdRef.put("ba", 	"backwards");
 		this.cmdRef.put("bl", 	"blocks");
 		this.cmdRef.put("c", 	"chance");
@@ -244,7 +246,7 @@ public class ijmh extends JavaPlugin {
 		if(this.getConfig().getBoolean("debug")) this.debug = true;
 		Util.toLog("Debug enabled", true);
 		
-		util.checkYamls();
+		Util.checkYamls();
 		
 		/* MySQL.test();
 		HashMap<Integer,List<String>> data = MySQL.select("SELECT * FROM faq;");
