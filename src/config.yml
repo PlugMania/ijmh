@@ -86,7 +86,7 @@ roses:
 brew:
   active: false
   skip_world: []
-  signs: false
+  signs: true
   chance: 1
   chancemod: 10
   multiplier: 1

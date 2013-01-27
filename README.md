@@ -11,9 +11,11 @@ version: 2.1.3<br /><br />
 v2.1.3 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v2.1.3 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v2.1.4 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v2.1.4<br />
+Fixed Signs in Brew Explosion, and set signs:true as default.<br />
 v2.1.3<br />
 Fixed error with Cows Do Kick didn't create config options.
 Added options to add items or change armorpoints for Heavy Duty.

@@ -73,6 +73,7 @@ public class ijmh extends JavaPlugin {
 	public HashMap<String, String> feature = new HashMap<String, String>();
 	public HashMap<String, String> subfeature = new HashMap<String, String>();
 	public HashMap<String, String> cmdRef = new HashMap<String, String>();
+	public PluginManager pm;
 	
 	// EFFECTS
 	public CraftThumb craftthumb;
@@ -234,8 +235,8 @@ public class ijmh extends JavaPlugin {
 		Util.language = new YamlConfiguration();
 		Util.config = new YamlConfiguration();
 		Util.loadYamls();
-		
-		PluginManager pm = getServer().getPluginManager();
+	
+		pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerListener(this), this);
 		pm.registerEvents(new BlockListener(this), this);
 		pm.registerEvents(new EntityListener(this), this);
