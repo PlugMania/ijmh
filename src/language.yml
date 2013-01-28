@@ -1,7 +1,7 @@
 # -------------------------------------------------
 # -----------| LANGUAGE FILE FOR ijmh |------------
 # -------------------------------------------------
-file-version: 2.1.0
+file-version: 2.1.5
 # -------------------------------------------------
 
 # ON FIRE
@@ -89,3 +89,5 @@ lan_39: Oh dear! Your weapon broke ...
 lan_40: You feel the rush from your kill!
 lan_41: Your fingers get in the way, man that hurt!
 lan_42: Only real weapons can hurt other players!
+lan_43: You cannot believe your eyes, it is multiplying... oh noes!
+lan_44: You cannot believe your eyes, it is multiplying... unreal!

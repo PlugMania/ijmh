@@ -9,6 +9,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Creature;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
@@ -19,6 +23,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
 public class CrazyCombat {
 
@@ -38,6 +43,7 @@ public class CrazyCombat {
 		plugin.subfeature.put("br", "broken");
 		plugin.subfeature.put("bs", "bowsnaps");
 		plugin.subfeature.put("ki", "killrush");
+		plugin.subfeature.put("dt", "doubletrouble");
 		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
 		c.put(1, plugin.util.cRow("active", "fairplay", "boolean", "true", "true/false/*"));
 		c.put(2, plugin.util.cRow("active", "sparkle", "boolean", "true", null));
@@ -70,7 +76,13 @@ public class CrazyCombat {
 		c.put(28, plugin.util.cRow("chance", "bowsnaps", "integer", "5", null));
 		c.put(29, plugin.util.cRow("chancemod", "bowsnaps", "integer", "1", null));
 		c.put(30, plugin.util.cRow("damage", "bowsnaps", "integer", "2", null));
-		
+		c.put(31, plugin.util.cRow("active", "doubletrouble", "boolean", "true", null));
+		c.put(32, plugin.util.cRow("message", "doubletrouble", "boolean", "true", null));
+		c.put(33, plugin.util.cRow("chance", "doubletrouble", "integer", "1", null));
+		c.put(34, plugin.util.cRow("chancemod", "doubletrouble", "integer", "1", null));
+		c.put(35, plugin.util.cRow("min", "doubletrouble", "integer", "2", "1-?"));
+		c.put(36, plugin.util.cRow("max", "doubletrouble", "integer", "3", "min-?"));
+		c.put(37, plugin.util.cRow("mobs", "doubletrouble", "list", null, null));
 	}	
 	
 	public boolean command(CommandSender sender, String[] args) {
@@ -125,7 +137,7 @@ public class CrazyCombat {
 								(damager.getItemInHand().getType().toString().contains("SWORD")) &&
 								(Util.pctChance(Util.config("crazycombat","broken").getInt("chance"),Util.config("crazycombat","broken").getInt("chancemod")))
 							) {
-										broken(damager);
+									broken(damager);
 							}
 						} else if(event.getCause().equals(DamageCause.PROJECTILE)) {
 							// BOW SNAPS FINGERS
@@ -137,7 +149,14 @@ public class CrazyCombat {
 						}
 						
 					} 
-				}	
+				} else if(event.getEntity() instanceof LivingEntity && !(event.getEntity() instanceof Player) && event.getDamager() instanceof Player) {
+					if(Util.config("crazycombat","doubletrouble").getBoolean("active") && Util.config("crazycombat","doubletrouble").getList("mobs").contains(event.getEntity().getType().toString())) {
+						Util.toLog("2", true);
+						if(Util.pctChance(Util.config("crazycombat","doubletrouble").getInt("chance"),Util.config("crazycombat","doubletrouble").getInt("chancemod"))) {
+							doubletrouble((LivingEntity) event.getEntity(), (Player) event.getDamager());
+						}
+					}
+				}
 			} else if(e.getEventName().equalsIgnoreCase("PlayerInteractEvent")) {
 				PlayerInteractEvent event = (PlayerInteractEvent) e;
 				Player player = (Player) event.getPlayer();
@@ -194,5 +213,19 @@ public class CrazyCombat {
 	void splinter(Player damager) {
 		damager.damage(Util.config("crazycombat","splinter").getInt("damage"));
 		if(Util.config("crazycombat","splinter").getBoolean("message")) damager.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_38")));
+	}
+	
+	// DOUBLE TROUBLE
+	void doubletrouble(LivingEntity entity, Player damager) {
+		int rand = (int) ((Util.config("crazycombat","doubletrouble").getInt("max")-Util.config("crazycombat","doubletrouble").getInt("min")+1)*Math.random()+Util.config("crazycombat","doubletrouble").getInt("min"));
+		
+		for(int i=Util.config("crazycombat","doubletrouble").getInt("min"); i<=rand; i++) {
+			entity.getWorld().spawnEntity(entity.getLocation(), entity.getType());
+			Util.toLog(entity.getType() + "spawned", true);
+		}
+		if(Util.config("crazycombat","doubletrouble").getBoolean("message")) {
+			if((entity instanceof Monster)) damager.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_43")));
+			else damager.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_44")));
+		}
 	}
 }

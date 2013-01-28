@@ -275,7 +275,17 @@ crazycombat:
     message: true  
     chance: 5
     chancemod: 1
-    damage: 2    
+    damage: 2  
+  doubletrouble:
+    active: true
+    message: true  
+    chance: 5
+    chancemod: 1
+    min: 2
+    max: 3 
+    mobs:
+    - ZOMBIE
+    - SKELETON
 neardeath:
   active: true
   skipworld: []

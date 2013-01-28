@@ -5,22 +5,24 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 2.1.3<br /><br />
+version: 2.1.5<br /><br />
 
 <b>Latest Release</b><br />
-v2.1.3 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v2.1.4 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v2.1.4 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v2.1.5 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+v2.1.5<br />
+Added Double Trouble to Crazy Combat feature<br />
 v2.1.4<br />
 Fixed Signs in Brew Explosion, and set signs:true as default.<br />
 v2.1.3<br />
-Fixed error with Cows Do Kick didn't create config options.
-Added options to add items or change armorpoints for Heavy Duty.
-Added permission (ijmh.immunity.tar) that prevents slow on player.
-Changed Struck by Lightning to check for non-user placed leaves.
+Fixed error with Cows Do Kick didn't create config options.<br />
+Added options to add items or change armorpoints for Heavy Duty.<br />
+Added permission (ijmh.immunity.tar) that prevents slow on player.<br />
+Changed Struck by Lightning to check for non-user placed leaves.<br />
 v2.1.2<br />
 Added AboveSeaLevel as option in Struck By Lightning<br />
 v2.1.1<br />
