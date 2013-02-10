@@ -35,6 +35,7 @@ import info.plugmania.ijmh.effects.BowBreaker;
 import info.plugmania.ijmh.effects.BrewExplosion;
 import info.plugmania.ijmh.effects.BuggyBlock;
 import info.plugmania.ijmh.effects.BumpInTheRail;
+import info.plugmania.ijmh.effects.CactusMania;
 import info.plugmania.ijmh.effects.Concussion;
 import info.plugmania.ijmh.effects.CowsDoKick;
 import info.plugmania.ijmh.effects.CraftThumb;
@@ -103,6 +104,7 @@ public class ijmh extends JavaPlugin {
 	public WorldDrop worlddrop;
 	public CrazyCombat crazycombat;
 	public NearDeath neardeath;
+	public CactusMania cactusmania;
 	
 	// PLUGIN SUPPORT
 	public MazeMania mazeMania;
@@ -141,6 +143,7 @@ public class ijmh extends JavaPlugin {
 		this.worlddrop = new WorldDrop(this);
 		this.crazycombat = new CrazyCombat(this);
 		this.neardeath = new NearDeath(this);
+		this.cactusmania = new CactusMania(this);
 	}
 	
 	public void onDisable(){
@@ -190,6 +193,7 @@ public class ijmh extends JavaPlugin {
 		this.zombienation.init();
 		this.crazycombat.init();
 		this.neardeath.init();
+		this.cactusmania.init();
 		
 		// COMMANDS
 		this.cmdRef.put("a", 	"angle");
@@ -222,6 +226,7 @@ public class ijmh extends JavaPlugin {
 		this.cmdRef.put("up", 	"upwards");
 		this.cmdRef.put("was", 	"whenabovesealvl");
 		this.cmdRef.put("wd", 	"whendesert");
+		this.cmdRef.put("we", 	"weapons");
 		this.cmdRef.put("ws", 	"walkspeed");
 		this.cmdRef.put("wz", 	"whenzombie");
 		
@@ -380,6 +385,7 @@ public class ijmh extends JavaPlugin {
 					else if("zombienation".contains(args[0].toLowerCase())) 		{	args[0] = "zombienation"; 		this.zombienation.command(sender, args); }
 					else if("heavyduty".contains(args[0].toLowerCase())) 			{	args[0] = "heavyduty"; 			this.heavyduty.command(sender, args); }			
 					else if("fishermanonhook".contains(args[0].toLowerCase())) 		{	args[0] = "fishermanonhook"; 	this.fishermanonhook.command(sender, args); }
+					else if("cactusmania".contains(args[0].toLowerCase())) 			{	args[0] = "cactusmania"; 		this.cactusmania.command(sender, args); }
 					else sender.sendMessage(ChatColor.RED + "No feature was recognized with that namesearch!");
 				}
 					

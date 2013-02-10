@@ -44,6 +44,7 @@ public class CrazyCombat {
 		plugin.subfeature.put("bs", "bowsnaps");
 		plugin.subfeature.put("ki", "killrush");
 		plugin.subfeature.put("dt", "doubletrouble");
+		plugin.subfeature.put("ow", "isweapon");
 		c.put(0, plugin.util.cRow("skipworld", null, "list", null, null));
 		c.put(1, plugin.util.cRow("active", "fairplay", "boolean", "true", "true/false/*"));
 		c.put(2, plugin.util.cRow("active", "sparkle", "boolean", "true", null));
@@ -83,6 +84,8 @@ public class CrazyCombat {
 		c.put(35, plugin.util.cRow("min", "doubletrouble", "integer", "2", "1-?"));
 		c.put(36, plugin.util.cRow("max", "doubletrouble", "integer", "3", "min-?"));
 		c.put(37, plugin.util.cRow("mobs", "doubletrouble", "list", null, null));
+		c.put(38, plugin.util.cRow("active", "isweapon", "boolean", "true", null));
+		c.put(39, plugin.util.cRow("weapons", "isweapon", "list", null, null));		
 	}	
 	
 	public boolean command(CommandSender sender, String[] args) {

@@ -286,6 +286,7 @@ crazycombat:
     mobs:
     - ZOMBIE
     - SKELETON
+    - PIG
 neardeath:
   active: true
   skipworld: []

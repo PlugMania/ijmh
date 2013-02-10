@@ -14,6 +14,8 @@ v2.1.4 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 v2.1.5 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+2.1.x<br />
+Started feature "Cactus Mania"<br />
 v2.1.5<br />
 Added Double Trouble to Crazy Combat feature<br />
 v2.1.4<br />
