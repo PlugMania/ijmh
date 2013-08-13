@@ -311,7 +311,7 @@ public class ijmh extends JavaPlugin {
 			effects.add("zombie");
 			effects.add("heavy");
 			
-			//this.disabled.add("ride");
+			this.disabled.add("cactusmania");
 			
 			if(sender.hasPermission("ijmh.admin")){
 				String features = "";
@@ -385,7 +385,7 @@ public class ijmh extends JavaPlugin {
 					else if("zombienation".contains(args[0].toLowerCase())) 		{	args[0] = "zombienation"; 		this.zombienation.command(sender, args); }
 					else if("heavyduty".contains(args[0].toLowerCase())) 			{	args[0] = "heavyduty"; 			this.heavyduty.command(sender, args); }			
 					else if("fishermanonhook".contains(args[0].toLowerCase())) 		{	args[0] = "fishermanonhook"; 	this.fishermanonhook.command(sender, args); }
-					else if("cactusmania".contains(args[0].toLowerCase())) 			{	args[0] = "cactusmania"; 		this.cactusmania.command(sender, args); }
+					//else if("cactusmania".contains(args[0].toLowerCase())) 			{	args[0] = "cactusmania"; 		this.cactusmania.command(sender, args); }
 					else sender.sendMessage(ChatColor.RED + "No feature was recognized with that namesearch!");
 				}
 					

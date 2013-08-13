@@ -43,7 +43,7 @@ public class CactusMania {
 	
 	public void main(Event e) {
 		
-		if(Util.config("bowbreaker",null).getBoolean("active")){
+		if(Util.config("cactusmania",null).getBoolean("active")){
 			
 			if(e.getEventName().equalsIgnoreCase("EntityDamageByEntityEvent")) {
 				EntityDamageByEntityEvent event = (EntityDamageByEntityEvent) e;
@@ -53,14 +53,14 @@ public class CactusMania {
 					Arrow arrow = (Arrow) event.getDamager();
 					if(arrow.getShooter() instanceof Player) {
 						damager = (Player) arrow.getShooter();
-						if(!damager.hasPermission("ijmh.immunity.bow")) {
-							if(!Util.config("bowbreaker",null).getList("skipworld").contains(damager.getWorld().getName())) {
-								if(Util.pctChance(Util.config("bowbreaker",null).getInt("chance"),Util.config("bowbreaker",null).getInt("chancemod"))) {
+						if(!damager.hasPermission("ijmh.immunity.cactusmania")) {
+							if(!Util.config("cactusmania",null).getList("skipworld").contains(damager.getWorld().getName())) {
+								if(Util.pctChance(Util.config("cactusmania",null).getInt("chance"),Util.config("cactusmania",null).getInt("chancemod"))) {
 									ItemStack itemHand = (ItemStack) damager.getItemInHand();
 									Inventory inv = damager.getInventory();
 									inv.remove(itemHand);
-									damager.damage(Util.config("bowbreaker",null).getInt("damage"));
-									if(Util.config("bowbreaker",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_17")));
+									damager.damage(Util.config("cactusmania",null).getInt("damage"));
+									if(Util.config("cactusmania",null).getBoolean("message")) damager.sendMessage(ChatColor.GOLD + Util.chatColorText(Util.language.getString("lan_17")));
 								}
 							}
 						}

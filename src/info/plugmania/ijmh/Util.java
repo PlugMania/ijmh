@@ -803,8 +803,8 @@ public class Util{
         	filecontents += plugin.util.VerifyConfig(plugin.buggyblock.c, "buggyblock");
         	filecontents += configFileContentsGen ("Bump In The Rail", "bumpintherail");
         	filecontents += plugin.util.VerifyConfig(plugin.bumpintherail.c, "rail");
-        	filecontents += configFileContentsGen ("Cactus Mania", "cactusmania");
-        	filecontents += plugin.util.VerifyConfig(plugin.cactusmania.c, "cactusmania");
+        	//filecontents += configFileContentsGen ("Cactus Mania", "cactusmania");
+        	//filecontents += plugin.util.VerifyConfig(plugin.cactusmania.c, "cactusmania");
         	filecontents += configFileContentsGen ("Concussion", "concussion");
         	filecontents += plugin.util.VerifyConfig(plugin.concussion.c, "fall");
         	filecontents += configFileContentsGen ("Crazy Combat", "crazycombat");
@@ -927,8 +927,8 @@ public class Util{
     	filecontents += plugin.util.VerifyConfig(plugin.buggyblock.c, "buggyblock");
     	filecontents += configFileContentsGen ("Bump In The Rail", "bumpintherail");
     	filecontents += plugin.util.VerifyConfig(plugin.bumpintherail.c, "bumpintherail");
-    	filecontents += configFileContentsGen ("Cactus Mania", "cactusmania");
-    	filecontents += plugin.util.VerifyConfig(plugin.cactusmania.c, "cactusmania");
+    	//filecontents += configFileContentsGen ("Cactus Mania", "cactusmania");
+    	//filecontents += plugin.util.VerifyConfig(plugin.cactusmania.c, "cactusmania");
     	filecontents += configFileContentsGen ("Concussion", "concussion");
     	filecontents += plugin.util.VerifyConfig(plugin.concussion.c, "concussion");
     	filecontents += configFileContentsGen ("Cows Do Kick", "cowsdokick");
