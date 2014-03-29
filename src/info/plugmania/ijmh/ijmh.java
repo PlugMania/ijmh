@@ -315,16 +315,21 @@ public class ijmh extends JavaPlugin {
 			
 			if(sender.hasPermission("ijmh.admin")){
 				String features = "";
-				
+
 				SortedSet<String> keys = new TreeSet<String>(this.feature.keySet());
+				if(this.debug) getLogger().info("Keyset -> SortedSet");
 				for (String eKey : keys) { 
 					String eValue = this.feature.get(eKey);
-				
-					ConfigurationSection config = this.getConfig().getConfigurationSection(eValue);
-					if(config.getBoolean("active")) features += ChatColor.GREEN;
-					else features += ChatColor.RED;
-					features += eValue + ChatColor.WHITE + ", ";
+
+					if(!this.disabled.contains(eValue))
+					{
+						ConfigurationSection config = this.getConfig().getConfigurationSection(eValue);
+						if(config.getBoolean("active")) features += ChatColor.GREEN;
+						else features += ChatColor.RED;
+						features += eValue + ChatColor.WHITE + ", ";
+					}
 				}
+
 				if (args[0].equalsIgnoreCase("help")) {
 					sender.sendMessage(ChatColor.AQUA + "- [ijhm] It Just Might Happen v" + this.getDescription().getVersion() + " ------------------"); 
 					sender.sendMessage(ChatColor.AQUA + "Features: " + ChatColor.GOLD + features.substring(0, features.length() - 2)); 
@@ -334,6 +339,7 @@ public class ijmh extends JavaPlugin {
 					sender.sendMessage(ChatColor.GREEN + "/ijmh update" + ChatColor.AQUA + " - Toggle the update messages on/off");
 					sender.sendMessage(ChatColor.GREEN + "/ijmh version" + ChatColor.AQUA + " - See version and check for new updates");
 				}
+
 				else if(args[0].equalsIgnoreCase("version")){
 					util.checkVersion(true,null,sender);
 				}
@@ -397,7 +403,7 @@ public class ijmh extends JavaPlugin {
 		
 		} catch (Exception e) {
 			sender.sendMessage(ChatColor.RED + "An error occured.");
-			if(this.debug) sender.sendMessage(ChatColor.RED + "" + e);
+			if(this.debug) sender.sendMessage(ChatColor.RED + "" + e + ", Command used: " + args[0]);
 		}
 		
 		return true;

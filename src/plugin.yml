@@ -2,7 +2,7 @@ name: ijmh
 description: -It Just Might Happen- is reality added based on events
 author: nsordk & PlugMania
 main: info.plugmania.ijmh.ijmh
-version: 2.2.0
+version: 2.3.0
 commands:
   ijmh:
     usage: /ijmh
