@@ -75,6 +75,7 @@ public class ijmh extends JavaPlugin {
 	public HashMap<String, String> subfeature = new HashMap<String, String>();
 	public HashMap<String, String> cmdRef = new HashMap<String, String>();
 	public PluginManager pm;
+	public File getFile;	
 	
 	// EFFECTS
 	public CraftThumb craftthumb;
@@ -114,6 +115,7 @@ public class ijmh extends JavaPlugin {
 		this.util = new Util(this);
 		this.scheduler = new Scheduler(this);
 		this.mySQL = new MySQL(this);
+		this.getFile = this.getFile();
 		
 		// EFFECTS
 		this.craftthumb = new CraftThumb(this);
@@ -248,7 +250,7 @@ public class ijmh extends JavaPlugin {
 		pm.registerEvents(new InventoryListener(this), this);
 		pm.registerEvents(new CraftListener(this), this);
 		
-        if(this.getConfig().getBoolean("update_message")) util.checkVersion(false, null, null);
+        if(this.getConfig().getBoolean("update_message")) util.checkVersion(false, null, null, this, this.getFile());
 		if(this.getConfig().getBoolean("debug")) this.debug = true;
 		Util.toLog("Debug enabled", true);
 		
@@ -341,7 +343,7 @@ public class ijmh extends JavaPlugin {
 				}
 
 				else if(args[0].equalsIgnoreCase("version")){
-					util.checkVersion(true,null,sender);
+					util.checkVersion(true,null,sender,this,this.getFile());
 				}
 				else if(args[0].equalsIgnoreCase("update")){
 					if(this.getConfig().getBoolean("update_message")) {

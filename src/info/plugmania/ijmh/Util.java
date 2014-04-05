@@ -1,5 +1,8 @@
 package info.plugmania.ijmh;
 
+import info.plugmania.ijmh.Updater.UpdateResult;
+import info.plugmania.ijmh.Updater.UpdateType;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -37,6 +40,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.json.simple.ItemList;
 
 import com.sk89q.worldedit.Vector;
@@ -65,8 +69,15 @@ public class Util{
 		plugin = instance;
 	}
 	
-	public void checkVersion(boolean isCmd, Player player,CommandSender sender){
+	public void checkVersion(boolean isCmd, Player player,CommandSender sender, Plugin plugin, File file){
 		
+		
+		Updater updater = new Updater(plugin, 42252, file, UpdateType.NO_DOWNLOAD, true);
+		if (updater.getResult() == UpdateResult.UPDATE_AVAILABLE) {
+		    plugin.getLogger().info("New version available! " + updater.getLatestName());
+		}		
+		
+/*		
 		try {	
 			URL url = new URL("http://dev.bukkit.org/server-mods/" + plugin.getDescription().getName() + "/files.rss");
 			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
@@ -99,7 +110,7 @@ public class Util{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+*/
 	}
 	
 	// SHORTCUT TO CONFIG SECTIONS
