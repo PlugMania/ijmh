@@ -5,15 +5,17 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 2.3.0<br /><br />
+version: 2.3.1<br /><br />
 
 <b>Latest Release</b><br />
-v2.3.0 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
+v2.3.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v2.3.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v2.3.1 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+2.3.0<br />
+Updated to CraftBukkit v1.7.9-R0.2 BETA<br />
 2.3.0<br />
 Updated to CraftBukkit v1.7.2-R0.3 BETA<br />
 2.2.0<br />
