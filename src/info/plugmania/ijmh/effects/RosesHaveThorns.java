@@ -14,6 +14,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -45,7 +47,7 @@ public class RosesHaveThorns {
 		return true;
 	}
 	
-	public void main(Event e) {
+	public void main(Event e) { 
 		
 		if(Util.config("roseshavethorns",null).getBoolean("active")){
 			
@@ -59,10 +61,17 @@ public class RosesHaveThorns {
 				
 				if(!player.hasPermission("ijmh.immunity.roses")) {
 					if(!Util.config("roseshavethorns",null).getList("skipworld").contains(player.getWorld().getName())){
+						Util.toLog("Block Data is " + to.getBlock().getState().getData().toItemStack().getDurability(), true);
 						if(
-								!player.getGameMode().equals(GameMode.CREATIVE) &&
-								to.getBlock().getType().equals(Material.RED_ROSE)
-								){
+								!player.getGameMode().equals(GameMode.CREATIVE) && (
+										to.getBlock().getType().equals(Material.RED_ROSE) || (
+										to.getBlock().getType().equals(Material.DOUBLE_PLANT) && (
+											to.getBlock().getState().getData().toItemStack().getDurability() == 4 || 
+											to.getBlock().getState().getData().toItemStack().getDurability() == 8
+										)
+									)
+								)
+							){
 							player.damage(Util.config("roseshavethorns",null).getInt("damage"));
 							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("roseshavethorns",null).getInt("duration")), Util.config("roseshavethorns",null).getInt("multiplier")));
 							if(
