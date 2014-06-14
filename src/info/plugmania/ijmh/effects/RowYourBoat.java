@@ -57,7 +57,7 @@ public class RowYourBoat {
 				if(event.getVehicle().getPassenger() instanceof Player) {
 					Player player = (Player) event.getVehicle().getPassenger();
 					
-					if(!Util.config("rowyourboat",null).getList("skip_world").contains(player.getWorld().getName())) {
+					if(!Util.config("rowyourboat",null).getList("skipworld").contains(player.getWorld().getName())) {
 						if(!player.hasPermission("ijmh.immunity.boat")) {	
 							if(
 									event.getVehicle().getType().equals(EntityType.BOAT) &&
