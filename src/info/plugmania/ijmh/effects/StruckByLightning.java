@@ -74,7 +74,7 @@ public class StruckByLightning {
 									Block testBlock = player.getWorld().getBlockAt(to.getBlockX(), to.getBlockY()+i, to.getBlockZ());
 									Material testMaterial = testBlock.getType();
 									
-									if(testMaterial.equals(Material.LEAVES) && (testBlock.getData() & 0x4) == 0) {
+									if(testMaterial.equals(Material.LEAVES) && testBlock.getState().getData().toItemStack().getDurability() != 4) {
 										isHit = true;
 									} else if(!testMaterial.equals(Material.AIR)) {
 										doBreak = true;
