@@ -64,7 +64,7 @@ public class StickyTar {
 						pUnder.getBlock().getType().equals(Material.WOOL)
 						) {
 						Block block = pUnder.getBlock();
-						Wool wool = new Wool(block.getType(), block.getData());
+						Wool wool = (Wool) block.getState().getData();
 						if(wool.getColor().equals(DyeColor.BLACK)) {
 							player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Util.sec2tic(Util.config("stickytar",null).getInt("duration")), Util.config("stickytar",null).getInt("multiplier")));
 							if(Util.config("stickytar",null).getBoolean("message")) {
