@@ -56,7 +56,7 @@ public class BumpInTheRail {
 					if(!Util.config("bumpintherail",null).getList("skipworld").contains(player.getWorld().getName())) {
 						if(event.getTo().getBlock().getType().equals(Material.RAILS) && event.getVehicle().getType().equals(EntityType.MINECART)) {
 							if(!player.hasPermission("ijmh.immunity.rail")) {
-								Rails rail = new Rails(event.getTo().getBlock().getType(), event.getTo().getBlock().getData());
+								Rails rail = (Rails) event.getTo().getBlock().getState().getData();
 								if(rail.isCurve() && Util.pctChance(Util.config("bumpintherail",null).getInt("chance"),Util.config("bumpintherail",null).getInt("chancemod"))) {
 									event.getVehicle().eject();
 									Vector vector = event.getTo().getDirection().midpoint(event.getFrom().getDirection());
