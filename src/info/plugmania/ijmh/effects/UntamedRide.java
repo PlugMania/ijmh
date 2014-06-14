@@ -122,7 +122,7 @@ public class UntamedRide {
 					
 					if(plugin.untamedride.riding.contains(event.getExited())) {
 						plugin.untamedride.riding.remove(event.getExited());
-						Util.toLog(player.getName() + " unmounted " + event.getVehicle().getType().getName(), true);
+						Util.toLog(player.getName() + " unmounted " + event.getVehicle().getType().name(), true);
 					}	
 				}	
 			}

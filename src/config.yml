@@ -1,14 +1,14 @@
 update_message: true
 fire:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 10
   chancemod: 1
   duration: 300
 electro:
   active: true
-  skip_world: []
+  skipworld: []
   high:
     message: true
     chance: 5
@@ -19,7 +19,7 @@ electro:
     damage: 2  
 lightning:
   active: true
-  skip_world: []
+  skipworld: []
   skip_biome:
     - JUNGLE
   message: true
@@ -30,12 +30,12 @@ lightning:
   whenabovesealvl: false
 fall:    
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   duration: 5
 foodpoison:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 10
   chancemod: 1
@@ -43,14 +43,14 @@ foodpoison:
   duration: 5
 craftthumb:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 10
   chancemod: 1
   damage: 2
 cows:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   kick:
     message: true
@@ -60,7 +60,7 @@ cows:
     upwards: 1
 happyminer:
   active: true
-  skip_world: []
+  skipworld: []
   tired:
     message: true
     chance: 2
@@ -78,21 +78,21 @@ happyminer:
     duration: 10
 roses:    
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   damage: 1
   multiplier: 3
   duration: 2
 brew:
   active: false
-  skip_world: []
+  skipworld: []
   signs: true
   chance: 1
   chancemod: 10
   multiplier: 1
 squid:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 25
   chancemod: 1
@@ -100,20 +100,20 @@ squid:
   duration: 5 
 tar:    
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   multiplier: 5
   duration: 1
 bow:    
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 1
   chancemod: 1  
   damage: 4
 rail:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 1
   chancemod: 1
@@ -121,7 +121,7 @@ rail:
   angle: 1
 fishing:
   active: true
-  skip_world: []
+  skipworld: []
   lucky:
     active: true
     message: true
@@ -138,7 +138,7 @@ fishing:
       - SILVERFISH
 quicksand:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 1
   chancemod: 1  
@@ -146,7 +146,7 @@ quicksand:
   jumps: 5
 desert:
   active: true
-  skip_world: []
+  skipworld: []
   whendesert: true
   message: true
   chance: 1
@@ -154,25 +154,25 @@ desert:
   multiplier: 2 
 boat:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 1
   chancemod: 1
 buggyblock:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 100
   chancemod: 1
   blocks: []
 tnt:
   active: true
-  skip_world: []
+  skipworld: []
   chance: 10
   chancemod: 1
 ride:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   chance: 10
   chancemod: 1
@@ -180,7 +180,7 @@ ride:
   angle: 1
 worlddrop:
   active: true
-  skip_world: []
+  skipworld: []
   chance: 10
   chancemod: 1
   radius: 30
@@ -192,10 +192,10 @@ worlddrop:
   - APPLE
 sneaky:
   active: true
-  skip_world: []
+  skipworld: []
 zombie:
   active: true
-  skip_world: []
+  skipworld: []
   message: true
   whenzombie: true
   chance: 10
@@ -203,7 +203,7 @@ zombie:
 heavy:
   active: true
   reset: false
-  skip_world: []
+  skipworld: []
   walkspeed: 0.2
   flyspeed: 0.1
   modifier: 0.4

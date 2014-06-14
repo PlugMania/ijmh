@@ -2,19 +2,13 @@ package info.plugmania.ijmh;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -276,7 +270,7 @@ public class ijmh extends JavaPlugin {
 	    this.worlddrop.main();
 	    
 	    // ARMORVALUES TO HASHMAP
-	    util.armorval2type();
+	    Util.armorval2type();
 	}
 	
 	public boolean onCommand(CommandSender sender, Command command, String commandLabel, String[] args) {

@@ -228,15 +228,15 @@ public class Util{
 
 					if(s1.contains("heavyduty") && name.contains("armor") && (!Util.config(s1,c.get(key).get("sub")).isSet(name) || (Util.config(s1,c.get(key).get("sub")).isSet(name) && Util.config(s1,c.get(key).get("sub")).getList("armor").size()==0))) {
 						
-						Map<Material,Integer> armorlist = new TreeMap<Material,Integer>(plugin.util.protectionDef);
+						Map<Material,Integer> armorlist = new TreeMap<Material,Integer>(Util.protectionDef);
 					    
 						for (Iterator<Material> j = armorlist.keySet().iterator(); j.hasNext();) {
 							Material armor = j.next();
 							
-					        Util.toLog(armor + ":" + plugin.util.protectionDef.get(armor), true);
+					        Util.toLog(armor + ":" + Util.protectionDef.get(armor), true);
 							
 							filecontents += "\n";
-							filecontents += "  - " + armor + "," + plugin.util.protectionDef.get(armor);
+							filecontents += "  - " + armor + "," + Util.protectionDef.get(armor);
 						}
 					} else if(Util.config(s1,c.get(key).get("sub")).isSet(name)) {
 						List<?> list = (List<?>) Util.config(s1,c.get(key).get("sub")).getList(name);
@@ -379,6 +379,8 @@ public class Util{
 								if(Util.isItem(cmdSplit[1].split(",")[0])!=null) {
 									int isItem = 0;
 									
+
+									@SuppressWarnings("unchecked")
 									List<String> items = (List<String>) Util.config(args[0],subfeature).getList("armor");
 									List<String> ItemList = new ArrayList<String>(items);
 
@@ -511,8 +513,8 @@ public class Util{
 			}
 		}
 		
-		if(armorVal == 0 && protectionDef.containsKey((Material) armor)) {
-			armorVal = protectionDef.get((Material) armor);
+		if(armorVal == 0 && Util.protectionDef.containsKey((Material) armor)) {
+			armorVal = Util.protectionDef.get((Material) armor);
 		}
 		
 		return armorVal;
@@ -578,7 +580,7 @@ public class Util{
 		
 		EntityType entityType = null;
 
-		if(EntityType.fromName(entity) != null) entityType = EntityType.fromName(entity);
+		if(EntityType.valueOf(entity.toUpperCase()) != null) entityType = EntityType.valueOf(entity.toUpperCase());
 		
 		return entityType;
 	}

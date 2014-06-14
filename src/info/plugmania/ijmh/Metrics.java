@@ -33,6 +33,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -230,7 +231,7 @@ public class Metrics {
             }
 
             // Begin hitting the server with glorious data
-            taskId = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+            BukkitTask BukkitTaskId = plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new Runnable() {
 
                 private boolean firstPost = true;
 
@@ -263,6 +264,7 @@ public class Metrics {
                 }
             }, 0, PING_INTERVAL * 1200);
 
+            taskId = BukkitTaskId.getTaskId();
             return true;
         }
     }

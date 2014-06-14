@@ -2,19 +2,13 @@ package info.plugmania.ijmh.effects;
 
 import java.util.HashMap;
 
-import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.inventory.ItemStack;
 
 import info.plugmania.ijmh.Util;
 import info.plugmania.ijmh.ijmh;

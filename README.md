@@ -5,15 +5,17 @@ name: ijmh<br />
 description: "It Just Might Happen" is reality added based on events<br />
 author: nsordk & PlugMania<br />
 main: info.plugmania.ijmh.ijmh<br />
-version: 2.3.2<br /><br />
+version: 2.4.0<br /><br />
 
 <b>Latest Release</b><br />
 v2.3.1 Bukkit: http://dev.bukkit.org/server-mods/ijmh/<br /><br />
 
 <b>Dev. version</b><br />
-v2.3.2 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
+v2.4.0 Github: https://github.com/PlugMania/ijmh/raw/master/Latest%20Build/ijmh.jar<br /><br />
               
 <b>Changelog</b><br />
+2.4.0<br />
+General cleanup and recoding of deprecated classes<br />
 2.3.2<br />
 "Roses have thorns" now also works on Rose bushes too<br />
 2.3.1<br />

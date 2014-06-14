@@ -14,8 +14,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -61,7 +59,6 @@ public class RosesHaveThorns {
 				
 				if(!player.hasPermission("ijmh.immunity.roses")) {
 					if(!Util.config("roseshavethorns",null).getList("skipworld").contains(player.getWorld().getName())){
-						Util.toLog("Block Data is " + to.getBlock().getState().getData().toItemStack().getDurability(), true);
 						if(
 								!player.getGameMode().equals(GameMode.CREATIVE) && (
 										to.getBlock().getType().equals(Material.RED_ROSE) || (
